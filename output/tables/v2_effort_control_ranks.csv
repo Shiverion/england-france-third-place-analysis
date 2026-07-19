@@ -1,0 +1,15 @@
+team,metric,label,current_value,rank_high_to_low,matches,higher_is_worse,empirical_percentile
+France,total_distance_m_per90,Total distance per 90,107322.6,7,8,False,25.0
+France,high_intensity_distance_m_per90,Distance at 20+ km/h per 90,9106.4,2,8,False,87.5
+France,sprints_per90,Sprints per 90,469.0,3,8,False,75.0
+France,fifa_direct_pressures,Direct pressures,75.0,1,8,False,100.0
+France,turnovers_per_100_pressures,Turnovers per 100 pressures,8.955223880597014,8,8,False,12.5
+France,opponent_xg,Opponent xG,2.34,1,8,True,100.0
+France,opponent_completed_line_breaks,Opponent completed line breaks,116.0,1,8,True,100.0
+England,total_distance_m_per90,Total distance per 90,107715.1,5,8,False,50.0
+England,high_intensity_distance_m_per90,Distance at 20+ km/h per 90,8390.6,3,8,False,75.0
+England,sprints_per90,Sprints per 90,421.0,4,8,False,62.5
+England,fifa_direct_pressures,Direct pressures,44.0,3,8,False,75.0
+England,turnovers_per_100_pressures,Turnovers per 100 pressures,14.349775784753364,3,8,False,75.0
+England,opponent_xg,Opponent xG,2.99,1,8,True,100.0
+England,opponent_completed_line_breaks,Opponent completed line breaks,105.0,2,8,True,87.5

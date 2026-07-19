@@ -39,6 +39,48 @@
       "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M103-FRA-V-ENG.pdf"
     ]
   },
+  "fifa_2026_france_england_player_effort": {
+    "paths": [
+      "data/processed/fifa_2026_france_england_player_match.csv",
+      "data/processed/fifa_2026_france_england_team_physical.csv"
+    ],
+    "extraction_script": "scripts/build_player_effort_data.py",
+    "coverage": "All eight France matches and all eight England matches; 15 unique official FIFA PMSRs because match 103 is shared.",
+    "grain": "One row per player-match in the player file and one row per focal team-match in the team file.",
+    "report_urls": [
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M17-FRA-V-SEN.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M22-ENG-V-CRO.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M42-FRA-V-IRQ.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M45-ENG-V-GHA.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M61-NOR-V-FRA.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M67-PAN-V-ENG.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M77-FRA-V-SWE.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M80-ENG-V-COD.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M89-PAR-V-FRA.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M92-MEX-V-ENG.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M97-FRA-V-MAR.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M99-NOR-V-ENG.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M101-FRA-V-ESP.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M102-ENG-V-ARG.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M103-FRA-V-ENG.pdf"
+    ],
+    "method": "PyMuPDF table extraction of official player physical, in-possession distribution, offers/receptions, out-of-possession, and lineup-summary pages. Match-103 per-90 rates are compared with each eligible player's pooled earlier-tournament rate.",
+    "fetch_behavior": "Saved official reports are read locally; missing reports are fetched in memory and are not persisted. Every processed row retains its report URL.",
+    "validation": "Unique match-team-shirt keys; eight matches per focal team; player minutes reconcile eleven on-field slots in all 16 team-matches; parsed goals, attempts, and direct pressures reconcile official FIFA team-summary totals in all 48 comparisons.",
+    "minute_override": {
+      "match": 61,
+      "player": "Ousmane Dembele",
+      "minutes": 65,
+      "reason": "Three goal events occupy the visible event slots in the PDF summary row, so the substitution time is not recoverable there.",
+      "official_source": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ousmane-dembele-hat-trick-norway"
+    },
+    "known_limitations": "Player observations share match-level tactics and score states. Physical totals include stoppage time while per-90 denominators use the regulation clock; the convention is applied consistently. The resulting player hypothesis tests are exploratory and Holm-adjusted across four related effort metrics."
+  },
+  "fifa_report_format_reference": {
+    "path": "data/fifa/FullTimeMatchReport-M42-FRA-V-IRQ-English.pdf",
+    "match": "France 3-0 Iraq, group-stage match 42",
+    "use": "Format reference only; excluded from every analysis table and result."
+  },
   "current_goal_timeline": {
     "path": "data/current_match_goals.csv",
     "source": "https://www.11v11.com/matches/france-v-england-18-july-2026-393896/"
@@ -47,6 +89,19 @@
     "path": "data/lineup_starters.csv",
     "source": "Official FIFA PMSR team-summary pages for matches 101-103",
     "method": "Manual transcription of starting XIs; notebook checks exactly 11 starters per team-match."
+  },
+  "individual_incentives": {
+    "path": "data/player_incentive_evidence.csv",
+    "pre_match_sources": [
+      "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/adidas-golden-boot-race-top-scorer",
+      "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/most-assists-top-assisters"
+    ],
+    "post_match_sources": [
+      "https://apnews.com/article/world-cup-england-france-third-place-score-52f94eda6ff6d268d38aaefbc446c525",
+      "https://as.com/us/futbol/mundial/michael-olise-supera-a-pele-y-rompe-record-historico-de-asistencias-en-un-mundial-f202607-n/"
+    ],
+    "method": "Timestamped before-versus-after mechanism audit: live award stake, player selection, match contribution, and change in the individual standing. This supports incentive plausibility but does not identify private motivation.",
+    "known_gap": "The Olise post-match assist total is reported by a secondary source because the saved FIFA PMSR does not assign assists."
   },
   "charity_benchmark": {
     "path": "data/soccer_aid_results.csv",

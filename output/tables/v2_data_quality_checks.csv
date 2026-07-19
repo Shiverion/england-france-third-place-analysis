@@ -6,4 +6,9 @@ World Cup goal events reconcile final scores,964,964,pass
 PMSR baseline has two team rows per match,96,96,pass
 Starter groups contain exactly 11 players,4,4,pass
 Current timeline contains ten goals,10,10,pass
+Individual incentive rows reconcile pre + match = post,4,4,pass
+FIFA player-match-shirt key unique,0,0,pass
+Focal teams each cover eight matches,2,2,pass
+Player minutes reconcile eleven on-field slots,16,16,pass
 Results backbone current score populated,0,1,expected gap
+"Player-derived goals, attempts, and direct pressures reconcile FIFA team totals",48,48,pass

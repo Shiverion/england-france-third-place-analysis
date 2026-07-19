@@ -1,8 +1,12 @@
 claim,assessment,evidence
 Lower selection priority,Supported,Each team changed 7 of 11 semi-final starters.
+Individual attacking incentives remained live,Supported selectively,"France retained Mbappe and Olise; their totals moved 8→10 goals and 5→7 assists. England began with Kane and Bellingham on the bench, so the mechanism was not universal."
+Players broadly coasted physically,Not supported,"Among 19 comparable outfielders, high-intensity distance was +12.0% and direct pressures were +63.2% versus their own prior rates; total distance was slightly lower. Raw tests are exploratory and none remains below 0.05 after Holm correction."
+Award leaders showed unusually aggressive activity,"Suggestive, not conclusive",Mbappe took 8 shots versus 4.88 per prior player-90; Olise made 17 offers in behind versus 8.34 and 11 direct pressures versus 3.37. Seven-match empirical p-values are coarse (0.25 and 0.125).
 Elite friendlies normally score much more,Not supported,Matched difference -0.04; 95% CI -0.35 to +0.27; p=0.824.
 Charity-like scoring spectacle,Supported descriptively,Ten goals exceeded every matched neutral professional comparison and every Soccer Aid row in the saved benchmark.
-Teams made no defensive effort,Contradicted,Direct pressures were at the 98th percentile.
+Teams made no defensive effort,Contradicted,"Direct pressures were at the 98th percentile, while high-intensity player distance was above individual baselines."
 Defensive control was unusually ineffective,Supported,Only 62 turnovers and 11.1 per 100 pressures; the latter was below all 102 earlier matches.
+Ten goals came only from chance volume,Not supported,Observed goals exceeded 5.33 xG by 4.67; aggregate-Poisson P(10+)≈4.5%.
 The 4–0 state explains all ten goals,Contradicted,State-conditioned expectation 3.30 versus 10 observed; level-state expectation 2.45.
 Current match fits an ordinary elite friendly,Not supported,Ten-goal model tail is below 0.1% in both matched professional contexts.

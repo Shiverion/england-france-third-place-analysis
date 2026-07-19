@@ -32,15 +32,18 @@ def build_notebook() -> nbf.NotebookNode:
 
             ## tl;dr
 
-            This version replaces the weak charity-only comparison with three stronger layers of evidence.
+            This version replaces the weak charity-only comparison with several stronger layers of evidence.
 
             - **Lower selection pressure is visible:** France and England each changed **7 of 11 starters** from their semi-finals.
+            - **Individual stakes remained live:** France retained Kylian Mbappe and Michael Olise—its live goal and assist leaders—among only four retained starters. Mbappe moved from **8 to 10 goals**, Olise from **5 to 7 assists**, and substitute Jude Bellingham from **6 to 7 goals**.
+            - **The players did not broadly coast:** among **19 comparable outfield players**, Match 103 total distance per 90 was slightly lower than their own earlier-tournament rates (**−3.2%**), but high-intensity distance was **12.0% higher** and direct pressures were **63.2% higher**. Raw exploratory p-values were approximately 0.09, 0.05, and 0.04; none remained below 0.05 after Holm correction across four effort metrics.
             - **Elite friendlies are not normally much more open:** in **173 matched neutral pairs** of elite men's internationals (1991–2023), friendlies averaged **2.45 goals** and official tournament matches averaged **2.49**. The paired difference was **−0.04 goals** (bootstrap 95% CI about **−0.35 to +0.27**; sign-flip permutation **p≈0.82**).
             - **The match process was extraordinarily open:** against the first 102 matches of the 2026 World Cup using the same official FIFA provider, England–France set new highs for **goals (10), total xG (5.33), and shots on target (20)**.
             - **“No defensive effort” is too simple:** the match was at the **98th percentile for direct pressures**, but produced only **62 forced turnovers** (about the 5th percentile). Its derived turnover yield—**11.1 per 100 pressures**—was below all 102 earlier matches.
             - **The 4–0 game state mattered but does not explain everything:** historical World Cup minute rates imply about **2.45 goals** for a level-state path and **3.30** for the score-state path actually experienced. Ten goals remain roughly three times the state-conditioned expectation.
+            - **Exceptional finishing amplified exceptional openness:** ten goals came from **5.33 xG**. A rough Poisson check gives about a **4.5%** chance of at least ten goals at that expectation; England alone scored six from 2.34 xG.
 
-            **Best verdict:** this was a heavily rotated, lower-stakes official match played with unusually aggressive risk and poor defensive control. It looked exhibition-like in openness, but the evidence does not support saying the teams simply stopped trying or that elite friendlies generally resemble charity games.
+            **Best verdict:** this was a heavily rotated, lower-stakes official match where attacking effort still carried individual rewards. The players performed substantial high-intensity work, but collective pressure outcomes and defensive structure deteriorated. Exceptional finishing then enlarged an already exceptional chance environment. It looked exhibition-like in openness, but the evidence does not support saying the teams simply stopped trying or that elite friendlies generally resemble charity games.
             """
         ),
         markdown(
@@ -51,13 +54,25 @@ def build_notebook() -> nbf.NotebookNode:
 
             > Was the match's selection and observable playing behaviour more consistent with high-stakes official football, elite professional friendlies, or an exhibition-style scoring environment?
 
+            ### Hypotheses and decision rule
+
+            **H1 (composite fun-match hypothesis):** compared with serious official matches, the third-place match behaved like a low-pressure exhibition or charity match—lower physical and defensive effort, unusually open scoring, and selective attacking behaviour aimed at individual statistics.
+
+            **H2 (individual-stat boost hypothesis):** live Golden Boot, assist, and record incentives influenced selection and attacking involvement, so the match gave specific players an unusual opportunity to add to their personal statistics.
+
+            **H0 / competing explanation:** the match was lower-stakes and heavily rotated, but players still worked physically; the open score was produced by attacking risk, weak collective control, score-state effects, individual incentives, and exceptional finishing rather than a general decision to stop trying.
+
+            This is a composite hypothesis, so one p-value cannot answer it. The notebook evaluates each component separately and reports a graded verdict: **supported**, **not supported**, **suggestive but underpowered**, or **descriptive only**. Private motivation and “fun” are not directly observable.
+
             ### Comparison hierarchy
 
             1. **Primary professional control:** neutral senior men's friendlies matched 1:1 to neutral major official tournament matches on year, average prior-year Elo, and Elo gap. Both teams must be prior-year top 30 and no more than 200 Elo points apart.
             2. **Duration sensitivity:** elite friendlies matched to official qualifiers, which normally avoid knockout extra time.
-            3. **Same-provider process benchmark:** official FIFA Post-Match Summary Report metrics for 102 earlier 2026 World Cup matches.
-            4. **Game-state benchmark:** regulation-time goal hazards from 964 men's World Cup matches through 2022.
-            5. **External exhibition anchor:** Soccer Aid remains descriptive only; it is not treated as a like-for-like professional control.
+            3. **Individual-incentive mechanism audit:** timestamped pre-match award standings, selection decisions, match contributions, and post-match changes.
+            4. **Player effort-versus-control audit:** official FIFA physical, pressing, movement, and shooting tables for all eight France and all eight England matches, with each player compared with his own earlier-tournament rate.
+            5. **Same-provider process benchmark:** official FIFA Post-Match Summary Report metrics for 102 earlier 2026 World Cup matches.
+            6. **Game-state benchmark:** regulation-time goal hazards from 964 men's World Cup matches through 2022.
+            7. **External exhibition anchor:** Soccer Aid remains descriptive only; it is not treated as a like-for-like professional control.
 
             ### Statistical plan
 
@@ -66,6 +81,9 @@ def build_notebook() -> nbf.NotebookNode:
             - Tail probabilities use a method-of-moments negative-binomial model, falling back to Poisson when overdispersion is absent. These are descriptive predictive checks, not causal estimates.
             - FIFA process metrics are empirical percentiles; only metrics from the same provider are compared.
             - Score-state rates are bootstrapped by World Cup match. Because score state is endogenous, the decomposition is explanatory context, not a causal claim.
+            - The individual-incentive audit is mechanism triangulation rather than a hypothesis test: a live award stake, selection, a match contribution, and a material change in the standing must all be visible.
+            - Player effort tests compare Match 103 per-90 rates with each outfielder's pooled prior-tournament rate. Eligibility requires at least 45 Match 103 minutes, two prior appearances, and 90 prior minutes. Player bootstrap intervals and sign-flip tests are exploratory because teammates are not fully independent.
+            - The finishing check treats total xG as a Poisson scoring mean. It is an approximation because shot-level xG values are not published in the saved report.
 
             ### Key assumptions and limitations
 
@@ -74,6 +92,8 @@ def build_notebook() -> nbf.NotebookNode:
             - The large results backbone has no stage field outside the World Cup source. Other competitions' third-place games are not fabricated or silently pooled.
             - Year-end Elo from year Y−1 is used for matches in year Y, preventing look-ahead but measuring strength less precisely than a match-day rating.
             - Charity matches differ in roster quality, rules, and incentives.
+            - Before/after award movement establishes that an incentive existed and the match changed the outcome; it cannot establish the player's private motive for any action.
+            - Physical totals include stoppage time while per-90 denominators use the regulation clock. This is applied consistently across reports; one crowded match-summary row required a separately sourced official substitution time.
 
             ### Sources
 
@@ -163,6 +183,9 @@ def build_notebook() -> nbf.NotebookNode:
             current_goals = pd.read_csv(ROOT / "data" / "current_match_goals.csv")
             soccer_aid = pd.read_csv(ROOT / "data" / "soccer_aid_results.csv")
             lineups = pd.read_csv(ROOT / "data" / "lineup_starters.csv")
+            player_incentives = pd.read_csv(ROOT / "data" / "player_incentive_evidence.csv")
+            player_match = pd.read_csv(PROCESSED / "fifa_2026_france_england_player_match.csv")
+            team_physical = pd.read_csv(PROCESSED / "fifa_2026_france_england_team_physical.csv")
 
             source_table = pd.DataFrame([
                 ("Senior internationals", len(results), "one row per match", "1872–2026 file; analysis uses complete 1991–2023 rows"),
@@ -172,6 +195,9 @@ def build_notebook() -> nbf.NotebookNode:
                 ("Current goal timeline", len(current_goals), "one row per goal", "match 103"),
                 ("Soccer Aid", len(soccer_aid), "one row per match", "2006–2026"),
                 ("Starter audit", len(lineups), "one row per starter", "semi-finals and match 103"),
+                ("Individual incentive audit", len(player_incentives), "one row per player-metric", "timestamped pre/post standings"),
+                ("FIFA player-match audit", len(player_match), "one row per player-match", "all 8 France and all 8 England matches"),
+                ("FIFA team physical audit", len(team_physical), "one row per team-match", "16 focal team-matches"),
             ], columns=["source", "rows_or_matches", "grain", "coverage"])
             display(source_table)
             """
@@ -188,11 +214,19 @@ def build_notebook() -> nbf.NotebookNode:
             men["score_goal_count"] = pd.to_numeric(men["home_team_score"]) + pd.to_numeric(men["away_team_score"])
 
             lineup_sizes = lineups.groupby(["match_number", "team"]).size()
+            incentive_arithmetic = (
+                player_incentives["pre_match_value"] + player_incentives["match_added"]
+            ).eq(player_incentives["post_match_value"])
             current_result_row = results[
                 results["date"].eq(pd.Timestamp("2026-07-18"))
                 & results["home_team"].eq("France")
                 & results["away_team"].eq("England")
             ]
+            player_key_duplicates = int(player_match.duplicated(["match_number", "team", "shirt_number"]).sum())
+            player_match_coverage = player_match.groupby("team")["match_number"].nunique()
+            minute_totals = player_match.groupby(["match_number", "team", "match_duration"])["minutes"].sum()
+            minute_expected = minute_totals.index.get_level_values("match_duration") * 11
+            minute_groups_reconciled = int(np.isclose(minute_totals.to_numpy(), minute_expected).sum())
 
             quality_checks = pd.DataFrame([
                 ("International result dates parse", int(results["date"].notna().sum()), len(results), "pass" if results["date"].notna().all() else "review"),
@@ -202,6 +236,10 @@ def build_notebook() -> nbf.NotebookNode:
                 ("PMSR baseline has two team rows per match", int(pmsr_base.groupby("match_number").size().eq(2).sum()), 96, "pass"),
                 ("Starter groups contain exactly 11 players", int(lineup_sizes.eq(11).sum()), len(lineup_sizes), "pass" if lineup_sizes.eq(11).all() else "fail"),
                 ("Current timeline contains ten goals", len(current_goals), 10, "pass" if len(current_goals) == 10 else "fail"),
+                ("Individual incentive rows reconcile pre + match = post", int(incentive_arithmetic.sum()), len(player_incentives), "pass" if incentive_arithmetic.all() else "fail"),
+                ("FIFA player-match-shirt key unique", player_key_duplicates, 0, "pass" if player_key_duplicates == 0 else "fail"),
+                ("Focal teams each cover eight matches", int(player_match_coverage.eq(8).sum()), 2, "pass" if player_match_coverage.eq(8).all() else "fail"),
+                ("Player minutes reconcile eleven on-field slots", minute_groups_reconciled, len(minute_totals), "pass" if minute_groups_reconciled == len(minute_totals) else "fail"),
                 ("Results backbone current score populated", int(current_result_row[["home_score", "away_score"]].notna().all(axis=1).sum()), 1, "expected gap"),
             ], columns=["check", "observed", "expected", "status"])
 
@@ -211,6 +249,11 @@ def build_notebook() -> nbf.NotebookNode:
             assert pmsr_base.groupby("match_number").size().eq(2).all()
             assert lineup_sizes.eq(11).all()
             assert len(current_goals) == 10
+            assert not player_incentives.duplicated(["player", "metric"]).any()
+            assert incentive_arithmetic.all()
+            assert player_key_duplicates == 0
+            assert player_match_coverage.eq(8).all()
+            assert minute_groups_reconciled == len(minute_totals)
             display(quality_checks)
 
             print("Known freshness gap: the cloned results backbone still stores match 103 as an unscored fixture; official FIFA data supplies the result and process metrics.")
@@ -770,6 +813,520 @@ def build_notebook() -> nbf.NotebookNode:
             plt.show()
             """
         ),
+        markdown(
+            """
+            ## Individual stakes can survive lower team stakes
+
+            The bronze match counted fully toward official player awards. Immediately before kick-off, FIFA listed Lionel Messi and Kylian Mbappe on eight goals, with Messi ahead on the assist tie-break; Michael Olise led the tournament assist table with five. France then retained **Mbappe and Olise among only four semi-final starters**.
+
+            The match materially changed those individual outcomes:
+
+            - Mbappe scored twice: **8 → 10 tournament goals**, moving into the provisional Golden Boot lead and reaching 22 career World Cup goals.
+            - Olise was credited with both Mbappe assists: **5 → 7 tournament assists**, extending his lead and passing FIFA's listed single-tournament benchmark of six.
+            - Bellingham began on the bench but scored after entering: **6 → 7 tournament goals**, setting an England single-World-Cup record.
+            - Kane also began on the bench and stayed at six, which is an important counterexample to a universal stat-padding explanation.
+
+            This completes part of the incentive puzzle: **team-level pressure can fall while individual attacking incentives remain high**. It does not prove that any player chose a selfish action, and the pattern is selective rather than shared by everyone.
+
+            Sources: [FIFA pre-match Golden Boot table and criteria](https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/adidas-golden-boot-race-top-scorer), [FIFA pre-match assist table](https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/most-assists-top-assisters), [AP post-match report](https://apnews.com/article/world-cup-england-france-third-place-score-52f94eda6ff6d268d38aaefbc446c525), and [reported Olise assist update](https://as.com/us/futbol/mundial/michael-olise-supera-a-pele-y-rompe-record-historico-de-asistencias-en-un-mundial-f202607-n/).
+            """
+        ),
+        code(
+            """
+            # Before-versus-after audit of individual award incentives
+            incentive_plot = player_incentives.copy()
+            incentive_plot["display_label"] = incentive_plot["player"] + "\\n" + incentive_plot["metric"]
+            incentive_plot.to_csv(TABLES / "v2_player_incentive_evidence.csv", index=False)
+
+            france_semi = set(lineups.loc[(lineups["team"].eq("France")) & lineups["match_number"].eq(101), "player"])
+            france_bronze = set(lineups.loc[(lineups["team"].eq("France")) & lineups["match_number"].eq(103), "player"])
+            england_bronze = set(lineups.loc[(lineups["team"].eq("England")) & lineups["match_number"].eq(103), "player"])
+            assert {"Kylian Mbappe", "Michael Olise"}.issubset(france_semi & france_bronze)
+            assert {"Harry Kane", "Jude Bellingham"}.isdisjoint(england_bronze)
+
+            display(incentive_plot[[
+                "player", "team", "metric", "pre_match_value", "match_added",
+                "post_match_value", "selection_status", "post_match_consequence", "evidence_strength"
+            ]])
+
+            fig, axes = plt.subplots(1, 2, figsize=(13.0, 6.3), gridspec_kw={"width_ratios": [1.45, 1]})
+            ordered = incentive_plot.iloc[::-1].reset_index(drop=True)
+            y = np.arange(len(ordered))
+            pre = ordered["pre_match_value"].to_numpy()
+            added = ordered["match_added"].to_numpy()
+
+            axes[0].barh(y, pre, color=BLUE_LIGHT, edgecolor=INK, label="Before match")
+            axes[0].barh(y, added, left=pre, color=ORANGE, edgecolor=INK, label="Added in match")
+            axes[0].set_yticks(y, ordered["display_label"])
+            axes[0].set_xlim(0, 11)
+            axes[0].set_xlabel("Tournament goals or assists")
+            axes[0].set_title("The bronze match changed individual standings", loc="left", pad=30)
+            axes[0].text(0, 1.01, "Timestamped pre-match total + match contribution = post-match total", transform=axes[0].transAxes, color=MUTED)
+            for yi, before, gain, after in zip(y, pre, added, ordered["post_match_value"]):
+                axes[0].text(after + 0.18, yi, f"{before:.0f} + {gain:.0f} = {after:.0f}", va="center", color=INK, fontweight="bold")
+            axes[0].legend(loc="lower right")
+            axes[0].spines[["top", "right"]].set_visible(False)
+
+            axes[1].axis("off")
+            axes[1].set_title("Selection makes the mechanism selective", loc="left", pad=30)
+            axes[1].text(0.02, 0.88, "FRANCE", color=BLUE, fontsize=14, fontweight="bold", transform=axes[1].transAxes)
+            axes[1].text(0.02, 0.78, "7 starter changes", fontsize=18, fontweight="bold", color=INK, transform=axes[1].transAxes)
+            axes[1].text(0.02, 0.62, "Mbappe + Olise retained\\n2 of only 4 retained starters\\nwere live individual-award leaders", fontsize=12, color=INK, linespacing=1.5, transform=axes[1].transAxes)
+            axes[1].text(0.02, 0.42, "ENGLAND", color=ORANGE, fontsize=14, fontweight="bold", transform=axes[1].transAxes)
+            axes[1].text(0.02, 0.32, "7 starter changes", fontsize=18, fontweight="bold", color=INK, transform=axes[1].transAxes)
+            axes[1].text(0.02, 0.16, "Kane + Bellingham began on bench\\nBellingham entered late and scored;\\nKane made no statistical gain", fontsize=12, color=INK, linespacing=1.5, transform=axes[1].transAxes)
+            axes[1].text(0.02, 0.01, "Conclusion: plausible attacking incentive,\\nnot a universal stat-padding pact.", fontsize=11, color=MUTED, fontstyle="italic", transform=axes[1].transAxes)
+
+            fig.tight_layout()
+            fig.savefig(ASSETS / "v2_individual_incentives.png", dpi=180, bbox_inches="tight")
+            plt.show()
+            """
+        ),
+        markdown(
+            """
+            ## Did the players physically coast—or did coordination fail?
+
+            FIFA's player tables allow a cleaner separation between **individual work** and **collective control**. This section uses all eight France matches and all eight England matches. Match 103 is compared with each player's own earlier-tournament rate rather than with a different squad or competition.
+
+            The primary player comparison includes 19 outfielders who played at least 45 minutes in Match 103 and had at least two earlier appearances totalling 90 minutes. It is an observational, exploratory comparison: teammates share tactics and score states, so the player rows are not perfectly independent.
+            """
+        ),
+        code(
+            """
+            # Player-level effort, attacking behaviour, and finishing decomposition
+            focal_process = pmsr[[
+                "match_number", "team_name", "opponent_team_name", "goals", "xg",
+                "attempts_at_goal", "shots_on_target", "completed_line_breaks",
+                "defensive_pressures", "direct_pressures", "forced_turnovers",
+            ]].rename(columns={
+                "team_name": "team",
+                "opponent_team_name": "opponent",
+                "goals": "fifa_goals",
+                "xg": "team_xg",
+                "attempts_at_goal": "fifa_attempts",
+                "shots_on_target": "team_shots_on_target",
+                "completed_line_breaks": "team_completed_line_breaks",
+                "direct_pressures": "fifa_direct_pressures",
+            })
+            effort_control = team_physical.merge(
+                focal_process,
+                on=["match_number", "team", "opponent"],
+                how="left",
+                validate="one_to_one",
+            )
+            opponent_process = pmsr[[
+                "match_number", "team_name", "xg", "shots_on_target", "completed_line_breaks"
+            ]].rename(columns={
+                "team_name": "opponent",
+                "xg": "opponent_xg",
+                "shots_on_target": "opponent_shots_on_target",
+                "completed_line_breaks": "opponent_completed_line_breaks",
+            })
+            effort_control = effort_control.merge(
+                opponent_process,
+                on=["match_number", "opponent"],
+                how="left",
+                validate="many_to_one",
+            )
+            effort_control["turnovers_per_100_pressures"] = (
+                100 * effort_control["forced_turnovers"] / effort_control["defensive_pressures"]
+            )
+            effort_control["high_intensity_km_per90"] = (
+                effort_control["high_intensity_distance_m_per90"] / 1_000
+            )
+
+            # Independent parser reconciliation against FIFA's match-summary totals.
+            assert effort_control["goals"].eq(effort_control["fifa_goals"]).all()
+            assert effort_control["attempts_at_goal"].eq(effort_control["fifa_attempts"]).all()
+            assert effort_control["pressures_direct"].eq(effort_control["fifa_direct_pressures"]).all()
+            player_team_reconciliations = int(
+                effort_control["goals"].eq(effort_control["fifa_goals"]).sum()
+                + effort_control["attempts_at_goal"].eq(effort_control["fifa_attempts"]).sum()
+                + effort_control["pressures_direct"].eq(effort_control["fifa_direct_pressures"]).sum()
+            )
+            quality_checks = pd.concat([
+                quality_checks,
+                pd.DataFrame([{
+                    "check": "Player-derived goals, attempts, and direct pressures reconcile FIFA team totals",
+                    "observed": player_team_reconciliations,
+                    "expected": 48,
+                    "status": "pass" if player_team_reconciliations == 48 else "fail",
+                }]),
+            ], ignore_index=True)
+
+            rank_metrics = {
+                "total_distance_m_per90": ("Total distance per 90", False),
+                "high_intensity_distance_m_per90": ("Distance at 20+ km/h per 90", False),
+                "sprints_per90": ("Sprints per 90", False),
+                "fifa_direct_pressures": ("Direct pressures", False),
+                "turnovers_per_100_pressures": ("Turnovers per 100 pressures", False),
+                "opponent_xg": ("Opponent xG", True),
+                "opponent_completed_line_breaks": ("Opponent completed line breaks", True),
+            }
+            team_rank_rows = []
+            for team in ("France", "England"):
+                team_matches = effort_control[effort_control["team"].eq(team)].copy()
+                current_row = team_matches[team_matches["match_number"].eq(103)].iloc[0]
+                for metric, (label, higher_is_worse) in rank_metrics.items():
+                    descending_rank = int(
+                        team_matches[metric].rank(method="min", ascending=False)
+                        .loc[team_matches["match_number"].eq(103)].iloc[0]
+                    )
+                    team_rank_rows.append({
+                        "team": team,
+                        "metric": metric,
+                        "label": label,
+                        "current_value": float(current_row[metric]),
+                        "rank_high_to_low": descending_rank,
+                        "matches": len(team_matches),
+                        "higher_is_worse": higher_is_worse,
+                        "empirical_percentile": 100 * float((team_matches[metric] <= current_row[metric]).mean()),
+                    })
+            effort_ranks = pd.DataFrame(team_rank_rows)
+
+            player_work = player_match.copy()
+            player_work["high_intensity_distance_m"] = (
+                player_work["zone4_distance_m"] + player_work["zone5_distance_m"]
+            )
+            effort_metrics = {
+                "total_distance_m": "Total distance per 90",
+                "high_intensity_distance_m": "Distance at 20+ km/h per 90",
+                "sprints": "Sprints per 90",
+                "pressures_direct": "Direct pressures per 90",
+            }
+            current_players = player_work[
+                player_work["match_number"].eq(103)
+                & player_work["position"].ne("GK")
+                & player_work["minutes"].ge(45)
+            ].copy()
+            prior_players = player_work[
+                player_work["match_number"].lt(103)
+                & player_work["position"].ne("GK")
+                & player_work["minutes"].ge(15)
+            ].copy()
+
+            prior_baseline = prior_players.groupby(["team", "player"]).agg(
+                prior_minutes=("minutes", "sum"),
+                prior_matches=("match_number", "nunique"),
+                **{f"prior_{metric}": (metric, "sum") for metric in effort_metrics},
+            )
+            for metric in effort_metrics:
+                prior_baseline[f"{metric}_baseline_p90"] = (
+                    prior_baseline[f"prior_{metric}"] / prior_baseline["prior_minutes"] * 90
+                )
+                current_players[f"{metric}_current_p90"] = (
+                    current_players[metric] / current_players["minutes"] * 90
+                )
+            player_effort = current_players.merge(
+                prior_baseline.reset_index(),
+                on=["team", "player"],
+                how="left",
+                validate="one_to_one",
+            )
+            player_effort = player_effort[
+                player_effort["prior_minutes"].ge(90)
+                & player_effort["prior_matches"].ge(2)
+            ].copy()
+            assert len(player_effort) == 19
+
+            test_rng = np.random.default_rng(SEED + 103)
+            player_test_rows = []
+            for metric, label in effort_metrics.items():
+                current_values = player_effort[f"{metric}_current_p90"].to_numpy()
+                baseline_values = player_effort[f"{metric}_baseline_p90"].to_numpy()
+                differences = current_values - baseline_values
+                n_players = len(differences)
+                bootstrap_indices = test_rng.integers(0, n_players, size=(20_000, n_players))
+                bootstrap_means = differences[bootstrap_indices].mean(axis=1)
+                signs = test_rng.choice([-1, 1], size=(100_000, n_players))
+                null_means = (signs * differences).mean(axis=1)
+                observed_delta = float(differences.mean())
+                permutation_p = float(
+                    (1 + (np.abs(null_means) >= abs(observed_delta)).sum()) / (len(null_means) + 1)
+                )
+                player_test_rows.append({
+                    "metric": metric,
+                    "label": label,
+                    "players": n_players,
+                    "current_mean": float(current_values.mean()),
+                    "prior_mean": float(baseline_values.mean()),
+                    "mean_delta": observed_delta,
+                    "relative_delta_pct": 100 * observed_delta / float(baseline_values.mean()),
+                    "bootstrap_ci_low": float(np.quantile(bootstrap_means, 0.025)),
+                    "bootstrap_ci_high": float(np.quantile(bootstrap_means, 0.975)),
+                    "sign_flip_p": permutation_p,
+                    "players_above_baseline": int((differences > 0).sum()),
+                })
+            player_effort_tests = pd.DataFrame(player_test_rows)
+            # Four related outcomes are examined. Holm adjustment controls the
+            # family-wise error rate and keeps the exploratory interpretation honest.
+            raw_player_p = player_effort_tests["sign_flip_p"].to_numpy()
+            player_p_order = np.argsort(raw_player_p)
+            player_p_sorted_adjusted = np.maximum.accumulate(
+                (len(raw_player_p) - np.arange(len(raw_player_p))) * raw_player_p[player_p_order]
+            )
+            player_p_adjusted = np.empty_like(raw_player_p)
+            player_p_adjusted[player_p_order] = np.minimum(player_p_sorted_adjusted, 1.0)
+            player_effort_tests["holm_adjusted_p"] = player_p_adjusted
+
+            # Award-candidate behaviour: counts, per-90 rates, and team shot share.
+            team_attempt_totals = player_work.groupby(
+                ["match_number", "team"], as_index=False
+            )["attempts_at_goal"].sum().rename(columns={"attempts_at_goal": "team_attempts"})
+            player_with_team = player_work.merge(
+                team_attempt_totals,
+                on=["match_number", "team"],
+                validate="many_to_one",
+            )
+            candidate_rows = []
+            for candidate in ("Kylian Mbappe", "Michael Olise", "Bukayo Saka", "Jude Bellingham", "Harry Kane"):
+                candidate_matches = player_with_team[player_with_team["player"].eq(candidate)]
+                current_candidate = candidate_matches[candidate_matches["match_number"].eq(103)]
+                prior_candidate = candidate_matches[
+                    candidate_matches["match_number"].lt(103)
+                    & candidate_matches["minutes"].ge(15)
+                ]
+                row = {
+                    "player": candidate,
+                    "team": "France" if candidate in {"Kylian Mbappe", "Michael Olise"} else "England",
+                    "appeared": not current_candidate.empty,
+                    "minutes": float(current_candidate["minutes"].iloc[0]) if not current_candidate.empty else 0.0,
+                    "prior_matches": int(prior_candidate["match_number"].nunique()),
+                }
+                for metric in ("attempts_at_goal", "offers_in_behind", "pressures_direct", "high_intensity_distance_m"):
+                    current_count = float(current_candidate[metric].iloc[0]) if not current_candidate.empty else 0.0
+                    prior_rate = (
+                        float(prior_candidate[metric].sum() / prior_candidate["minutes"].sum() * 90)
+                        if prior_candidate["minutes"].sum() > 0 else np.nan
+                    )
+                    current_rate = (
+                        float(current_count / current_candidate["minutes"].iloc[0] * 90)
+                        if not current_candidate.empty and current_candidate["minutes"].iloc[0] > 0 else np.nan
+                    )
+                    row[f"{metric}_current"] = current_count
+                    row[f"{metric}_current_p90"] = current_rate
+                    row[f"{metric}_prior_p90"] = prior_rate
+                    row[f"{metric}_index"] = 100 * current_rate / prior_rate if prior_rate > 0 else np.nan
+                    prior_match_rates = prior_candidate[metric] / prior_candidate["minutes"] * 90
+                    row[f"{metric}_rank_high_to_low"] = (
+                        int(1 + (prior_match_rates > current_rate).sum())
+                        if np.isfinite(current_rate) else np.nan
+                    )
+                    row[f"{metric}_empirical_one_sided_p"] = (
+                        float((1 + (prior_match_rates >= current_rate).sum()) / (len(prior_match_rates) + 1))
+                        if np.isfinite(current_rate) and len(prior_match_rates) else np.nan
+                    )
+                row["shot_share_current"] = (
+                    float(current_candidate["attempts_at_goal"].iloc[0] / current_candidate["team_attempts"].iloc[0])
+                    if not current_candidate.empty else 0.0
+                )
+                row["shot_share_prior"] = (
+                    float(prior_candidate["attempts_at_goal"].sum() / prior_candidate["team_attempts"].sum())
+                    if prior_candidate["team_attempts"].sum() > 0 else np.nan
+                )
+                row["rate_stability"] = "unstable: under 30 minutes" if 0 < row["minutes"] < 30 else "usable"
+                candidate_rows.append(row)
+            candidate_behavior = pd.DataFrame(candidate_rows)
+
+            current_fifa_teams = focal_process[
+                focal_process["match_number"].eq(103)
+                & focal_process["team"].isin(["France", "England"])
+            ]
+            finishing_rows = []
+            for team in ("France", "England"):
+                team_row = current_fifa_teams[current_fifa_teams["team"].eq(team)].iloc[0]
+                finishing_rows.append({
+                    "scope": team,
+                    "xg": float(team_row["team_xg"]),
+                    "goals": int(team_row["fifa_goals"]),
+                })
+            finishing_rows.append({
+                "scope": "Combined",
+                "xg": float(current_fifa_teams["team_xg"].sum()),
+                "goals": int(current_fifa_teams["fifa_goals"].sum()),
+            })
+            finishing = pd.DataFrame(finishing_rows)
+            finishing["goals_above_xg"] = finishing["goals"] - finishing["xg"]
+            finishing["goals_to_xg_ratio"] = finishing["goals"] / finishing["xg"]
+            finishing["poisson_tail_p"] = [
+                float(stats.poisson.sf(goals - 1, expected))
+                for expected, goals in zip(finishing["xg"], finishing["goals"])
+            ]
+
+            effort_control.to_csv(TABLES / "v2_effort_control_team_matches.csv", index=False)
+            effort_ranks.to_csv(TABLES / "v2_effort_control_ranks.csv", index=False)
+            player_effort.to_csv(TABLES / "v2_player_effort_comparison.csv", index=False)
+            player_effort_tests.to_csv(TABLES / "v2_player_effort_tests.csv", index=False)
+            candidate_behavior.to_csv(TABLES / "v2_candidate_behavior.csv", index=False)
+            finishing.to_csv(TABLES / "v2_finishing_decomposition.csv", index=False)
+
+            display(effort_ranks.round(2))
+            display(player_effort_tests.round(3))
+            display(candidate_behavior[[
+                "player", "minutes", "attempts_at_goal_current", "attempts_at_goal_current_p90",
+                "attempts_at_goal_prior_p90", "attempts_at_goal_empirical_one_sided_p",
+                "shot_share_current", "shot_share_prior", "offers_in_behind_current",
+                "offers_in_behind_prior_p90", "offers_in_behind_empirical_one_sided_p",
+                "pressures_direct_current", "pressures_direct_prior_p90",
+                "pressures_direct_empirical_one_sided_p", "rate_stability",
+            ]].round(3))
+            display(finishing.round(3))
+
+            # Chart contract: 16 equal-grain team-match points; scatter shows whether
+            # high-intensity output translated into pressure outcomes. Team colors are
+            # reinforced by labels and filled current-match markers.
+            fig, axes = plt.subplots(1, 2, figsize=(13.2, 6.0), gridspec_kw={"width_ratios": [1.5, 1]})
+            team_colors = {"France": BLUE, "England": ORANGE}
+            prior_effort = effort_control[effort_control["match_number"].lt(103)]
+            axes[0].axvline(prior_effort["high_intensity_km_per90"].median(), color=GRID, linestyle="--", linewidth=1)
+            axes[0].axhline(prior_effort["turnovers_per_100_pressures"].median(), color=GRID, linestyle="--", linewidth=1)
+            for team, color in team_colors.items():
+                prior_points = effort_control[
+                    effort_control["team"].eq(team) & effort_control["match_number"].lt(103)
+                ]
+                current_point = effort_control[
+                    effort_control["team"].eq(team) & effort_control["match_number"].eq(103)
+                ].iloc[0]
+                axes[0].scatter(
+                    prior_points["high_intensity_km_per90"],
+                    prior_points["turnovers_per_100_pressures"],
+                    s=58, facecolor=BG, edgecolor=color, linewidth=1.5, label=f"{team} earlier"
+                )
+                axes[0].scatter(
+                    current_point["high_intensity_km_per90"],
+                    current_point["turnovers_per_100_pressures"],
+                    s=150, marker="*", color=color, edgecolor=INK, linewidth=0.8,
+                    label=f"{team} Match 103", zorder=5,
+                )
+                axes[0].annotate(
+                    f"{team}\\n{current_point['high_intensity_km_per90']:.1f} km · {current_point['turnovers_per_100_pressures']:.1f} turnovers/100",
+                    (current_point["high_intensity_km_per90"], current_point["turnovers_per_100_pressures"]),
+                    xytext=(8, -4 if team == "France" else 8), textcoords="offset points",
+                    fontsize=8.5, color=INK,
+                )
+            axes[0].set_xlabel("Team distance at 20+ km/h per 90 (km)")
+            axes[0].set_ylabel("Forced turnovers per 100 defensive pressures")
+            axes[0].set_title("Physical intensity versus pressure outcome", loc="left", pad=30)
+            axes[0].text(0, 1.01, "France and England at the 2026 World Cup; 16 team-matches", transform=axes[0].transAxes, color=MUTED)
+            axes[0].legend(loc="upper left", ncol=2, fontsize=8)
+            axes[0].spines[["top", "right"]].set_visible(False)
+
+            axes[1].axis("off")
+            axes[1].set_title("Match 103 ranks within each team's eight matches", loc="left", pad=30)
+            rank_lookup = effort_ranks.set_index(["team", "metric"])
+            axes[1].text(0.02, 0.90, "FRANCE", color=BLUE, fontsize=14, fontweight="bold", transform=axes[1].transAxes)
+            axes[1].text(
+                0.02, 0.72,
+                f"High-intensity distance  #{int(rank_lookup.loc[('France', 'high_intensity_distance_m_per90'), 'rank_high_to_low'])} of 8\\n"
+                f"Direct pressures             #{int(rank_lookup.loc[('France', 'fifa_direct_pressures'), 'rank_high_to_low'])} of 8\\n"
+                f"Turnover yield               #{int(rank_lookup.loc[('France', 'turnovers_per_100_pressures'), 'rank_high_to_low'])} of 8\\n"
+                f"Opponent xG                  #{int(rank_lookup.loc[('France', 'opponent_xg'), 'rank_high_to_low'])} of 8 (worst)",
+                fontsize=11.5, linespacing=1.55, color=INK, transform=axes[1].transAxes,
+            )
+            axes[1].text(0.02, 0.48, "ENGLAND", color=ORANGE, fontsize=14, fontweight="bold", transform=axes[1].transAxes)
+            axes[1].text(
+                0.02, 0.30,
+                f"High-intensity distance  #{int(rank_lookup.loc[('England', 'high_intensity_distance_m_per90'), 'rank_high_to_low'])} of 8\\n"
+                f"Direct pressures             #{int(rank_lookup.loc[('England', 'fifa_direct_pressures'), 'rank_high_to_low'])} of 8\\n"
+                f"Opponent xG                  #{int(rank_lookup.loc[('England', 'opponent_xg'), 'rank_high_to_low'])} of 8 (worst)\\n"
+                f"Line breaks conceded     #{int(rank_lookup.loc[('England', 'opponent_completed_line_breaks'), 'rank_high_to_low'])} of 8",
+                fontsize=11.5, linespacing=1.55, color=INK, transform=axes[1].transAxes,
+            )
+            axes[1].text(
+                0.02, 0.04,
+                "Interpretation: substantial fast running and pressing,\\nbut unusually weak collective control.",
+                fontsize=11, color=MUTED, fontstyle="italic", transform=axes[1].transAxes,
+            )
+            fig.tight_layout()
+            fig.savefig(ASSETS / "v2_effort_vs_control.png", dpi=180, bbox_inches="tight")
+            plt.show()
+
+            # Chart contract: indexed grouped comparison for two award leaders plus
+            # an absolute xG/goals comparison. Exact values and baseline=100 prevent
+            # the index from being mistaken for raw event counts.
+            spotlight = candidate_behavior[
+                candidate_behavior["player"].isin(["Kylian Mbappe", "Michael Olise"])
+            ].copy()
+            behavior_rows = []
+            behavior_specs = [
+                ("attempts_at_goal", "Attempts at goal / 90"),
+                ("offers_in_behind", "Offers in behind / 90"),
+                ("pressures_direct", "Direct pressures / 90"),
+            ]
+            for row in spotlight.itertuples():
+                for metric, label in behavior_specs:
+                    behavior_rows.append({
+                        "player": row.player,
+                        "metric": metric,
+                        "label": f"{row.player.replace('Kylian ', '').replace('Michael ', '')}\\n{label}",
+                        "index": getattr(row, f"{metric}_index"),
+                        "current_rate": getattr(row, f"{metric}_current_p90"),
+                        "prior_rate": getattr(row, f"{metric}_prior_p90"),
+                    })
+            behavior_index = pd.DataFrame(behavior_rows)
+
+            fig, axes = plt.subplots(1, 2, figsize=(13.2, 5.8), gridspec_kw={"width_ratios": [1.55, 1]})
+            behavior_plot = behavior_index.iloc[::-1].reset_index(drop=True)
+            y = np.arange(len(behavior_plot))
+            colors = [BLUE if player == "Kylian Mbappe" else ORANGE for player in behavior_plot["player"]]
+            bars = axes[0].barh(y, behavior_plot["index"], color=colors, edgecolor=INK, linewidth=0.6)
+            axes[0].axvline(100, color=INK, linestyle="--", linewidth=1.2, label="Own earlier rate = 100")
+            axes[0].set_yticks(y, behavior_plot["label"])
+            axes[0].set_xlabel("Match 103 activity index (own prior tournament rate = 100)")
+            axes[0].set_xlim(0, max(360, behavior_plot["index"].max() * 1.18))
+            axes[0].set_title("Award leaders' observable Match 103 activity", loc="left", pad=30)
+            axes[0].text(0, 1.01, "Rates per 90; descriptive comparison with seven earlier matches per player", transform=axes[0].transAxes, color=MUTED)
+            for bar, row in zip(bars, behavior_plot.itertuples()):
+                axes[0].text(
+                    bar.get_width() + 7, bar.get_y() + bar.get_height() / 2,
+                    f"{row.current_rate:.1f} vs {row.prior_rate:.1f}",
+                    va="center", fontsize=8.5, color=INK,
+                )
+            axes[0].legend(loc="upper right", fontsize=8.5)
+            axes[0].spines[["top", "right"]].set_visible(False)
+
+            x = np.arange(len(finishing))
+            width = 0.36
+            xg_bars = axes[1].bar(x - width / 2, finishing["xg"], width, color=BLUE_LIGHT, edgecolor=INK, label="xG")
+            goal_bars = axes[1].bar(x + width / 2, finishing["goals"], width, color=ORANGE, edgecolor=INK, label="Goals")
+            axes[1].set_xticks(x, finishing["scope"])
+            axes[1].set_ylabel("Expected or observed goals")
+            axes[1].set_title("Chance quality versus finishing", loc="left", pad=30)
+            axes[1].text(0, 1.01, "Poisson tail is an approximation from aggregate xG", transform=axes[1].transAxes, color=MUTED)
+            axes[1].bar_label(xg_bars, fmt="%.2f", padding=3, fontsize=8.5)
+            axes[1].bar_label(goal_bars, fmt="%.0f", padding=3, fontsize=8.5)
+            combined_finishing = finishing[finishing["scope"].eq("Combined")].iloc[0]
+            axes[1].text(
+                0.04, 0.90,
+                f"10 from 5.33 xG\\n+{combined_finishing['goals_above_xg']:.2f} above xG\\nP(10+) ≈ {100 * combined_finishing['poisson_tail_p']:.1f}%",
+                transform=axes[1].transAxes, va="top", fontsize=11, color=INK,
+                bbox={"facecolor": BG, "edgecolor": GRID, "pad": 6},
+            )
+            axes[1].legend(loc="upper center", ncol=2)
+            axes[1].spines[["top", "right"]].set_visible(False)
+            fig.tight_layout()
+            fig.savefig(ASSETS / "v2_player_behavior_and_finishing.png", dpi=180, bbox_inches="tight")
+            plt.show()
+            """
+        ),
+        markdown(
+            """
+            ### Interpretation
+
+            The new evidence separates **work rate** from **defensive organisation**:
+
+            - Across 19 comparable outfielders, total distance per 90 was **3.2% below** their own earlier rates (bootstrap CI includes zero; sign-flip p≈0.09). That is compatible with a slightly less continuous game.
+            - Distance at 20+ km/h was **12.0% above** baseline (bootstrap interval roughly +9 to +176 metres per player-90; raw p≈0.05). Direct pressures were **63.2% above** baseline (raw p≈0.04). Sprints were essentially unchanged. Neither raw result survives Holm correction across the four related effort metrics, so the pattern is exploratory rather than confirmatory.
+            - France produced its **second-highest high-intensity distance** and **highest direct-pressure count** in eight matches, yet its **worst turnover yield**, while conceding its highest opponent xG and most completed line breaks.
+            - England's high-intensity distance ranked **third of eight**, but it also conceded its highest opponent xG.
+
+            This is stronger evidence for **active but poorly coordinated defending** than for players simply jogging through the match. The p-values remain exploratory because player observations share the same match environment and several related metrics were examined.
+
+            The individual-incentive story also gains behavioural support, selectively. Mbappe took **8 shots versus a prior rate of 4.88 per 90**, accounting for 42% of France's attempts. Olise made **17 offers in behind versus 8.34 per 90** and applied **11 direct pressures versus 3.37 per 90**. With only seven earlier matches per player, the empirical one-sided p-values are coarse (Mbappe attempts p=0.25; Olise offers and pressures p=0.125). These are observable changes consistent with aggressive attacking involvement, not standalone proof or evidence of private motive.
+
+            Finally, the score was not only about openness. Match 103 generated a tournament-high **5.33 xG**, but ten goals were **4.67 above xG**. Under a rough aggregate-Poisson check, ten or more goals had probability about **4.5%**; England's six goals from 2.34 xG had a corresponding tail near **3.2%**. Structural openness created the opportunity, and exceptional finishing magnified it.
+            """
+        ),
         code(
             """
             # Regulation-time score-state exposure and World Cup goal hazards
@@ -915,14 +1472,29 @@ def build_notebook() -> nbf.NotebookNode:
             # Evidence scorecard and machine-readable handoff
             evidence_scorecard = pd.DataFrame([
                 ("Lower selection priority", "Supported", "Each team changed 7 of 11 semi-final starters."),
+                ("Individual attacking incentives remained live", "Supported selectively", "France retained Mbappe and Olise; their totals moved 8→10 goals and 5→7 assists. England began with Kane and Bellingham on the bench, so the mechanism was not universal."),
+                ("Players broadly coasted physically", "Not supported", f"Among {len(player_effort)} comparable outfielders, high-intensity distance was {player_effort_tests.loc[player_effort_tests['metric'].eq('high_intensity_distance_m'), 'relative_delta_pct'].iloc[0]:+.1f}% and direct pressures were {player_effort_tests.loc[player_effort_tests['metric'].eq('pressures_direct'), 'relative_delta_pct'].iloc[0]:+.1f}% versus their own prior rates; total distance was slightly lower. Raw tests are exploratory and none remains below 0.05 after Holm correction."),
+                ("Award leaders showed unusually aggressive activity", "Suggestive, not conclusive", "Mbappe took 8 shots versus 4.88 per prior player-90; Olise made 17 offers in behind versus 8.34 and 11 direct pressures versus 3.37. Seven-match empirical p-values are coarse (0.25 and 0.125)."),
                 ("Elite friendlies normally score much more", "Not supported", f"Matched difference {primary_test['mean_difference']:+.2f}; 95% CI {primary_test['ci_low']:+.2f} to {primary_test['ci_high']:+.2f}; p={primary_test['permutation_p']:.3f}."),
                 ("Charity-like scoring spectacle", "Supported descriptively", "Ten goals exceeded every matched neutral professional comparison and every Soccer Aid row in the saved benchmark."),
-                ("Teams made no defensive effort", "Contradicted", f"Direct pressures were at the {process_percentiles.loc[process_percentiles['metric'].eq('direct_pressures'), 'percentile'].iloc[0]:.0f}th percentile."),
+                ("Teams made no defensive effort", "Contradicted", f"Direct pressures were at the {process_percentiles.loc[process_percentiles['metric'].eq('direct_pressures'), 'percentile'].iloc[0]:.0f}th percentile, while high-intensity player distance was above individual baselines."),
                 ("Defensive control was unusually ineffective", "Supported", f"Only {current_process['forced_turnovers']:.0f} turnovers and {current_process['turnovers_per_100_pressures']:.1f} per 100 pressures; the latter was below all 102 earlier matches."),
+                ("Ten goals came only from chance volume", "Not supported", f"Observed goals exceeded 5.33 xG by 4.67; aggregate-Poisson P(10+)≈{100 * finishing.loc[finishing['scope'].eq('Combined'), 'poisson_tail_p'].iloc[0]:.1f}%."),
                 ("The 4–0 state explains all ten goals", "Contradicted", f"State-conditioned expectation {current_expected:.2f} versus 10 observed; level-state expectation {level_expected:.2f}."),
                 ("Current match fits an ordinary elite friendly", "Not supported", "Ten-goal model tail is below 0.1% in both matched professional contexts."),
             ], columns=["claim", "assessment", "evidence"])
             display(evidence_scorecard)
+
+            hypothesis_verdict = pd.DataFrame([
+                ("Overall H1: the match behaved like a fun/charity match", "Partially supported", "Lower selection priority and exhibition-like openness are supported; broad coasting and no defending are contradicted.", "Moderate"),
+                ("Lower team-level stakes", "Supported", "Both teams changed seven of eleven semi-final starters.", "High"),
+                ("Players broadly reduced physical/defensive effort", "Not supported", "High-intensity distance and direct pressures rose; player tests are exploratory and Holm-adjusted p-values exceed 0.05.", "Moderate"),
+                ("Collective defensive control weakened", "Supported", "Pressure-to-turnover yield and opponent chance quality were unusually poor.", "Moderate-high"),
+                ("H2: individual rewards affected selection and attacking involvement", "Suggestive, underpowered", "Mbappe and Olise were selectively retained and highly involved; within-player samples are small and motive is unobserved.", "Low-moderate"),
+                ("H2 stronger claim: the match was primarily used to farm statistics", "Not established", "Award totals changed, but the evidence cannot distinguish intentional stat-seeking from normal attacking opportunity or private motive.", "Low"),
+                ("The match was equivalent to a charity match", "Not established", "The scoring was charity-like descriptively, but roster quality, incentives, and rules are not comparable.", "Low"),
+            ], columns=["hypothesis_component", "verdict", "evidence", "confidence"])
+            display(hypothesis_verdict)
 
             summary_payload = {
                 "analysis_as_of": "2026-07-19",
@@ -936,7 +1508,31 @@ def build_notebook() -> nbf.NotebookNode:
                 "primary_mcnemar_p": mcnemar_p,
                 "france_starter_changes": int(rotation.loc[rotation["team"].eq("France"), "starter_changes"].iloc[0]),
                 "england_starter_changes": int(rotation.loc[rotation["team"].eq("England"), "starter_changes"].iloc[0]),
+                "mbappe_tournament_goals_before": int(player_incentives.loc[player_incentives["player"].eq("Kylian Mbappe"), "pre_match_value"].iloc[0]),
+                "mbappe_tournament_goals_after": int(player_incentives.loc[player_incentives["player"].eq("Kylian Mbappe"), "post_match_value"].iloc[0]),
+                "olise_tournament_assists_before": int(player_incentives.loc[player_incentives["player"].eq("Michael Olise"), "pre_match_value"].iloc[0]),
+                "olise_tournament_assists_after": int(player_incentives.loc[player_incentives["player"].eq("Michael Olise"), "post_match_value"].iloc[0]),
+                "bellingham_tournament_goals_before": int(player_incentives.loc[player_incentives["player"].eq("Jude Bellingham"), "pre_match_value"].iloc[0]),
+                "bellingham_tournament_goals_after": int(player_incentives.loc[player_incentives["player"].eq("Jude Bellingham"), "post_match_value"].iloc[0]),
+                "comparable_outfield_players": int(len(player_effort)),
+                "player_total_distance_delta_pct": float(player_effort_tests.loc[player_effort_tests["metric"].eq("total_distance_m"), "relative_delta_pct"].iloc[0]),
+                "player_total_distance_sign_flip_p": float(player_effort_tests.loc[player_effort_tests["metric"].eq("total_distance_m"), "sign_flip_p"].iloc[0]),
+                "player_total_distance_holm_p": float(player_effort_tests.loc[player_effort_tests["metric"].eq("total_distance_m"), "holm_adjusted_p"].iloc[0]),
+                "player_high_intensity_distance_delta_pct": float(player_effort_tests.loc[player_effort_tests["metric"].eq("high_intensity_distance_m"), "relative_delta_pct"].iloc[0]),
+                "player_high_intensity_distance_sign_flip_p": float(player_effort_tests.loc[player_effort_tests["metric"].eq("high_intensity_distance_m"), "sign_flip_p"].iloc[0]),
+                "player_high_intensity_distance_holm_p": float(player_effort_tests.loc[player_effort_tests["metric"].eq("high_intensity_distance_m"), "holm_adjusted_p"].iloc[0]),
+                "player_direct_pressure_delta_pct": float(player_effort_tests.loc[player_effort_tests["metric"].eq("pressures_direct"), "relative_delta_pct"].iloc[0]),
+                "player_direct_pressure_sign_flip_p": float(player_effort_tests.loc[player_effort_tests["metric"].eq("pressures_direct"), "sign_flip_p"].iloc[0]),
+                "player_direct_pressure_holm_p": float(player_effort_tests.loc[player_effort_tests["metric"].eq("pressures_direct"), "holm_adjusted_p"].iloc[0]),
+                "mbappe_match_attempts": int(candidate_behavior.loc[candidate_behavior["player"].eq("Kylian Mbappe"), "attempts_at_goal_current"].iloc[0]),
+                "mbappe_prior_attempts_per90": float(candidate_behavior.loc[candidate_behavior["player"].eq("Kylian Mbappe"), "attempts_at_goal_prior_p90"].iloc[0]),
+                "mbappe_attempts_empirical_p": float(candidate_behavior.loc[candidate_behavior["player"].eq("Kylian Mbappe"), "attempts_at_goal_empirical_one_sided_p"].iloc[0]),
+                "olise_match_offers_in_behind": int(candidate_behavior.loc[candidate_behavior["player"].eq("Michael Olise"), "offers_in_behind_current"].iloc[0]),
+                "olise_prior_offers_in_behind_per90": float(candidate_behavior.loc[candidate_behavior["player"].eq("Michael Olise"), "offers_in_behind_prior_p90"].iloc[0]),
+                "olise_offers_in_behind_empirical_p": float(candidate_behavior.loc[candidate_behavior["player"].eq("Michael Olise"), "offers_in_behind_empirical_one_sided_p"].iloc[0]),
                 "current_total_xg": float(current_process["total_xg"]),
+                "goals_above_xg": float(finishing.loc[finishing["scope"].eq("Combined"), "goals_above_xg"].iloc[0]),
+                "aggregate_poisson_ten_plus_p": float(finishing.loc[finishing["scope"].eq("Combined"), "poisson_tail_p"].iloc[0]),
                 "current_shots_on_target": int(current_process["shots_on_target"]),
                 "current_direct_pressures": int(current_process["direct_pressures"]),
                 "current_forced_turnovers": int(current_process["forced_turnovers"]),
@@ -944,10 +1540,17 @@ def build_notebook() -> nbf.NotebookNode:
                 "level_state_expected_goals": level_expected,
                 "observed_state_expected_goals": current_expected,
                 "observed_goals": 10,
+                "overall_hypothesis_verdict": "Partially supported",
+                "overall_hypothesis_confidence": "Moderate",
+                "hypothesis_note": "Lower stakes and exhibition-like openness are supported; broad coasting, no defending, and exact charity equivalence are not established.",
+                "individual_stats_hypothesis_verdict": "Suggestive, underpowered",
+                "individual_stats_hypothesis_confidence": "Low-moderate",
+                "individual_stats_strong_claim_verdict": "Not established",
             }
             with open(TABLES / "v2_summary_metrics.json", "w", encoding="utf-8") as handle:
                 json.dump(summary_payload, handle, indent=2)
             evidence_scorecard.to_csv(TABLES / "v2_evidence_scorecard.csv", index=False)
+            hypothesis_verdict.to_csv(TABLES / "v2_hypothesis_verdict.csv", index=False)
             quality_checks.to_csv(TABLES / "v2_data_quality_checks.csv", index=False)
 
             print("Saved analysis tables:", TABLES)
@@ -960,18 +1563,25 @@ def build_notebook() -> nbf.NotebookNode:
 
             1. **The stronger professional sample removes the original power problem for the friendly comparison.** With 173 neutral matched pairs, there is no evidence of a large general scoring difference between elite friendlies and official tournament matches. The result remains small and unstable across stricter rank cutoffs.
             2. **Selection clearly signalled lower priority.** Both teams replaced seven semi-final starters, consistent with fatigue management, experimentation, and reduced consequence.
-            3. **The game was open from process, not merely scoreline luck.** It exceeded every earlier 2026 match in total xG and shots on target.
-            4. **Effort and control separated.** Direct pressing was exceptionally high, while forced-turnover yield was exceptionally low. The teams appeared to attack and press aggressively without maintaining normal defensive control.
-            5. **Game state amplified the spectacle.** The 4–0 lead raised the historical scoring expectation by roughly one-third, but the state-conditioned expectation remained far below ten.
-            6. **Soccer Aid is still useful only as a visual anchor.** The current match was more extreme than the saved charity sample, but that does not make the competitions equivalent.
+            3. **Individual rewards survived the fall in team-level pressure.** France retained Mbappe and Olise despite seven changes; both materially improved live award positions. Bellingham also set an England record after coming off the bench. Kane's unchanged total prevents this from becoming a universal stat-padding claim.
+            4. **The new physical data reject a simple coasting explanation.** Comparable outfielders covered slightly less total distance, but 12% more distance at 20+ km/h and applied 63% more direct pressures than their own prior rates. France's high-intensity distance ranked second of eight and England's third. The player-level tests are exploratory; none remains below 0.05 after Holm correction.
+            5. **Effort and control separated.** France produced its highest direct-pressure count but worst turnover yield; both teams conceded their highest opponent xG of the tournament. The players ran and pressed, but the collective defensive system did not convert that work into control.
+            6. **The individual-incentive mechanism now has behavioural evidence.** Mbappe's eight attempts were 64% above his prior per-90 rate, while Olise doubled his prior rate of in-behind offers and more than tripled his direct-pressure rate. This is consistent with strong involvement, not proof of conscious stat-padding.
+            7. **The game was open from process and amplified by finishing.** It exceeded every earlier 2026 match in total xG and shots on target, then produced ten goals from 5.33 xG. England supplied most of the finishing overperformance with six goals from 2.34 xG.
+            8. **Game state amplified the spectacle.** The 4–0 lead raised the historical scoring expectation by roughly one-third, but the state-conditioned expectation remained far below ten.
+            9. **Soccer Aid is still useful only as a visual anchor.** The current match was more extreme than the saved charity sample, but that does not make the competitions equivalent.
 
             ### Final interpretation
 
-            The evidence supports calling England–France a **lower-stakes, heavily rotated official match with exhibition-like openness**. It does not support the stronger claim that the players made no defensive effort. A better description is **high attacking commitment, aggressive pressing, weak pressure outcomes, and unusually permissive defensive structure**, intensified by the 4–0 game state.
+            The evidence supports calling England–France a **lower-stakes, heavily rotated official match with exhibition-like openness and selective individual attacking incentives**. It does not support the stronger claim that the players made no physical or defensive effort. A better description is **normal-to-high explosive effort, high attacking commitment, individually rewarded attacking output, aggressive pressing, weak collective pressure outcomes, unusually permissive defensive structure, and exceptional finishing**, intensified by the 4–0 game state.
+
+            ### Hypothesis verdict
+
+            **Overall: H1 is partially supported with moderate confidence. H2 is suggestive but underpowered, with low-moderate confidence.** The data support lower team-level stakes and an exhibition-like scoring environment. They do not support broad physical coasting, “no defending,” or the claim that this match was equivalent to a charity game. The evidence shows that individual awards were live and that Mbappe and Olise were selectively retained and highly involved; it does not establish that the match was primarily played to farm statistics or that any player intentionally sacrificed defending for personal numbers.
 
             ### Remaining data gap
 
-            A same-provider event dataset covering elite professional friendlies would allow direct classification on pressure, transition, and defensive-structure features. The public score backbone supplies statistical power, but not those event-level behaviours. Other competitions' placement games also need a reliable stage-labelled source before hierarchical pooling is defensible.
+            Minute-by-minute event and positional data would allow the remaining structural question to be tested directly: whether defensive spacing and transition protection deteriorated before or only after the 4–0 score. The current FIFA reports provide player-match totals but not a timestamped location for every pressure, run, and defensive imbalance. Other competitions' placement games also need a reliable stage-labelled source before hierarchical pooling is defensible.
             """
         ),
     ]
