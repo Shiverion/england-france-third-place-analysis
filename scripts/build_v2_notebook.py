@@ -40,10 +40,12 @@ def build_notebook() -> nbf.NotebookNode:
             - **Elite friendlies are not normally much more open:** in **173 matched neutral pairs** of elite men's internationals (1991–2023), friendlies averaged **2.45 goals** and official tournament matches averaged **2.49**. The paired difference was **−0.04 goals** (bootstrap 95% CI about **−0.35 to +0.27**; sign-flip permutation **p≈0.82**).
             - **The match process was extraordinarily open:** against the first 102 matches of the 2026 World Cup using the same official FIFA provider, England–France set new highs for **goals (10), total xG (5.33), and shots on target (20)**.
             - **“No defensive effort” is too simple:** the match was at the **98th percentile for direct pressures**, but produced only **62 forced turnovers** (about the 5th percentile). Its derived turnover yield—**11.1 per 100 pressures**—was below all 102 earlier matches.
+            - **The new contact evidence reveals the sharper anomaly:** Match 103 had **22 fouls**, almost identical to the first-102 mean of **23**, but **zero cards** versus an earlier mean of **2.86**. It was only the second cardless knockout match through Match 103. The all-match empirical lower tail is **p≈0.097** and the knockout-only tail **p≈0.065**—suggestive, not conclusive by itself.
+            - **Activity rose while control outcomes collapsed:** across the two teams, tackles attempted were **61% above** their own earlier-tournament baselines, direct pressures **52% above**, and high-intensity distance **16% above**. Yet clearances were **65% lower**, possession contests won **53% lower**, and aerial duels won **53% lower**.
             - **The 4–0 game state mattered but does not explain everything:** historical World Cup minute rates imply about **2.45 goals** for a level-state path and **3.30** for the score-state path actually experienced. Ten goals remain roughly three times the state-conditioned expectation.
             - **Exceptional finishing amplified exceptional openness:** ten goals came from **5.33 xG**. A rough Poisson check gives about a **4.5%** chance of at least ten goals at that expectation; England alone scored six from 2.34 xG.
 
-            **Best verdict:** this was a heavily rotated, lower-stakes official match where attacking effort still carried individual rewards. The players performed substantial high-intensity work, but collective pressure outcomes and defensive structure deteriorated. Exceptional finishing then enlarged an already exceptional chance environment. It looked exhibition-like in openness, but the evidence does not support saying the teams simply stopped trying or that elite friendlies generally resemble charity games.
+            **Best verdict:** Match 103 showed a **spectacle-first tendency**. Players still ran, pressed, tackled, and fouled, but the match maximized visible attacking output while the usual collective controls and disciplinary consequences weakened sharply. That pattern is consistent with exhibition-like incentives and stat-padding opportunity; it is not evidence that the score was pre-arranged.
             """
         ),
         markdown(
@@ -60,7 +62,9 @@ def build_notebook() -> nbf.NotebookNode:
 
             **H2 (individual-stat boost hypothesis):** live Golden Boot, assist, and record incentives influenced selection and attacking involvement, so the match gave specific players an unusual opportunity to add to their personal statistics.
 
-            **H0 / competing explanation:** the match was lower-stakes and heavily rotated, but players still worked physically; the open score was produced by attacking risk, weak collective control, score-state effects, individual incentives, and exceptional finishing rather than a general decision to stop trying.
+            **H3 (spectacle-first tendency):** observable behaviour shifted toward maximizing visible action—shots, goals, assists, runs, and pressure attempts—rather than minimizing defeat, producing normal contact volume but unusually weak defensive conversion and disciplinary consequence.
+
+            **H0 / competing explanation:** the match was lower-stakes and heavily rotated, but players still worked physically; the open score was produced by ordinary tactical variance, score-state effects, referee style, and exceptional finishing rather than a systematic spectacle-first shift.
 
             This is a composite hypothesis, so one p-value cannot answer it. The notebook evaluates each component separately and reports a graded verdict: **supported**, **not supported**, **suggestive but underpowered**, or **descriptive only**. Private motivation and “fun” are not directly observable.
 
@@ -80,6 +84,7 @@ def build_notebook() -> nbf.NotebookNode:
             - Matched outcomes use a paired bootstrap confidence interval and paired sign-flip permutation test. A paired exact McNemar test checks the five-plus-goal threshold.
             - Tail probabilities use a method-of-moments negative-binomial model, falling back to Poisson when overdispersion is absent. These are descriptive predictive checks, not causal estimates.
             - FIFA process metrics are empirical percentiles; only metrics from the same provider are compared.
+            - Contact and discipline use all 103 official FIFA Full Time Match Reports. Match 103 is compared with the first 102 matches, the first 30 knockout matches, a ±3-foul band, the same referee's earlier matches, and each focal team's seven earlier matches. Add-one empirical tails avoid zero-probability estimates.
             - Score-state rates are bootstrapped by World Cup match. Because score state is endogenous, the decomposition is explanatory context, not a causal claim.
             - The individual-incentive audit is mechanism triangulation rather than a hypothesis test: a live award stake, selection, a match contribution, and a material change in the standing must all be visible.
             - Player effort tests compare Match 103 per-90 rates with each outfielder's pooled prior-tournament rate. Eligibility requires at least 45 Match 103 minutes, two prior appearances, and 90 prior minutes. Player bootstrap intervals and sign-flip tests are exploratory because teammates are not fully independent.
@@ -94,6 +99,7 @@ def build_notebook() -> nbf.NotebookNode:
             - Charity and exhibition matches differ in roster quality, rules, substitutions, duration, and incentives. The expanded benchmark is stratified by event rather than collapsed into one supposedly homogeneous population.
             - Before/after award movement establishes that an incentive existed and the match changed the outcome; it cannot establish the player's private motive for any action.
             - Physical totals include stoppage time while per-90 denominators use the regulation clock. This is applied consistently across reports; one crowded match-summary row required a separately sourced official substitution time.
+            - Fouls and cards are aggregate match totals. They cannot isolate tactical fouls by score state, and card issuance depends partly on referee thresholds. The cardless result is supporting evidence, not a standalone test of intent.
 
             ### Sources
 
@@ -187,6 +193,8 @@ def build_notebook() -> nbf.NotebookNode:
             player_incentives = pd.read_csv(ROOT / "data" / "player_incentive_evidence.csv")
             player_match = pd.read_csv(PROCESSED / "fifa_2026_france_england_player_match.csv")
             team_physical = pd.read_csv(PROCESSED / "fifa_2026_france_england_team_physical.csv")
+            match_discipline = pd.read_csv(PROCESSED / "fifa_2026_match_contact_discipline.csv")
+            team_discipline = pd.read_csv(PROCESSED / "fifa_2026_team_contact_discipline.csv")
 
             source_table = pd.DataFrame([
                 ("Senior internationals", len(results), "one row per match", "1872–2026 file; analysis uses complete 1991–2023 rows"),
@@ -200,6 +208,8 @@ def build_notebook() -> nbf.NotebookNode:
                 ("Individual incentive audit", len(player_incentives), "one row per player-metric", "timestamped pre/post standings"),
                 ("FIFA player-match audit", len(player_match), "one row per player-match", "all 8 France and all 8 England matches"),
                 ("FIFA team physical audit", len(team_physical), "one row per team-match", "16 focal team-matches"),
+                ("FIFA contact/discipline matches", len(match_discipline), "one row per match", "all completed matches 1–103"),
+                ("FIFA contact/discipline teams", len(team_discipline), "one row per team-match", "206 rows from 103 official reports"),
             ], columns=["source", "rows_or_matches", "grain", "coverage"])
             display(source_table)
             """
@@ -229,6 +239,17 @@ def build_notebook() -> nbf.NotebookNode:
             minute_totals = player_match.groupby(["match_number", "team", "match_duration"])["minutes"].sum()
             minute_expected = minute_totals.index.get_level_values("match_duration") * 11
             minute_groups_reconciled = int(np.isclose(minute_totals.to_numpy(), minute_expected).sum())
+            discipline_team_sizes = team_discipline.groupby("match_number").size()
+            discipline_foul_reconciliation = team_discipline.merge(
+                team_discipline[["match_number", "team", "fouls_committed"]],
+                left_on=["match_number", "opponent"],
+                right_on=["match_number", "team"],
+                suffixes=("", "_opponent"),
+                validate="one_to_one",
+            )
+            discipline_fouls_reconciled = discipline_foul_reconciliation[
+                "fouls_suffered"
+            ].eq(discipline_foul_reconciliation["fouls_committed_opponent"])
 
             quality_checks = pd.DataFrame([
                 ("International result dates parse", int(results["date"].notna().sum()), len(results), "pass" if results["date"].notna().all() else "review"),
@@ -245,6 +266,10 @@ def build_notebook() -> nbf.NotebookNode:
                 ("FIFA player-match-shirt key unique", player_key_duplicates, 0, "pass" if player_key_duplicates == 0 else "fail"),
                 ("Focal teams each cover eight matches", int(player_match_coverage.eq(8).sum()), 2, "pass" if player_match_coverage.eq(8).all() else "fail"),
                 ("Player minutes reconcile eleven on-field slots", minute_groups_reconciled, len(minute_totals), "pass" if minute_groups_reconciled == len(minute_totals) else "fail"),
+                ("Full Time reports cover matches 1–103 exactly", int(set(match_discipline["match_number"]) == set(range(1, 104))), 1, "pass" if set(match_discipline["match_number"]) == set(range(1, 104)) else "fail"),
+                ("Full Time reports have two team rows per match", int(discipline_team_sizes.eq(2).sum()), 103, "pass" if discipline_team_sizes.eq(2).all() else "fail"),
+                ("Fouls suffered reconcile to opponent fouls", int(discipline_fouls_reconciled.sum()), len(team_discipline), "pass" if discipline_fouls_reconciled.all() else "fail"),
+                ("Full Time report supplies Match-103 ten-goal score", int(match_discipline.loc[match_discipline["match_number"].eq(103), "total_goals"].iloc[0]), 10, "pass"),
                 ("Results backbone current score populated", int(current_result_row[["home_score", "away_score"]].notna().all(axis=1).sum()), 1, "expected gap"),
             ], columns=["check", "observed", "expected", "status"])
 
@@ -262,6 +287,10 @@ def build_notebook() -> nbf.NotebookNode:
             assert player_key_duplicates == 0
             assert player_match_coverage.eq(8).all()
             assert minute_groups_reconciled == len(minute_totals)
+            assert set(match_discipline["match_number"]) == set(range(1, 104))
+            assert discipline_team_sizes.eq(2).all()
+            assert discipline_fouls_reconciled.all()
+            assert match_discipline.loc[match_discipline["match_number"].eq(103), "total_goals"].iloc[0] == 10
             display(quality_checks)
 
             print("Known freshness gap: the cloned results backbone still stores match 103 as an unscored fixture; official FIFA data supplies the result and process metrics.")
@@ -1471,6 +1500,316 @@ def build_notebook() -> nbf.NotebookNode:
             Finally, the score was not only about openness. Match 103 generated a tournament-high **5.33 xG**, but ten goals were **4.67 above xG**. Under a rough aggregate-Poisson check, ten or more goals had probability about **4.5%**; England's six goals from 2.34 xG had a corresponding tail near **3.2%**. Structural openness created the opportunity, and exceptional finishing magnified it.
             """
         ),
+        markdown(
+            """
+            ## Contact, discipline, and the spectacle-first hypothesis
+
+            **H3:** Match 103 shifted toward maximizing visible action—shots, goals, assists, runs, tackles, and pressure attempts—rather than minimizing defeat. The predicted signature is not necessarily fewer actions. It is **normal or high engagement paired with unusually weak defensive conversion and disciplinary consequence**.
+
+            This distinction matters. A genuinely low-effort match would show less running, pressing, tackling, and contact. A spectacle-first match can instead be frantic: players keep producing visible actions while teams accept risks that serious knockout football normally suppresses.
+            """
+        ),
+        code(
+            """
+            # Official contact, disciplinary intensity, and defensive-control outcomes
+            reference_matches = match_discipline[match_discipline["match_number"].lt(103)].copy()
+            reference_90 = reference_matches[~reference_matches["went_to_extra_time"]].copy()
+            knockout_reference = reference_matches[~reference_matches["stage"].eq("Group stage")].copy()
+            knockout_90_reference = knockout_reference[~knockout_reference["went_to_extra_time"]].copy()
+            current_discipline = match_discipline[match_discipline["match_number"].eq(103)].iloc[0]
+            foul_band_reference = reference_90[
+                reference_90["total_fouls"].between(
+                    current_discipline["total_fouls"] - 3,
+                    current_discipline["total_fouls"] + 3,
+                )
+            ].copy()
+            same_referee_reference = reference_matches[
+                reference_matches["referee"].eq(current_discipline["referee"])
+            ].copy()
+
+            def add_one_lower_tail(reference: pd.Series, observed: float) -> float:
+                return float((1 + reference.le(observed).sum()) / (len(reference) + 1))
+
+            def negative_binomial_zero_probability(values: pd.Series) -> float:
+                values = values.astype(float)
+                mean = float(values.mean())
+                variance = float(values.var(ddof=1))
+                if mean <= 0:
+                    return 1.0
+                if variance <= mean:
+                    return float(np.exp(-mean))
+                size = mean ** 2 / (variance - mean)
+                probability = size / (size + mean)
+                return float(stats.nbinom.pmf(0, size, probability))
+
+            discipline_summary = pd.DataFrame([
+                {
+                    "metric": "Total fouls",
+                    "current": float(current_discipline["total_fouls"]),
+                    "first_102_mean": float(reference_matches["total_fouls"].mean()),
+                    "first_102_median": float(reference_matches["total_fouls"].median()),
+                    "regulation_only_mean": float(reference_90["total_fouls"].mean()),
+                    "knockout_90_mean": float(knockout_90_reference["total_fouls"].mean()),
+                    "rank_low_to_high_vs_first_102": int(1 + reference_matches["total_fouls"].lt(current_discipline["total_fouls"]).sum()),
+                },
+                {
+                    "metric": "Card events",
+                    "current": float(current_discipline["total_card_events"]),
+                    "first_102_mean": float(reference_matches["total_card_events"].mean()),
+                    "first_102_median": float(reference_matches["total_card_events"].median()),
+                    "regulation_only_mean": float(reference_90["total_card_events"].mean()),
+                    "knockout_90_mean": float(knockout_90_reference["total_card_events"].mean()),
+                    "rank_low_to_high_vs_first_102": int(1 + reference_matches["total_card_events"].lt(current_discipline["total_card_events"]).sum()),
+                },
+                {
+                    "metric": "Card events per 10 fouls",
+                    "current": float(current_discipline["cards_per_10_fouls"]),
+                    "first_102_mean": float(reference_matches["cards_per_10_fouls"].mean()),
+                    "first_102_median": float(reference_matches["cards_per_10_fouls"].median()),
+                    "regulation_only_mean": float(reference_90["cards_per_10_fouls"].mean()),
+                    "knockout_90_mean": float(knockout_90_reference["cards_per_10_fouls"].mean()),
+                    "rank_low_to_high_vs_first_102": int(1 + reference_matches["cards_per_10_fouls"].lt(current_discipline["cards_per_10_fouls"]).sum()),
+                },
+            ])
+
+            discipline_test_specs = [
+                ("All first 102 matches", reference_matches),
+                ("Regulation-only first 102", reference_90),
+                ("All earlier knockout matches", knockout_reference),
+                ("Regulation-only knockout matches", knockout_90_reference),
+                ("Regulation matches within ±3 fouls", foul_band_reference),
+                ("Same referee's earlier matches", same_referee_reference),
+            ]
+            discipline_tests = pd.DataFrame([
+                {
+                    "reference": label,
+                    "matches": len(frame),
+                    "mean_fouls": float(frame["total_fouls"].mean()),
+                    "mean_card_events": float(frame["total_card_events"].mean()),
+                    "zero_card_matches": int(frame["total_card_events"].eq(0).sum()),
+                    "raw_zero_frequency": float(frame["total_card_events"].eq(0).mean()),
+                    "add_one_empirical_lower_tail_p": add_one_lower_tail(
+                        frame["total_card_events"], current_discipline["total_card_events"]
+                    ),
+                    "negative_binomial_p_zero": negative_binomial_zero_probability(
+                        frame["total_card_events"]
+                    ) if len(frame) >= 10 else np.nan,
+                }
+                for label, frame in discipline_test_specs
+            ])
+
+            # Aggregate player events to equal-grain team-match rates. These outcomes
+            # separate activity from whether the defensive action restored control.
+            contact_control_metrics = [
+                "tackles_made", "tackles_won", "blocks", "interceptions",
+                "pressures_direct", "duels_won_aerial", "duels_won_physical",
+                "possession_contests_won", "clearances", "possession_regains",
+                "possession_interrupted", "high_intensity_distance_m", "sprints",
+            ]
+            team_contact_control = player_match.groupby(
+                ["match_number", "team", "match_duration"], as_index=False
+            )[contact_control_metrics].sum()
+            for metric in contact_control_metrics:
+                team_contact_control[f"{metric}_per90"] = (
+                    90 * team_contact_control[metric] / team_contact_control["match_duration"]
+                )
+
+            metric_metadata = {
+                "tackles_made": ("Tackles attempted", "activity"),
+                "tackles_won": ("Tackles won", "control outcome"),
+                "blocks": ("Blocks", "activity"),
+                "interceptions": ("Interceptions", "control outcome"),
+                "pressures_direct": ("Direct pressures", "activity"),
+                "duels_won_aerial": ("Aerial duels won", "control outcome"),
+                "duels_won_physical": ("Physical duels won", "control outcome"),
+                "possession_contests_won": ("Possession contests won", "control outcome"),
+                "clearances": ("Clearances", "control outcome"),
+                "possession_regains": ("Possession regains", "control outcome"),
+                "possession_interrupted": ("Possession interrupted", "control outcome"),
+                "high_intensity_distance_m": ("Distance at 20+ km/h", "activity"),
+                "sprints": ("Sprints", "activity"),
+            }
+            team_contact_rows = []
+            for team in ("France", "England"):
+                team_matches = team_contact_control[team_contact_control["team"].eq(team)]
+                current_team = team_matches[team_matches["match_number"].eq(103)].iloc[0]
+                prior_team = team_matches[team_matches["match_number"].lt(103)]
+                for metric, (label, category) in metric_metadata.items():
+                    value_column = f"{metric}_per90"
+                    current_value = float(current_team[value_column])
+                    prior_mean = float(prior_team[value_column].mean())
+                    team_contact_rows.append({
+                        "team": team,
+                        "metric": metric,
+                        "label": label,
+                        "category": category,
+                        "current_per90": current_value,
+                        "prior_mean_per90": prior_mean,
+                        "relative_delta_pct": 100 * (current_value / prior_mean - 1) if prior_mean else np.nan,
+                        "rank_high_to_low": int(1 + prior_team[value_column].gt(current_value).sum()),
+                        "rank_low_to_high": int(1 + prior_team[value_column].lt(current_value).sum()),
+                    })
+            contact_control_team_ranks = pd.DataFrame(team_contact_rows)
+
+            contact_control_split = contact_control_team_ranks.groupby(
+                ["metric", "label", "category"], as_index=False
+            ).agg(
+                current_per90=("current_per90", "sum"),
+                prior_mean_per90=("prior_mean_per90", "sum"),
+            )
+            contact_control_split["relative_delta_pct"] = 100 * (
+                contact_control_split["current_per90"]
+                / contact_control_split["prior_mean_per90"] - 1
+            )
+
+            # Independent reconciliation with the already-built PMSR panel.
+            discipline_scores = match_discipline[["match_number", "total_goals"]]
+            pmsr_scores = pmsr.groupby("match_number", as_index=False)["goals"].sum().rename(
+                columns={"goals": "pmsr_total_goals"}
+            )
+            discipline_score_check = discipline_scores.merge(
+                pmsr_scores, on="match_number", validate="one_to_one"
+            )
+            assert discipline_score_check["total_goals"].eq(
+                discipline_score_check["pmsr_total_goals"]
+            ).all()
+            quality_checks = pd.concat([
+                quality_checks,
+                pd.DataFrame([(
+                    "Full Time report goals reconcile PMSR totals",
+                    int(discipline_score_check["total_goals"].eq(discipline_score_check["pmsr_total_goals"]).sum()),
+                    len(discipline_score_check),
+                    "pass",
+                )], columns=quality_checks.columns),
+            ], ignore_index=True)
+
+            discipline_summary.to_csv(TABLES / "v2_contact_discipline_summary.csv", index=False)
+            discipline_tests.to_csv(TABLES / "v2_contact_discipline_tests.csv", index=False)
+            contact_control_team_ranks.to_csv(TABLES / "v2_contact_control_team_ranks.csv", index=False)
+            contact_control_split.to_csv(TABLES / "v2_contact_control_split.csv", index=False)
+
+            display(discipline_summary.round(3))
+            display(discipline_tests.round(3))
+            display(contact_control_team_ranks[
+                contact_control_team_ranks["metric"].isin([
+                    "tackles_made", "tackles_won", "interceptions", "duels_won_aerial",
+                    "possession_contests_won", "clearances", "pressures_direct",
+                    "high_intensity_distance_m",
+                ])
+            ].round(2))
+
+            # Chart contract: panel 1 compares two match-level metrics with a common
+            # baseline index; panel 2 shows same-team deltas at one team-match grain.
+            fig, axes = plt.subplots(1, 2, figsize=(14.8, 6.8), gridspec_kw={"width_ratios": [0.8, 1.45]})
+            baseline_fouls = float(reference_90["total_fouls"].mean())
+            baseline_cards = float(reference_90["total_card_events"].mean())
+            context_rows = pd.DataFrame([
+                ("Total fouls", float(current_discipline["total_fouls"]), baseline_fouls, BLUE),
+                ("Card events", float(current_discipline["total_card_events"]), baseline_cards, ORANGE),
+            ], columns=["metric", "current", "baseline", "color"])
+            context_rows["index"] = 100 * context_rows["current"] / context_rows["baseline"]
+            y_context = np.arange(len(context_rows))
+            axes[0].barh(y_context, [100, 100], color="#E9EDF5", edgecolor=GRID, height=0.56)
+            current_bars = axes[0].barh(
+                y_context, context_rows["index"], color=context_rows["color"],
+                edgecolor=INK, linewidth=0.6, height=0.56,
+            )
+            axes[0].axvline(100, color=INK, linestyle="--", linewidth=1.1)
+            axes[0].set_yticks(y_context, context_rows["metric"])
+            axes[0].invert_yaxis()
+            axes[0].set_xlim(0, 125)
+            axes[0].set_xlabel("Match 103 index (90-minute tournament mean = 100)")
+            axes[0].set_title("Contact and discipline", loc="left", pad=30)
+            axes[0].text(0, 1.01, "Match 103 versus 94 earlier regulation-time matches", transform=axes[0].transAxes, color=MUTED)
+            for bar, row in zip(current_bars, context_rows.itertuples()):
+                axes[0].text(
+                    min(max(bar.get_width() + 4, 4), 112),
+                    bar.get_y() + bar.get_height() / 2,
+                    f"{row.current:g} vs {row.baseline:.2f}",
+                    va="center", fontsize=9, color=INK,
+                )
+            axes[0].spines[["top", "right"]].set_visible(False)
+
+            plot_metric_order = [
+                "tackles_made", "blocks", "pressures_direct", "high_intensity_distance_m",
+                "tackles_won", "interceptions", "duels_won_aerial",
+                "possession_contests_won", "clearances",
+            ]
+            split_plot = contact_control_split.set_index("metric").loc[plot_metric_order].reset_index()
+            split_plot["display_label"] = [
+                f"{label}  [{category}]"
+                for label, category in zip(split_plot["label"], split_plot["category"])
+            ]
+            split_colors = [BLUE if category == "activity" else ORANGE for category in split_plot["category"]]
+            y_split = np.arange(len(split_plot))
+            split_bars = axes[1].barh(
+                y_split, split_plot["relative_delta_pct"], color=split_colors,
+                edgecolor=INK, linewidth=0.5,
+            )
+            axes[1].axvline(0, color=INK, linewidth=1.1)
+            axes[1].set_yticks(y_split, split_plot["display_label"])
+            axes[1].invert_yaxis()
+            axes[1].set_xlim(-85, 85)
+            axes[1].set_xlabel("Change versus sum of each team's prior-match mean (%)")
+            axes[1].set_title("Defensive activity and control outcomes", loc="left", pad=30)
+            axes[1].text(0, 1.01, "France + England; per-90 rates versus their own previous seven matches", transform=axes[1].transAxes, color=MUTED)
+            for bar, value in zip(split_bars, split_plot["relative_delta_pct"]):
+                axes[1].text(
+                    value + (2.2 if value >= 0 else -2.2),
+                    bar.get_y() + bar.get_height() / 2,
+                    f"{value:+.0f}%",
+                    ha="left" if value >= 0 else "right", va="center", fontsize=8.8, color=INK,
+                )
+            axes[1].spines[["top", "right"]].set_visible(False)
+            fig.tight_layout()
+            fig.savefig(ASSETS / "v2_contact_discipline_and_control.png", dpi=180, bbox_inches="tight")
+            plt.show()
+
+            # Narrative image for non-technical readers.
+            fig, ax = plt.subplots(figsize=(16, 9), facecolor="#0B132B")
+            ax.set_facecolor("#0B132B")
+            ax.axis("off")
+            ax.text(0.055, 0.92, "MATCH 103 · FRANCE 4–6 ENGLAND", color=BLUE_LIGHT, fontsize=16, fontweight="bold", transform=ax.transAxes)
+            ax.text(0.055, 0.79, "Bukan tanpa kontak.\\nYang hilang adalah rem.", color="white", fontsize=34, fontweight="bold", linespacing=1.05, transform=ax.transAxes)
+            ax.text(0.055, 0.65, "Pemain tetap aktif—tetapi permainan tidak lagi meminimalkan risiko kebobolan.", color="#CBD5E1", fontsize=16, transform=ax.transAxes)
+
+            ax.add_patch(plt.Rectangle((0.055, 0.25), 0.40, 0.32, facecolor="#14213D", edgecolor=BLUE, linewidth=2, transform=ax.transAxes))
+            ax.text(0.085, 0.52, "AKTIVITAS TETAP TINGGI", color=BLUE_LIGHT, fontsize=17, fontweight="bold", transform=ax.transAxes)
+            ax.text(0.085, 0.43, "22 foul", color="white", fontsize=25, fontweight="bold", transform=ax.transAxes)
+            ax.text(0.25, 0.43, "≈ normal turnamen", color="#CBD5E1", fontsize=14, transform=ax.transAxes)
+            ax.text(0.085, 0.35, "+61% tekel dicoba", color="white", fontsize=19, transform=ax.transAxes)
+            ax.text(0.085, 0.28, "+52% tekanan langsung", color="white", fontsize=19, transform=ax.transAxes)
+
+            ax.add_patch(plt.Rectangle((0.545, 0.25), 0.40, 0.32, facecolor="#261B24", edgecolor=ORANGE, linewidth=2, transform=ax.transAxes))
+            ax.text(0.575, 0.52, "KONTROL & KONSEKUENSI TURUN", color=ORANGE_LIGHT, fontsize=17, fontweight="bold", transform=ax.transAxes)
+            ax.text(0.575, 0.43, "0 kartu", color="white", fontsize=25, fontweight="bold", transform=ax.transAxes)
+            ax.text(0.73, 0.43, "vs 2,79 normal", color="#CBD5E1", fontsize=14, transform=ax.transAxes)
+            ax.text(0.575, 0.35, "−65% clearance", color="white", fontsize=19, transform=ax.transAxes)
+            ax.text(0.575, 0.28, "yield tekanan terendah", color="white", fontsize=19, transform=ax.transAxes)
+
+            ax.text(0.055, 0.15, "SPECTACLE-FIRST TENDENCY", color=ORANGE, fontsize=22, fontweight="bold", transform=ax.transAxes)
+            ax.text(0.055, 0.095, "Pola konsisten dengan insentif exhibition/stat-padding—bukan bukti skor disepakati.", color="#CBD5E1", fontsize=14, transform=ax.transAxes)
+            fig.savefig(ASSETS / "narrative_07_spectacle_without_brakes.png", dpi=180, bbox_inches="tight", facecolor=fig.get_facecolor())
+            plt.show()
+            """
+        ),
+        markdown(
+            """
+            ### Contact verdict: not softer, but less consequential
+
+            Match 103 recorded **22 fouls**, almost identical to the **22.39** average in the 94 earlier regulation-time matches. Contact therefore did not disappear. The sharper anomaly is that those 22 fouls produced **zero yellow or red cards**, compared with **2.79 card events** in the regulation-time reference and **3.27** in regulation-time knockout matches.
+
+            Zero cards are unusual but not independently decisive. The add-one empirical lower-tail probability is **0.097** against all first 102 matches, **0.065** against all earlier knockout matches, **0.087** after removing extra-time knockout matches, **0.140** among regulation matches within three fouls of Match 103, and **0.250** against the same referee's three earlier tournament matches. A negative-binomial model gives a roughly **6%** zero-card probability in the regulation-time knockout reference. Referee style and ordinary variation therefore remain credible alternatives.
+
+            The stronger evidence comes from the **directional stack**. Across France and England, tackles attempted rose **61%**, direct pressures **52%**, blocks **38%**, and high-intensity distance **16%** versus their own earlier matches. Tackles won also rose **53%**, an important counter-signal showing genuine engagement. Yet interceptions fell **25%**, aerial duels won **53%**, possession contests won **53%**, and clearances **65%**. Both teams recorded their fewest clearances in eight tournament matches, while pressure-to-turnover yield was already below every earlier World Cup match.
+
+            > **Bold insight:** this was not low-intensity football. It was **high-activity, low-restraint football**—closer to a match maximizing spectacle and individual output than to teams optimizing the probability of avoiding defeat.
+
+            **H3 verdict: supported with moderate-high confidence as a behavioural tendency.** The evidence supports a spectacle-first incentive pattern. It does not establish coordination, a pre-arranged score, or private intent; those are different hypotheses requiring communications, betting, or integrity evidence that match statistics cannot supply.
+
+            ![Contact stayed normal while cards and collective control fell](../assets/narrative_07_spectacle_without_brakes.png)
+            """
+        ),
         code(
             """
             # Regulation-time score-state exposure and World Cup goal hazards
@@ -1622,7 +1961,10 @@ def build_notebook() -> nbf.NotebookNode:
                 ("Elite friendlies normally score much more", "Not supported", f"Matched difference {primary_test['mean_difference']:+.2f}; 95% CI {primary_test['ci_low']:+.2f} to {primary_test['ci_high']:+.2f}; p={primary_test['permutation_p']:.3f}."),
                 ("Charity-like scoring spectacle", "Supported descriptively", f"Ten goals exceeded every Soccer Aid row; the expanded {len(benchmark_all)}-match benchmark shows that creator-led formats can also reach 10+ goals, so event stratification matters."),
                 ("Teams made no defensive effort", "Contradicted", f"Direct pressures were at the {process_percentiles.loc[process_percentiles['metric'].eq('direct_pressures'), 'percentile'].iloc[0]:.0f}th percentile, while high-intensity player distance was above individual baselines."),
+                ("Contact intensity disappeared", "Contradicted", f"Match 103 had {current_discipline['total_fouls']:.0f} fouls versus {reference_90['total_fouls'].mean():.2f} in earlier regulation-time matches; tackles attempted were {contact_control_split.loc[contact_control_split['metric'].eq('tackles_made'), 'relative_delta_pct'].iloc[0]:+.0f}% versus the focal teams' own prior rates."),
+                ("Disciplinary consequence weakened", "Supported as a secondary signal", f"Zero cards versus {reference_90['total_card_events'].mean():.2f} earlier regulation-time mean; add-one empirical p={discipline_tests.loc[discipline_tests['reference'].eq('All earlier knockout matches'), 'add_one_empirical_lower_tail_p'].iloc[0]:.3f} for all earlier knockout matches and {discipline_tests.loc[discipline_tests['reference'].eq('Regulation-only knockout matches'), 'add_one_empirical_lower_tail_p'].iloc[0]:.3f} after excluding extra time."),
                 ("Defensive control was unusually ineffective", "Supported", f"Only {current_process['forced_turnovers']:.0f} turnovers and {current_process['turnovers_per_100_pressures']:.1f} per 100 pressures; the latter was below all 102 earlier matches."),
+                ("Spectacle-first behavioural tendency", "Supported", "Normal contact and high activity coexisted with zero cards, tournament-leading attack, bottom-ranked pressure yield, and collapsed clearance/duel outcomes. This supports an incentive tendency, not pre-arrangement."),
                 ("Ten goals came only from chance volume", "Not supported", f"Observed goals exceeded 5.33 xG by 4.67; aggregate-Poisson P(10+)≈{100 * finishing.loc[finishing['scope'].eq('Combined'), 'poisson_tail_p'].iloc[0]:.1f}%."),
                 ("The 4–0 state explains all ten goals", "Contradicted", f"State-conditioned expectation {current_expected:.2f} versus 10 observed; level-state expectation {level_expected:.2f}."),
                 ("Current match fits an ordinary elite friendly", "Not supported", "Ten-goal model tail is below 0.1% in both matched professional contexts."),
@@ -1634,7 +1976,10 @@ def build_notebook() -> nbf.NotebookNode:
                 ("Lower team-level stakes", "Supported", "Both teams changed seven of eleven semi-final starters.", "High"),
                 ("Players broadly reduced physical/defensive effort", "Not supported", "High-intensity distance and direct pressures rose; player tests are exploratory and Holm-adjusted p-values exceed 0.05.", "Moderate"),
                 ("Collective defensive control weakened", "Supported", "Pressure-to-turnover yield and opponent chance quality were unusually poor.", "Moderate-high"),
-                ("H2: individual rewards affected selection and attacking involvement", "Suggestive, underpowered", "Mbappe and Olise were selectively retained and highly involved; within-player samples are small and motive is unobserved.", "Low-moderate"),
+                ("Contact intensity was broadly lower", "Not supported", "Twenty-two fouls were normal and tackles attempted, blocks, pressure attempts, and high-intensity distance were elevated.", "Moderate-high"),
+                ("Disciplinary intensity was lower", "Suggestive", "The match was cardless despite normal foul volume; knockout empirical tails are about 0.065–0.087 and referee/foul-band sensitivities are weaker.", "Low-moderate"),
+                ("H3: spectacle-first behavioural tendency", "Supported", "Visible activity remained high while attacking output peaked and collective defensive conversion, clearances, duel control, and card consequence fell.", "Moderate-high"),
+                ("H2: individual rewards affected selection and attacking involvement", "Supported as an incentive/opportunity mechanism; player attribution remains suggestive", "Mbappe and Olise were selectively retained, highly involved, and materially changed award standings; small within-player samples and unobserved motive limit attribution.", "Moderate"),
                 ("H2 stronger claim: the match was primarily used to farm statistics", "Not established", "Award totals changed, but the evidence cannot distinguish intentional stat-seeking from normal attacking opportunity or private motive.", "Low"),
                 ("The match was equivalent to a charity match", "Not established", "The scoring was charity-like descriptively, but roster quality, incentives, and rules are not comparable.", "Low"),
             ], columns=["hypothesis_component", "verdict", "evidence", "confidence"])
@@ -1687,14 +2032,25 @@ def build_notebook() -> nbf.NotebookNode:
                 "current_direct_pressures": int(current_process["direct_pressures"]),
                 "current_forced_turnovers": int(current_process["forced_turnovers"]),
                 "current_turnovers_per_100_pressures": float(current_process["turnovers_per_100_pressures"]),
+                "current_total_fouls": int(current_discipline["total_fouls"]),
+                "regulation_reference_mean_fouls": float(reference_90["total_fouls"].mean()),
+                "current_total_card_events": int(current_discipline["total_card_events"]),
+                "regulation_reference_mean_card_events": float(reference_90["total_card_events"].mean()),
+                "knockout_cardless_empirical_p": float(discipline_tests.loc[discipline_tests["reference"].eq("All earlier knockout matches"), "add_one_empirical_lower_tail_p"].iloc[0]),
+                "regulation_knockout_cardless_empirical_p": float(discipline_tests.loc[discipline_tests["reference"].eq("Regulation-only knockout matches"), "add_one_empirical_lower_tail_p"].iloc[0]),
+                "tackles_made_delta_pct": float(contact_control_split.loc[contact_control_split["metric"].eq("tackles_made"), "relative_delta_pct"].iloc[0]),
+                "clearances_delta_pct": float(contact_control_split.loc[contact_control_split["metric"].eq("clearances"), "relative_delta_pct"].iloc[0]),
+                "possession_contests_won_delta_pct": float(contact_control_split.loc[contact_control_split["metric"].eq("possession_contests_won"), "relative_delta_pct"].iloc[0]),
+                "spectacle_first_hypothesis_verdict": "Supported as a behavioural tendency",
+                "spectacle_first_hypothesis_confidence": "Moderate-high",
                 "level_state_expected_goals": level_expected,
                 "observed_state_expected_goals": current_expected,
                 "observed_goals": 10,
                 "overall_hypothesis_verdict": "Partially supported",
                 "overall_hypothesis_confidence": "Moderate",
-                "hypothesis_note": "Lower stakes and exhibition-like openness are supported; broad coasting, no defending, and exact charity equivalence are not established.",
-                "individual_stats_hypothesis_verdict": "Suggestive, underpowered",
-                "individual_stats_hypothesis_confidence": "Low-moderate",
+                "hypothesis_note": "The literal low-effort claim is only partial, but the revised spectacle-first hypothesis is supported: visible activity stayed high while attack, risk acceptance, stat opportunity, and defensive-control failure aligned.",
+                "individual_stats_hypothesis_verdict": "Supported as an incentive/opportunity mechanism; intentional attribution remains suggestive",
+                "individual_stats_hypothesis_confidence": "Moderate",
                 "individual_stats_strong_claim_verdict": "Not established",
             }
             with open(TABLES / "v2_summary_metrics.json", "w", encoding="utf-8") as handle:
@@ -1716,22 +2072,24 @@ def build_notebook() -> nbf.NotebookNode:
             3. **Individual rewards survived the fall in team-level pressure.** France retained Mbappe and Olise despite seven changes; both materially improved live award positions. Bellingham also set an England record after coming off the bench. Kane's unchanged total prevents this from becoming a universal stat-padding claim.
             4. **The new physical data reject a simple coasting explanation.** Comparable outfielders covered slightly less total distance, but 12% more distance at 20+ km/h and applied 63% more direct pressures than their own prior rates. France's high-intensity distance ranked second of eight and England's third. The player-level tests are exploratory; none remains below 0.05 after Holm correction.
             5. **Effort and control separated.** France produced its highest direct-pressure count but worst turnover yield; both teams conceded their highest opponent xG of the tournament. The players ran and pressed, but the collective defensive system did not convert that work into control.
-            6. **The individual-incentive mechanism now has behavioural evidence.** Mbappe's eight attempts were 64% above his prior per-90 rate, while Olise doubled his prior rate of in-behind offers and more than tripled his direct-pressure rate. This is consistent with strong involvement, not proof of conscious stat-padding.
-            7. **The game was open from process and amplified by finishing.** It exceeded every earlier 2026 match in total xG and shots on target, then produced ten goals from 5.33 xG. England supplied most of the finishing overperformance with six goals from 2.34 xG.
-            8. **Game state amplified the spectacle.** The 4–0 lead raised the historical scoring expectation by roughly one-third, but the state-conditioned expectation remained far below ten.
-            9. **The expanded benchmark improves context but weakens the shortcut.** England–France's ten goals exceeded all 15 Soccer Aid rows, but creator-led formats in the expanded 41-match file reached 10–20 regulation-time goals. The event-level spread shows why there is no single “charity average” that proves equivalence.
+            6. **Contact did not disappear; consequence did.** Match 103 had 22 fouls versus 22.39 in earlier regulation-time matches, but zero cards versus 2.79. The cardless knockout tail is suggestive rather than conclusive (empirical p≈0.065–0.087), especially after referee and foul-band sensitivity checks.
+            7. **The action-to-control split is the boldest insight.** Across both teams, tackles attempted rose 61%, direct pressures 52%, and high-intensity distance 16%; clearances fell 65%, possession contests won 53%, and aerial duels won 53%. Tackles won rose 53%, showing reactive engagement rather than passivity.
+            8. **The individual-incentive mechanism now has behavioural evidence.** Mbappe's eight attempts were 64% above his prior per-90 rate, while Olise doubled his prior rate of in-behind offers and more than tripled his direct-pressure rate. This supports a stat-opportunity mechanism, not proof of conscious intent.
+            9. **The game was open from process and amplified by finishing.** It exceeded every earlier 2026 match in total xG and shots on target, then produced ten goals from 5.33 xG. England supplied most of the finishing overperformance with six goals from 2.34 xG.
+            10. **Game state amplified the spectacle.** The 4–0 lead raised the historical scoring expectation by roughly one-third, but the state-conditioned expectation remained far below ten.
+            11. **The expanded benchmark improves context but weakens the shortcut.** England–France's ten goals exceeded all 15 Soccer Aid rows, but creator-led formats in the expanded 41-match file reached 10–20 regulation-time goals. The event-level spread shows why there is no single “charity average” that proves equivalence.
 
             ### Final interpretation
 
-            The evidence supports calling England–France a **lower-stakes, heavily rotated official match with exhibition-like openness and selective individual attacking incentives**. It does not support the stronger claim that the players made no physical or defensive effort. A better description is **normal-to-high explosive effort, high attacking commitment, individually rewarded attacking output, aggressive pressing, weak collective pressure outcomes, unusually permissive defensive structure, and exceptional finishing**, intensified by the 4–0 game state.
+            The evidence supports calling England–France a **spectacle-first official match**: lower collective stakes, normal contact, high physical and attacking activity, live individual rewards, weak disciplinary consequence, and an extraordinary collapse in collective defensive control. The teams did not stop working; they stopped behaving as if preventing the next goal was the dominant objective. This is an evidence-backed tendency toward exhibition-like incentive alignment, not evidence of a pre-arranged score.
 
             ### Hypothesis verdict
 
-            **Overall: H1 is partially supported with moderate confidence. H2 is suggestive but underpowered, with low-moderate confidence.** The data support lower team-level stakes and an exhibition-like scoring environment. They do not support broad physical coasting, “no defending,” or the claim that this match was equivalent to a charity game. The evidence shows that individual awards were live and that Mbappe and Olise were selectively retained and highly involved; it does not establish that the match was primarily played to farm statistics or that any player intentionally sacrificed defending for personal numbers.
+            **Overall: literal H1 is partially supported; the sharper H3 spectacle-first hypothesis is supported with moderate-high confidence. H2 is supported as an incentive/opportunity mechanism with moderate confidence, while intentional stat-padding remains suggestive.** The statistics show a coherent direction—more visible action and personal-output opportunity, less collective control and disciplinary consequence. They do not prove coordination, an agreed score, or private motive.
 
             ### Remaining data gap
 
-            Minute-by-minute event and positional data would allow the remaining structural question to be tested directly: whether defensive spacing and transition protection deteriorated before or only after the 4–0 score. The current FIFA reports provide player-match totals but not a timestamped location for every pressure, run, and defensive imbalance. Other competitions' placement games also need a reliable stage-labelled source before hierarchical pooling is defensible.
+            Minute-by-minute foul locations, tactical-foul labels, and positional tracking would show whether the disappearance of restraint occurred before or only after the 4–0 score. Integrity evidence—communications, unusual betting patterns, or an official investigation—would be required to test coordination or pre-arrangement. Match statistics alone can identify the spectacle-first tendency, not its private origin.
             """
         ),
     ]

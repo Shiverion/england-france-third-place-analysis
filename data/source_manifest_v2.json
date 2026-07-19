@@ -81,6 +81,22 @@
     "match": "France 3-0 Iraq, group-stage match 42",
     "use": "Format reference only; excluded from every analysis table and result."
   },
+  "fifa_2026_full_time_contact_discipline": {
+    "paths": [
+      "data/processed/fifa_2026_match_contact_discipline.csv",
+      "data/processed/fifa_2026_team_contact_discipline.csv"
+    ],
+    "extraction_script": "scripts/build_contact_discipline_data.py",
+    "coverage": "All 103 completed FIFA World Cup 2026 matches through the bronze final; 103 match rows and 206 team rows.",
+    "source_pattern": "https://fdp.fifa.org/assetspublic/ce281/r{asset_id}/pdf/FullTimeMatchReport-English.pdf",
+    "asset_range": "r12449-r12551; match numbers are parsed from the reports rather than inferred from asset order.",
+    "current_match_url": "https://fdp.fifa.org/assetspublic/ce281/r12551/pdf/FullTimeMatchReport-English.pdf",
+    "grain": "One row per match and one row per team-match.",
+    "metrics": "Fouls Against (used as fouls committed), fouls suffered, direct and indirect free kicks, penalties, offsides, yellow cards, second-yellow reds, direct reds, possession, attempts, and shots on target.",
+    "method": "PyMuPDF extraction from official FIFA Full Time Match Reports. Reports are fetched in memory; compact processed CSVs retain the official URL and asset id.",
+    "validation": "Matches 1-103 appear exactly once; every match has two team rows; fouls suffered reconcile to opponent fouls committed; goals reconcile 103/103 with the independent FIFA PMSR extract.",
+    "known_limitations": "Aggregate reports do not timestamp every foul, so tactical fouls and score-state-specific contact cannot be isolated. Card counts also reflect referee thresholds; same-referee and foul-band checks are reported as sensitivity analyses."
+  },
   "current_goal_timeline": {
     "path": "data/current_match_goals.csv",
     "source": "https://www.11v11.com/matches/france-v-england-18-july-2026-393896/"

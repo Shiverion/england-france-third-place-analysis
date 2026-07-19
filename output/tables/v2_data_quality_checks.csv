@@ -13,5 +13,10 @@ Individual incentive rows reconcile pre + match = post,4,4,pass
 FIFA player-match-shirt key unique,0,0,pass
 Focal teams each cover eight matches,2,2,pass
 Player minutes reconcile eleven on-field slots,16,16,pass
+Full Time reports cover matches 1–103 exactly,1,1,pass
+Full Time reports have two team rows per match,103,103,pass
+Fouls suffered reconcile to opponent fouls,206,206,pass
+Full Time report supplies Match-103 ten-goal score,10,10,pass
 Results backbone current score populated,0,1,expected gap
 "Player-derived goals, attempts, and direct pressures reconcile FIFA team totals",48,48,pass
+Full Time report goals reconcile PMSR totals,103,103,pass

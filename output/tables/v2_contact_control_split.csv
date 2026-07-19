@@ -1,0 +1,14 @@
+metric,label,category,current_per90,prior_mean_per90,relative_delta_pct
+blocks,Blocks,activity,59.0,42.67857142857143,38.24267782426778
+clearances,Clearances,control outcome,15.0,43.07142857142857,-65.17412935323384
+duels_won_aerial,Aerial duels won,control outcome,14.0,29.67857142857143,-52.82791817087846
+duels_won_physical,Physical duels won,control outcome,2.0,1.9642857142857144,1.8181818181818077
+high_intensity_distance_m,Distance at 20+ km/h,activity,17497.0,15107.660714285714,15.81541531082269
+interceptions,Interceptions,control outcome,13.0,17.428571428571427,-25.409836065573764
+possession_contests_won,Possession contests won,control outcome,17.0,36.142857142857146,-52.96442687747036
+possession_interrupted,Possession interrupted,control outcome,49.0,52.96428571428571,-7.484828051247461
+possession_regains,Possession regains,control outcome,76.0,79.32142857142857,-4.187303016659161
+pressures_direct,Direct pressures,activity,119.0,78.46428571428572,51.66135639508418
+sprints,Sprints,activity,890.0,836.3571428571429,6.413869672901185
+tackles_made,Tackles attempted,activity,82.0,50.85714285714286,61.23595505617976
+tackles_won,Tackles won,control outcome,23.0,15.035714285714285,52.96912114014254

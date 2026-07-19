@@ -11,9 +11,9 @@ The analysis cannot observe private motivation. No statistical test can prove th
 
 What it can test is whether the match looked different from carefully chosen serious-match comparisons, whether the scoreline was unusually extreme, and whether the match process showed effort or defensive activity.
 
-The evidence supports this wording:
+The evidence supports this stronger wording:
 
-> **England–France was a lower-stakes, heavily rotated official match with high attacking risk, aggressive pressure attempts, and unusually weak defensive control. Its scoring looked exhibition-like, but the process data do not look like passive play.**
+> **England–France showed a spectacle-first tendency: normal contact and high physical activity coexisted with tournament-leading attack, zero cards, and unusually weak defensive conversion. This supports exhibition-like incentive alignment, not a pre-arranged-score claim.**
 
 ## Hypothesis and decision rule
 
@@ -27,6 +27,10 @@ H1: Compared with serious official matches, the third-place match behaved
 H2: Live Golden Boot, assist, and record incentives influenced selection
     and attacking involvement, giving specific players an opportunity to
     boost personal statistics.
+
+H3: Visible action remained high while the usual collective controls and
+    disciplinary consequences weakened: a spectacle-first behavioural
+    tendency rather than simple low physical effort.
 ```
 
 The competing explanation is that the match had lower team-level stakes and heavy rotation, but physical effort remained; attacking risk, weak coordination, score-state effects, individual incentives, and finishing produced the open score.
@@ -38,12 +42,15 @@ There is no single binary test for H1 because it combines selection, physical ef
 | Lower team stakes | Rotation and starter retention | Supported with high confidence |
 | Exhibition-like scoring | Historical and matched professional comparisons | Supported descriptively with moderate confidence |
 | Broad coasting/no defending | Player effort tests plus same-team ranks | Not supported with moderate confidence |
+| Lower contact intensity | Fouls, tackles, blocks, pressures, and high-intensity distance | Not supported with moderate-high confidence |
+| Lower disciplinary intensity | Card events conditional on tournament phase, foul band, duration, and referee | Suggestive with low-moderate confidence |
 | Defensive control | Pressure-to-turnover conversion and opponent access | Supported with moderate-high confidence |
-| Individual stat-seeking | Award mechanism plus candidate activity | Suggestive but underpowered; low-moderate confidence |
+| H3 spectacle-first tendency | Directional stack across attack, activity, discipline, control, rotation, and incentives | Supported with moderate-high confidence |
+| Individual stat-seeking | Award mechanism plus candidate activity | Supported as incentive/opportunity; intentional attribution suggestive |
 | H2 stronger claim: the match was primarily used to boost statistics | Intentional stat-padding or private motive | Not established; low confidence |
 | Charity equivalence | Like-for-like roster/rule comparison | Not established; low confidence |
 
-**Overall verdict: H1 is partially supported with moderate confidence.** The lower-stakes and exhibition-like-openness parts fit the evidence. The stronger claim that players stopped trying, stopped defending, or played an equivalent form of charity football does not.
+**Overall verdict:** literal H1 is partially supported, but **H3 is supported with moderate-high confidence**. The lower-stakes, exhibition-like-openness, and spectacle-first parts fit the evidence. Broad physical coasting does not. Coordinated pre-arrangement remains outside what match statistics can identify.
 
 ## Plain-language guide to the statistics
 
@@ -55,6 +62,8 @@ There is no single binary test for H1 because it combines selection, physical ef
 - **Holm adjustment:** a correction used when several related outcomes are tested. It raises p-values enough to control the chance of at least one false positive across the family of tests.
 - **Empirical tail check:** the current player's rate is ranked against his own earlier matches. With only six or seven earlier appearances, the resulting p-values are necessarily coarse.
 - **xG/Poisson check:** a rough calculation of how often a Poisson process with mean equal to aggregate expected goals would score at least the observed number. It is an approximation, not an exact shot-level model.
+- **Add-one empirical lower tail:** `(1 + prior matches no higher than observed) / (1 + prior matches)`. It avoids claiming a zero probability when the reference sample is finite.
+- **Negative-binomial zero check:** a predictive probability of zero card events that allows card counts to vary more than a Poisson model would permit.
 
 ## 1. Primary professional comparison
 
@@ -221,7 +230,75 @@ This is not a formal hypothesis test because the FIFA process sample is a single
 
 That pattern is more consistent with **active but ineffective defending** than with “nobody tried.”
 
-## 7. Player-level effort-versus-control test
+## 7. Contact and disciplinary-intensity test
+
+### Source and grain
+
+`scripts/build_contact_discipline_data.py` fetches official FIFA Full Time Match Reports in memory for asset ids `r12449` through `r12551`, then parses the match number from each report. The resulting files contain:
+
+- **103 match rows**, exactly matches 1–103;
+- **206 team-match rows**, exactly two per match;
+- fouls, cards, free kicks, penalties, offsides, referee, possession, attempts, and shots on target;
+- official report URL and asset id on every row.
+
+FIFA labels the committed-foul field “Fouls Against.” The parser uses it as `fouls_committed`; opponent-team reconciliation confirms that it equals the opposing row's fouls suffered in all 206 rows. Final-score totals reconcile with the independent PMSR panel in 103 of 103 matches.
+
+`card_events` is the sum of single-yellow cards, second-yellow red events, and direct-red events. It counts disciplinary sanctions, not FIFA fair-play penalty points. Match 103 had no cards of any type, so alternate weighting does not change its result.
+
+### Primary observable pattern
+
+| Metric | Match 103 | Earlier 90-minute mean | Earlier 90-minute knockout mean |
+|---|---:|---:|---:|
+| Total fouls | 22 | 22.394 | 22.636 |
+| Card events | 0 | 2.787 | 3.273 |
+| Card events per 10 fouls | 0.000 | 1.249 | 1.426 |
+
+This directly rejects **H3a: contact broadly disappeared**. Fouls were normal, and the separate player-event panel shows more tackles, blocks, and pressure attempts.
+
+### One-sided cardless tests
+
+The pre-specified lower-tail statistic is:
+
+```text
+p_empirical = (1 + count(reference card events <= 0)) / (1 + reference matches)
+```
+
+The add-one term prevents a finite reference from returning zero. The test is one-sided because H3 specifically predicts lower disciplinary consequence.
+
+| Reference | n | Zero-card matches | Add-one empirical p | Method-of-moments NB P(0) |
+|---|---:|---:|---:|---:|
+| All first 102 | 102 | 9 | 0.097 | 0.081 |
+| Regulation-only first 102 | 94 | 9 | 0.105 | 0.082 |
+| All earlier knockout matches | 30 | 1 | 0.065 | 0.062 |
+| Regulation-only knockout matches | 22 | 1 | 0.087 | 0.064 |
+| Regulation matches within ±3 fouls | 42 | 5 | 0.140 | 0.082 |
+| Same referee's earlier matches | 3 | 0 | 0.250 | Not estimated |
+
+No empirical result crosses 0.05. The correct formal judgment is **suggestive, not conventionally significant**. The knockout references provide the strongest signal, while foul-band and same-referee checks show that contact volume and referee style weaken it. The negative-binomial checks return roughly 6% probability of zero cards in knockout references, but they are predictive model checks rather than causal tests.
+
+### Defensive action versus defensive control
+
+Player events are summed to the team-match grain, divided by match duration, and multiplied by 90. Match 103 for France and England is compared with each team's own previous-seven-match mean; the two current values and two baseline means are then summed before calculating the percentage change.
+
+Activity metrics were specified as tackles attempted, blocks, direct pressures, high-intensity distance, and sprints. Outcome/control metrics were tackles won, interceptions, aerial and physical duels won, possession contests won, clearances, possession regains, and possession interrupted. Reporting the full set prevents selection of only metrics that fit the narrative.
+
+The critical counterexample is **tackles won, +53%**. It demonstrates genuine reactive defending. Yet interceptions fell 25%, aerial duels won 53%, possession contests won 53%, and clearances 65%. The evidence therefore supports **high activity with weak anticipatory and collective control**, not universal defensive failure on every action.
+
+### H3 decision rule
+
+H3 is not accepted because one card p-value crosses an arbitrary threshold; none does. It is graded from a multi-layer directional stack:
+
+1. Goals, xG, and shots on target were tournament highs.
+2. Direct pressures and fast running were high.
+3. Total fouls were normal, rejecting low contact.
+4. Card consequence was unusually low, though only suggestive after sensitivities.
+5. Pressure yield was below all 102 earlier matches.
+6. Clearance, aerial-duel, and possession-contest outcomes collapsed versus both teams' own baselines.
+7. Team-level stakes fell while individual attacking rewards remained live.
+
+These components are correlated, so their p-values are **not combined with Fisher's method or treated as independent experiments**. The verdict is a structured evidence judgment: **spectacle-first tendency supported with moderate-high confidence; coordinated pre-arrangement not tested**.
+
+## 8. Player-level effort-versus-control test
 
 ### Question
 
@@ -273,7 +350,7 @@ The raw results suggest more explosive work and more pressure activity, but no p
 
 The 19 rows are not fully independent: teammates share tactics, opposition, substitutions, and score state. With only two team clusters, a cluster-robust player test would not be credible. The analysis therefore reports raw and multiplicity-adjusted values, calls the tests exploratory, and uses same-team match ranks as triangulation. The test does not estimate a causal effect of “lower stakes.”
 
-## 8. Candidate behavior and finishing checks
+## 9. Candidate behavior and finishing checks
 
 ### Candidate behavior
 
@@ -303,7 +380,7 @@ Goals | aggregate xG ~ Poisson(aggregate xG)
 
 This check separates chance environment from conversion: high xG shows structural openness, while goals above xG show that finishing enlarged the score. It is rough because shot outcomes can be dependent, xG is estimated, and the aggregate mean loses shot-level information. It should not be read as a test of seriousness.
 
-## 9. Selection evidence
+## 10. Selection evidence
 
 Official FIFA team summaries show that both countries retained only four semi-final starters and changed seven:
 
@@ -314,7 +391,7 @@ Official FIFA team summaries show that both countries retained only four semi-fi
 
 This is strong descriptive evidence that the bronze match had lower selection priority than the semi-finals. It does not identify whether the reason was fatigue, squad rotation, experimentation, reward, or lower competitive pressure.
 
-## 10. Individual incentive mechanism
+## 11. Individual incentive mechanism
 
 This section evaluates **H2**: whether live individual rewards plausibly influenced selection and attacking involvement. It is not another p-value. It is a timestamped mechanism audit designed to avoid turning a plausible story into an unsupported claim. The mechanism is considered supported only when four observable links are present:
 
@@ -334,9 +411,9 @@ The France evidence is especially strong because Mbappe and Olise were two of on
 
 The supported conclusion is **selective individual attacking incentives remained active while collective stakes were lower**. The evidence does not identify private motivation, prove selfish decision-making, or show that players agreed to trade defensive effort for statistics.
 
-The distinction matters: H2's moderate version—**individual rewards were live and plausibly shaped involvement**—is suggestive but underpowered. The strong version—**the match was primarily played to boost statistics**—is not established.
+The distinction matters: H2's moderate version—**individual rewards were live, changed selection/involvement incentives, and created a concrete stat-boost opportunity**—is supported as a mechanism with moderate confidence. Player-specific intentional attribution remains suggestive and underpowered. The strong version—**the match was coordinated primarily to boost statistics**—is not established.
 
-## 11. Data-quality checks
+## 12. Data-quality checks
 
 The notebook ran consistency checks before promoting results into the report:
 
@@ -353,6 +430,10 @@ The notebook ran consistency checks before promoting results into the report:
 | Focal teams cover eight matches each | 2 / 2 |
 | Player minutes reconcile to 11 on-field slots | 16 / 16 |
 | Parsed goals, attempts, and direct pressures reconcile to FIFA team totals | 48 / 48 |
+| Full Time reports cover matches 1–103 exactly | 103 / 103 |
+| Full Time report team rows | 206 / 206 |
+| Fouls suffered reconcile to opponent fouls committed | 206 / 206 |
+| Full Time report goals reconcile to PMSR totals | 103 / 103 |
 
 One expected gap remains: the current match is held in a separate current-match source rather than being fully populated in the historical results backbone. The current score, timeline, FIFA process data, and lineup data are nevertheless checked separately and reconciled in the notebook.
 
@@ -363,11 +444,16 @@ One expected gap remains: the current match is held in a separate current-match 
 | The match had lower selection priority than the semi-finals | Supported by seven changes for both teams |
 | Individual attacking incentives remained meaningful | Supported selectively by pre/post award movement and France retaining Mbappe and Olise |
 | Players broadly coasted physically | Not supported by high-intensity distance, pressure activity, and same-team ranks; player p-values remain exploratory after Holm correction |
+| Contact intensity broadly disappeared | Contradicted by normal foul volume and higher tackles, blocks, pressures, and high-intensity distance |
+| Disciplinary intensity was lower | Suggestive: zero cards, but empirical sensitivity p-values range from 0.065 to 0.250 |
 | Award-candidate activity proves stat-padding | Not supported; activity is suggestive but empirical tests are underpowered and motive is unobserved |
+| Individual rewards created an unusual stat-boost opportunity | Supported as an incentive/opportunity mechanism; intentional attribution remains suggestive |
 | Elite friendlies are normally much more goal-heavy | Not supported by matched mean or threshold tests |
 | The match looked exhibition-like in its scoring | Supported descriptively; ten goals exceeded all saved professional matches and all Soccer Aid rows, but not every expanded creator-format match |
 | The teams made no defensive effort | Not supported; direct pressure was at the 98th percentile |
 | Defensive control was unusually poor | Supported by very low forced-turnover yield and high attacking access |
+| Match 103 showed a spectacle-first behavioural tendency | Supported with moderate-high confidence by the aligned attack/activity/control/discipline/incentive stack |
+| Match 103 was coordinated or pre-arranged | Not established and not testable from match statistics alone |
 | Chance creation alone explains all ten goals | Not supported; ten goals exceeded 5.33 xG by 4.67, with England six from 2.34 xG |
 | The 4–0 state explains all ten goals | Not supported; expected scoring rose to about 3.30, not 10 |
 | The match was an ordinary elite friendly | Not supported; ten goals were an extreme professional-model tail event |
@@ -379,12 +465,19 @@ One expected gap remains: the current match is held in a separate current-match 
 - Matched pairs: `data/processed/matched_neutral_elite_friendlies_vs_officials.csv`
 - Individual incentive audit: `data/player_incentive_evidence.csv`
 - FIFA player extraction script: `scripts/build_player_effort_data.py`
+- FIFA foul/card extraction script: `scripts/build_contact_discipline_data.py`
 - FIFA player-match extract: `data/processed/fifa_2026_france_england_player_match.csv`
 - FIFA team physical extract: `data/processed/fifa_2026_france_england_team_physical.csv`
+- FIFA match contact/discipline extract: `data/processed/fifa_2026_match_contact_discipline.csv`
+- FIFA team contact/discipline extract: `data/processed/fifa_2026_team_contact_discipline.csv`
 - Player-effort tests: `output/tables/v2_player_effort_tests.csv`
 - Team effort/control ranks: `output/tables/v2_effort_control_ranks.csv`
 - Candidate behavior: `output/tables/v2_candidate_behavior.csv`
 - Finishing decomposition: `output/tables/v2_finishing_decomposition.csv`
+- Contact/discipline summary: `output/tables/v2_contact_discipline_summary.csv`
+- Contact/discipline tests: `output/tables/v2_contact_discipline_tests.csv`
+- Contact/control team ranks: `output/tables/v2_contact_control_team_ranks.csv`
+- Contact/control split: `output/tables/v2_contact_control_split.csv`
 - Summary metrics: `output/tables/v2_summary_metrics.json`
 - Evidence scorecard: `output/tables/v2_evidence_scorecard.csv`
 - Hypothesis verdict table: `output/tables/v2_hypothesis_verdict.csv`

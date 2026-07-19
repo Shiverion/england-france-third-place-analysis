@@ -1,0 +1,27 @@
+team,metric,label,category,current_per90,prior_mean_per90,relative_delta_pct,rank_high_to_low,rank_low_to_high
+France,tackles_made,Tackles attempted,activity,43.0,28.571428571428573,50.499999999999986,1,8
+France,tackles_won,Tackles won,control outcome,7.0,9.0,-22.22222222222222,5,3
+France,blocks,Blocks,activity,30.0,22.142857142857142,35.48387096774195,3,6
+France,interceptions,Interceptions,control outcome,7.0,10.142857142857142,-30.985915492957737,7,2
+France,pressures_direct,Direct pressures,activity,75.0,38.285714285714285,95.89552238805972,1,8
+France,duels_won_aerial,Aerial duels won,control outcome,9.0,14.285714285714286,-37.0,7,1
+France,duels_won_physical,Physical duels won,control outcome,2.0,0.8571428571428571,133.33333333333334,2,6
+France,possession_contests_won,Possession contests won,control outcome,12.0,17.571428571428573,-31.70731707317074,7,2
+France,clearances,Clearances,control outcome,9.0,19.714285714285715,-54.347826086956516,8,1
+France,possession_regains,Possession regains,control outcome,37.0,41.857142857142854,-11.604095563139927,6,2
+France,possession_interrupted,Possession interrupted,control outcome,24.0,27.428571428571427,-12.5,5,4
+France,high_intensity_distance_m,Distance at 20+ km/h,activity,9106.4,7461.328571428572,22.04796924331742,2,7
+France,sprints,Sprints,activity,469.0,407.0,15.233415233415236,3,6
+England,tackles_made,Tackles attempted,activity,39.0,22.285714285714285,75.0,1,8
+England,tackles_won,Tackles won,control outcome,16.0,6.035714285714286,165.08875739644972,1,8
+England,blocks,Blocks,activity,29.0,20.535714285714285,41.21739130434783,2,7
+England,interceptions,Interceptions,control outcome,6.0,7.285714285714286,-17.647058823529417,4,1
+England,pressures_direct,Direct pressures,activity,44.0,40.17857142857143,9.511111111111115,2,6
+England,duels_won_aerial,Aerial duels won,control outcome,5.0,15.392857142857142,-67.51740139211138,8,1
+England,duels_won_physical,Physical duels won,control outcome,0.0,1.1071428571428572,-100.0,7,1
+England,possession_contests_won,Possession contests won,control outcome,5.0,18.571428571428573,-73.07692307692308,8,1
+England,clearances,Clearances,control outcome,6.0,23.357142857142858,-74.31192660550458,8,1
+England,possession_regains,Possession regains,control outcome,39.0,37.464285714285715,4.0991420400381395,3,6
+England,possession_interrupted,Possession interrupted,control outcome,25.0,25.535714285714285,-2.0979020979020935,5,4
+England,high_intensity_distance_m,Distance at 20+ km/h,activity,8390.6,7646.332142857143,9.73365848144747,3,6
+England,sprints,Sprints,activity,421.0,429.35714285714283,-1.9464315421726774,4,5

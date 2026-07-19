@@ -7,13 +7,15 @@ Statistical tests, evidence definitions, assumptions, and reproducibility notes:
 
 ## Executive Summary
 
-England–France was not statistically similar to an ordinary elite friendly, and “the teams did not try to defend” is too simple.
+England–France was not statistically similar to an ordinary elite friendly. The sharper conclusion is that it behaved like **spectacle-first football**: the players remained active, but the teams accepted risks that serious knockout football normally suppresses.
 
 The stronger evidence supports a more precise description:
 
-> **A lower-stakes, heavily rotated official match in which attacking output still carried live individual rewards. It featured extreme attacking risk, aggressive pressing, and unusually weak defensive control. Its openness looked exhibition-like, but its effort profile did not look passive.**
+> **This was not a match without effort or contact. It was a match without brakes: high running, pressing, tackling, and ordinary foul volume coexisted with tournament-leading attack, zero cards, and collapsing collective control. The observable pattern tilted toward spectacle and stat opportunity rather than minimizing defeat.**
 
 Both countries changed seven starters from their semi-finals. The match then produced more goals, expected goals, and shots on target than any of the first 102 matches of the 2026 World Cup. At the same time, FIFA recorded an exceptionally high number of direct pressures but exceptionally few forced turnovers relative to those pressures. Player-level data reinforce that distinction: comparable outfielders produced 12% more high-intensity distance and 63% more direct pressures per 90 than their own earlier-tournament rates. That combination indicates failed or poorly protected pressure—not an absence of physical activity.
+
+The new Full Time Match Report panel covers **all 103 completed World Cup matches**. Match 103 recorded **22 fouls**, almost identical to the **22.39** average in earlier regulation-time matches, but **zero card events** versus an earlier average of **2.79**. Across France and England, tackles attempted were **61% above** their own earlier-match baselines and direct pressures **52% above**, yet clearances were **65% lower**, aerial duels won **53% lower**, and possession contests won **53% lower**. Tackles won rose 53%, an important counter-signal: this was reactive engagement without stable control, not theatrical walking pace.
 
 The rotation was also selective. France retained Kylian Mbappe and Michael Olise—its live goal and assist leaders—among only four retained starters. Mbappe used the match to move from eight to ten tournament goals, while Olise was credited with two assists to move from five to seven. Jude Bellingham came off England's bench and moved from six to seven goals. Individual attacking incentives therefore remained meaningful even as the collective stakes fell.
 
@@ -25,6 +27,8 @@ The 4–0 score state materially opened the second half, but historical World Cu
 
 **H1:** compared with serious official matches, England–France behaved like a low-pressure fun or charity match: players reduced effort and defending, attacking became unusually open, and individuals had incentives to add goals or assists.
 
+**H3:** observable behaviour shifted toward maximizing visible action—shots, goals, assists, runs, tackles, and pressure attempts—rather than minimizing defeat. This **spectacle-first tendency** predicts normal or high activity alongside weak defensive conversion and disciplinary consequence.
+
 **Competing explanation:** the match was lower-stakes and heavily rotated, but players still worked physically; attacking risk, weak collective control, score-state effects, individual incentives, and exceptional finishing created the spectacle.
 
 Because H1 is composite, it cannot be answered by one p-value. Each component receives its own evidence judgment:
@@ -34,13 +38,16 @@ Because H1 is composite, it cannot be answered by one p-value. Each component re
 | Lower team-level stakes | **Supported** | High | Both teams changed seven of eleven semi-final starters. |
 | Exhibition-like openness | **Supported descriptively** | Moderate | Ten goals, 5.33 xG, and 20 shots on target exceeded the earlier World Cup matches. |
 | Broad physical coasting or no defending | **Not supported** | Moderate | High-intensity distance and direct pressures rose; the player tests are exploratory and Holm-adjusted p-values exceed 0.05. |
+| Lower contact intensity | **Not supported** | Moderate-high | Twenty-two fouls were normal; tackles attempted, blocks, and pressure attempts rose. |
+| Lower disciplinary intensity | **Suggestive** | Low-moderate | Zero cards were unusual for a knockout match, but empirical tails are 0.065–0.087 and referee/foul-band checks are weaker. |
 | Collective defensive control weakened | **Supported** | Moderate-high | Pressure attempts produced unusually few takeaways, while opponent chance quality was worst for both teams. |
-| Individual stat-seeking caused behavior | **Suggestive but underpowered** | Low-moderate | Mbappe and Olise were selectively retained and highly involved, but samples are small and motive is unobserved. |
+| Spectacle-first behavioural tendency | **Supported** | Moderate-high | Attack peaked while high activity coexisted with zero cards, weak pressure yield, and collapsed clearance/duel outcomes. |
+| Individual-reward mechanism | **Supported as incentive/opportunity; attribution remains suggestive** | Moderate | Mbappe and Olise were selectively retained, highly involved, and changed award standings; motive remains unobserved. |
 | Equivalent to a charity match | **Not established** | Low | The scoring was charity-like descriptively, but rules, rosters, and incentives are not comparable. |
 
 ### Overall verdict
 
-**H1 is partially supported with moderate overall confidence.** The evidence supports “lower-stakes official match with exhibition-like openness,” but not “the players stopped trying” or “this was basically a charity match.” The most defensible description is **high individual effort, weak collective control, selective attacking incentives, and exceptional finishing**.
+**Literal H1 is only partially supported, but the sharper H3 is supported with moderate-high confidence.** The teams did not stop working. They behaved as if preventing the next goal was no longer the dominant objective. That is a bold, evidence-backed tendency toward exhibition-like incentive alignment—not a claim that the score was agreed in advance.
 
 ### H2: did the match boost individual statistics?
 
@@ -57,7 +64,7 @@ This is different from claiming that the match was deliberately arranged for sta
 | Statistical strength | Empirical one-sided p-values were coarse: Mbappe attempts 0.25; Olise movement and pressure 0.125 | Underpowered |
 | Counterexamples | Kane did not appear; Bellingham did not start; Saka's per-90 attempt rate was only second-highest among his appearances | Limits a universal stat-padding story |
 
-**H2 verdict: suggestive but underpowered, with low-moderate confidence.** The match clearly changed individual standings and preserved selective attacking incentives. It does **not** establish that England or France primarily played the match to farm statistics, that every player pursued personal numbers, or that anyone intentionally traded defending for goals or assists.
+**H2 verdict: supported as an incentive-and-opportunity mechanism with moderate confidence; intentional player attribution remains suggestive.** The match clearly changed individual standings, selectively retained France's award leaders, and created an environment where personal output was unusually cheap in team-risk terms. It does **not** establish a coordinated plan, universal stat-padding, or private motive.
 
 ## Visual story for general audiences
 
@@ -113,6 +120,12 @@ The bronze medal was less valuable than a place in the final, but official goals
 Fast running and direct pressure were normal-to-high for both teams. The problem was what happened around those actions: France's pressure produced its worst turnover yield, and both teams allowed their highest opponent xG of the tournament.
 
 ![High physical intensity paired with weak pressure outcomes](assets/narrative_05_effort_without_control.png)
+
+### 5a. Not contactless—brakeless
+
+Twenty-two fouls were ordinary. Zero cards and the collapse in clearances, aerial-duel wins, possession contests, and pressure yield were not. The most intuitive reading is **high activity without the usual risk-control objective**.
+
+![Contact stayed normal while cards and collective control fell](assets/narrative_07_spectacle_without_brakes.png)
 
 ### 6. Attacking involvement plus exceptional finishing
 
@@ -240,6 +253,57 @@ The most defensible interpretation is **active but ineffective defending**: aggr
 
 This ratio is a derived analytical proxy, not an official FIFA “pressing efficiency” statistic. A forced turnover is not mechanically attributable to one specific pressure.
 
+## Contact did not disappear; its consequences did
+
+The contact analysis adds **103 official FIFA Full Time Match Reports**, covering every completed match through the bronze final. FIFA's “Fouls Against” field is treated as fouls committed and reconciled to the opponent's fouls suffered. Scores reconcile with the independent PMSR panel in all 103 matches.
+
+| Match-level metric | Match 103 | First-102 mean | Earlier 90-minute mean | Earlier 90-minute knockout mean |
+|---|---:|---:|---:|---:|
+| Total fouls | 22 | 23.00 | 22.39 | 22.64 |
+| Card events | 0 | 2.86 | 2.79 | 3.27 |
+| Card events per 10 fouls | 0.00 | 1.25 | 1.25 | 1.43 |
+
+The foul count ranks **43rd-lowest of 103**, close to the center of the tournament distribution. The card count ranks joint-lowest. This rejects the simple “low-contact friendly” explanation and replaces it with a sharper one: **ordinary contact, almost no disciplinary friction**.
+
+### How unusual was a cardless match?
+
+The pre-specified one-sided empirical test counts prior matches with card totals no higher than Match 103 and adds one to numerator and denominator. The negative-binomial column models the zero-card probability while allowing overdispersion.
+
+| Reference | Matches | Zero-card matches | Add-one empirical p | Modelled P(0 cards) |
+|---|---:|---:|---:|---:|
+| All first 102 | 102 | 9 | 0.097 | 0.081 |
+| Earlier 90-minute matches | 94 | 9 | 0.105 | 0.082 |
+| All earlier knockout matches | 30 | 1 | 0.065 | 0.062 |
+| Earlier 90-minute knockout matches | 22 | 1 | 0.087 | 0.064 |
+| Earlier 90-minute matches within ±3 fouls | 42 | 5 | 0.140 | 0.082 |
+| Same referee's earlier matches | 3 | 0 | 0.250 | Not estimated |
+
+The current referee, Jesús Valenzuela, had issued only one, two, and one card events in his three earlier matches, below the tournament average. Referee style plausibly explains part of the result. Therefore **zero cards are a supporting clue, not the main proof**.
+
+### The stronger evidence is the action-to-control split
+
+Per-90 Match-103 totals are compared with the sum of France's and England's own previous-seven-match means:
+
+| Metric | Change | Interpretation |
+|---|---:|---|
+| Tackles attempted | +61% | More engagement, not less |
+| Blocks | +38% | Reactive defensive activity increased |
+| Direct pressures | +52% | Pressure attempts increased |
+| Distance at 20+ km/h | +16% | Explosive work increased |
+| Tackles won | +53% | Important counter-signal: some ground defending worked |
+| Interceptions | −25% | Less anticipatory control |
+| Aerial duels won | −53% | Much weaker duel control |
+| Possession contests won | −53% | Much weaker recovery control |
+| Clearances | −65% | Both teams recorded their fewest in eight matches |
+
+![Contact, discipline, and defensive-control comparison](assets/v2_contact_discipline_and_control.png)
+
+The positive tackle result prevents a lazy “nobody defended” interpretation. The match was full of reactive actions. What disappeared was stable collective control: anticipation, clean recovery, clearance, pressure conversion, and risk suppression.
+
+> **Bold insight:** Match 103 looks less like two teams optimizing the probability of avoiding defeat and more like two teams maximizing visible action under cheap collective consequences. That is the observable **spectacle-first tendency**.
+
+This does not prove a coordinated script. It shows that the incentives and behaviour moved in the same direction a spectacle-oriented or stat-padding-friendly match would produce.
+
 ## Player-level test: did the players physically coast?
 
 The team totals cannot tell whether a few energetic players hid general passivity. To test that possibility, the analysis extracted physical, pressing, movement, and shooting rows from the official FIFA reports for **all eight France matches and all eight England matches**.
@@ -351,9 +415,13 @@ This remains useful as a face-validity anchor: the bronze match reached an exhib
 | Elite friendlies normally score much more than official tournament matches | **Not supported** |
 | The scoreline was exhibition-like | **Supported descriptively** |
 | The players broadly coasted physically | **Not supported; high-intensity work and direct pressure rose** |
+| Contact intensity broadly disappeared | **Contradicted; foul volume was normal and tackle activity rose** |
+| Disciplinary intensity was unusually low | **Suggestive; zero cards, but empirical p=0.065–0.250 across sensitivity references** |
 | The teams made no defensive effort | **Contradicted by pressure and physical activity** |
 | Defensive control was exceptionally poor | **Supported** |
+| The match showed a spectacle-first behavioural tendency | **Supported with moderate-high confidence** |
 | Award leaders displayed unusually aggressive activity | **Suggestive, not conclusive** |
+| Individual rewards created a stat-boost opportunity | **Supported as a mechanism; intentional attribution remains suggestive** |
 | Chance creation alone explains ten goals | **Not supported; finishing added 4.67 goals above xG** |
 | The 4–0 game state explains all ten goals | **Contradicted** |
 | The match fits an ordinary elite friendly | **Not supported** |
@@ -362,15 +430,17 @@ This remains useful as a face-validity anchor: the bronze match reached an exhib
 
 **Overall status: share with caveats.**
 
-- **High confidence:** score, lineup rotation, official FIFA process metrics, physical-table extraction, report reconciliation, and the focal teams' within-tournament ranks.
-- **Moderate confidence:** matched professional score comparison, historical score-state decomposition, and the qualitative effort-versus-control diagnosis.
-- **Low confidence:** corrected player-level hypothesis-test significance, any statement about private player motivation, or exact equivalence to charity football.
+- **High confidence:** score, lineup rotation, official FIFA process metrics, 103-report foul/card extraction, report reconciliation, and the focal teams' within-tournament ranks.
+- **Moderate-high confidence:** the spectacle-first behavioural diagnosis, because attack, activity, control failure, rotation, and individual incentives align across independent evidence layers.
+- **Low-moderate confidence:** zero cards as a standalone disciplinary anomaly; the empirical tail varies from 0.065 to 0.250 under reasonable sensitivity checks.
+- **Low confidence:** coordinated pre-arrangement, private player motivation, or exact equivalence to charity football. No match-statistical design can establish those claims.
 
-The most important remaining data gap is timestamped event and tracking data. It would show whether spacing, counter-press protection, and defensive recovery deteriorated before the score became 4–0 or mainly as a consequence of it. A same-provider event dataset for elite professional friendlies would also allow pressure, transition, line-break, and defensive-structure classification across contexts—not merely score comparisons. Other competitions' placement matches require a reliable stage-labelled source before hierarchical pooling is defensible.
+The most important remaining performance-data gap is timestamped foul location and tracking data. It would show whether tactical-foul avoidance, spacing, counter-press protection, and defensive recovery deteriorated before the score became 4–0 or mainly afterward. Testing actual coordination would require a different evidence class entirely: communications, integrity reports, or unusual betting patterns.
 
 ## Source notes
 
 - [FIFA match-103 Post-Match Summary Report](https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M103-FRA-V-ENG.pdf)
+- [FIFA Match-103 Full Time Match Report](https://fdp.fifa.org/assetspublic/ce281/r12551/pdf/FullTimeMatchReport-English.pdf), source for fouls, cards, free kicks, referee, and team disciplinary totals
 - [FIFA Training Centre report library](https://www.fifatrainingcentre.com/), used for all eight France and all eight England matches; exact report URLs are in the source manifest
 - [FIFA's Norway–France report](https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ousmane-dembele-hat-trick-norway), used only to recover Ousmane Dembele's 65th-minute substitution when the crowded PDF row omitted it
 - [Mart Jürisoo international-results repository](https://github.com/martj42/international_results), pinned locally at commit `80f408d2c93ba4f9e06a2c7cdc5effb05fea9680`

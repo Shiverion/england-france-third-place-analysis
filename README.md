@@ -4,11 +4,13 @@ Reproducible analysis of whether England 6–4 France played like a relaxed exhi
 
 ## Main conclusion
 
-The evidence supports a more precise interpretation than “nobody tried”:
+The evidence supports a bolder interpretation than “nobody tried”:
 
-> A lower-stakes, heavily rotated official match in which live individual rewards preserved strong attacking incentives. It combined high attacking risk and aggressive pressure attempts with unusually weak defensive control. Its scoring looked exhibition-like, but the process data do not look passive.
+> **Match 103 showed a spectacle-first tendency.** Players kept running, pressing, tackling, and fouling, but the usual collective controls and disciplinary consequences weakened sharply. The match behaved more like it was maximizing visible action and stat opportunity than minimizing defeat—without providing evidence that the score was pre-arranged.
 
 The matched professional comparison found no general goal-scoring advantage for elite friendlies over official tournament matches. The current match was still an extreme ten-goal outlier, and the 4–0 score state explains only part of its openness. Player-level FIFA data sharpen the diagnosis: comparable outfielders produced 12% more high-intensity distance and 63% more direct pressures than their own earlier-tournament rates, while both teams conceded their worst opponent xG of the tournament. The raw player tests are exploratory and do not survive correction for four related outcomes, but the same-team rankings strongly reject a simple “everyone jogged” story.
+
+The new contact panel adds **all 103 official FIFA Full Time Match Reports**. Match 103 had **22 fouls** versus **22.39** in earlier regulation-time matches, but **zero cards** versus **2.79**. Across France and England, tackles attempted rose **61%** and direct pressures **52%**, while clearances fell **65%**, aerial duels won **53%**, and possession contests won **53%**. This is high-activity, low-restraint football—not low intensity.
 
 France also retained Kylian Mbappé and Michael Olise—its live goal and assist leaders—among only four retained starters. Their before-and-after totals and observable Match-103 activity support a selective individual-incentive mechanism, without proving private motive or universal stat-padding. Ten goals from 5.33 xG show that exceptional finishing then magnified the open chance environment.
 
@@ -18,9 +20,11 @@ France also retained Kylian Mbappé and Michael Olise—its live goal and assist
 
 **H2:** live Golden Boot, assist, and record incentives influenced selection and attacking involvement, giving specific players an opportunity to boost personal statistics.
 
-**Verdict: partially supported, with moderate overall confidence.** Lower team-level stakes and exhibition-like openness are supported. Broad physical coasting and “no defending” are not supported; the player tests are exploratory and none survives Holm correction. Individual award incentives are plausible and selectively supported, but the samples are small and private motivation cannot be observed. Exact equivalence to a charity match is not established.
+**H3:** visible action remained high while defensive conversion and disciplinary consequence weakened—a spectacle-first behavioural tendency.
 
-For H2 specifically: **suggestive but underpowered, with low-moderate confidence**. Mbappe and Olise were selectively retained and highly involved, but the small within-player samples cannot establish intentional stat-padding or prove that the match was primarily played to boost statistics.
+**Verdict:** literal H1 is partially supported, while **H3 is supported with moderate-high confidence**. Lower stakes, exhibition-like openness, weak collective control, normal contact, and low disciplinary consequence align. Broad physical coasting is contradicted. Exact charity equivalence and coordinated pre-arrangement are not established.
+
+For H2 specifically: **supported as an incentive/opportunity mechanism with moderate confidence; intentional attribution remains suggestive**. Mbappe and Olise were selectively retained, highly involved, and improved award totals, but match data cannot establish private motive or coordination.
 
 ## Expanded charity/exhibition benchmark
 
@@ -48,6 +52,8 @@ To address the original 15-match Soccer Aid limitation, the analysis now adds 26
 - [They ran, they pressed, they lost control](output/assets/narrative_05_effort_without_control.png)
 - [Award-leader activity and finishing decomposition](output/assets/v2_player_behavior_and_finishing.png)
 - [The expanded charity benchmark](output/assets/narrative_06_expanded_exhibition_benchmark.png)
+- [Not contactless—brakeless](output/assets/narrative_07_spectacle_without_brakes.png)
+- [Contact, discipline, and control](output/assets/v2_contact_discipline_and_control.png)
 
 ## Methods in brief
 
@@ -60,6 +66,8 @@ To address the original 15-match Soccer Aid limitation, the analysis now adds 26
 - Expanded charity/exhibition benchmark with event-level means, bootstrap intervals, empirical tails, and source-tier labels.
 - World Cup score-state decomposition using 964 regulation-time matches and match-cluster bootstrap resampling.
 - FIFA Post-Match Summary Report process comparison for matches 1–103.
+- FIFA Full Time Match Report foul/card panel for all 103 completed matches, with knockout, regulation-only, foul-band, and same-referee sensitivity checks.
+- Same-team defensive action/control comparison covering tackles, blocks, interceptions, duels, possession contests, clearances, pressures, sprints, and high-intensity distance.
 - Timestamped before/after audit of live player awards, selection, match contributions, and changed standings.
 - Player-level physical and pressing extraction from all eight France and all eight England matches.
 - Within-player per-90 comparison for 19 eligible outfielders, using bootstrap intervals, sign-flip tests, and Holm correction across four effort metrics.
@@ -75,17 +83,18 @@ The notebook was executed top-to-bottom successfully before publication. To reru
 
 ```powershell
 python scripts/build_player_effort_data.py
+python scripts/build_contact_discipline_data.py
 python scripts/build_v2_notebook.py
 python scripts/execute_notebook.py
 python scripts/build_narrative_effort_control_image.py
 ```
 
-The compact processed player CSVs are included, so the first command is only needed to refresh them. It reads saved official reports where available and fetches missing FIFA reports in memory.
+The compact processed player and contact/discipline CSVs are included, so the first two commands are only needed to refresh them. The extraction scripts fetch missing official FIFA reports in memory.
 
 The international-results source is tracked as a submodule at the pinned commit listed in `data/source_manifest_v2.json`. The team-strength and World Cup-history inputs are external source snapshots from the sibling `Argentina Comeback Analysis` project; their repositories and pinned commits are recorded in the manifest.
 
 ## Data and provenance
 
-The project combines public international match results, soccer Elo ratings, World Cup history, FIFA Post-Match Summary Reports, player physical and event tables from 15 official reports, a current-match goal timeline, manually transcribed starting lineups, timestamped player-award evidence, and a 41-match charity/exhibition benchmark. The benchmark is stratified by event and roster profile; it is used for descriptive context, not as a like-for-like professional control.
+The project combines public international match results, soccer Elo ratings, World Cup history, FIFA Post-Match Summary Reports, player physical and event tables from 15 official reports, foul/card/contact data from **103 official Full Time Match Reports**, a current-match goal timeline, manually transcribed starting lineups, timestamped player-award evidence, and a 41-match charity/exhibition benchmark. The benchmark is stratified by event and roster profile; it is used for descriptive context, not as a like-for-like professional control.
 
 See `data/source_manifest_v2.json` for source URLs, pinned commits, coverage, and known limitations.
