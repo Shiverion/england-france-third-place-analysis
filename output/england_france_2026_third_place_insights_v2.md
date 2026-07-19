@@ -77,9 +77,30 @@ The 4–0 lead encouraged risk and made the match more open. Historical scoring 
 
 ### 3. Not an ordinary friendly
 
-Matched elite friendlies averaged almost exactly the same number of goals as matched official games. Historical third-place matches and the charity sample were higher-scoring, but this match still sat far above every comparison.
+Matched elite friendlies averaged almost exactly the same number of goals as matched official games. Historical third-place matches and Soccer Aid were higher-scoring than ordinary professional matches, and England–France exceeded every professional comparison and every Soccer Aid row. The expanded creator-led benchmark adds a useful caveat: some exhibition formats reached even higher regulation-time totals.
 
 ![Ten goals compared with elite official matches, elite friendlies, World Cup third-place matches, and the charity sample](assets/narrative_03_not_ordinary_friendly.png)
+
+### 3a. More charity data makes the comparison more honest
+
+The original Soccer Aid benchmark had only **15 matches**. To address that limitation, the project now adds **26 documented charity/exhibition matches**, producing **41 regulation-score matches** in total. The new rows cover Corazón Classic Match, Match for Hope, Sidemen Charity Match, Football for Hope, Game4Ukraine, and a Manchester United/Pompey legends benefit.
+
+The larger sample does not produce one trustworthy “charity average.” Its event means are sharply different:
+
+| Event group | Matches | Average goals | Maximum |
+|---|---:|---:|---:|
+| Soccer Aid | 15 | 5.13 | 9 |
+| Corazón Classic | 13 | 5.08 | 11 |
+| Match for Hope | 3 | 12.67 | 15 |
+| Sidemen Charity | 7 | 12.14 | 20 |
+| Other benefit events | 3 | 9.00 | 14 |
+| All expanded events | 41 | 7.15 | 20 |
+
+England–France's ten goals exceeded every Soccer Aid match, but it was not unusually high relative to creator-led formats: **9 of 41** expanded benchmark matches reached at least ten regulation-time goals. With a small-sample correction, the descriptive upper-tail rate is **6.25%** for Soccer Aid alone and **23.81%** for the heterogeneous expanded file.
+
+This improves the narrative in two directions. It strengthens the claim that the match reached an exhibition-like scoring environment, but it weakens the stronger claim that England–France was specifically equivalent to Soccer Aid or to all charity football. The event-level spread is evidence that format, roster, and incentive structure matter. The professional matched sample therefore remains the primary comparison for serious-versus-friendly scoring; the charity/exhibition benchmark is context only.
+
+![The expanded charity benchmark by event format](assets/narrative_06_expanded_exhibition_benchmark.png)
 
 ### 4. Lower team stakes, live individual rewards
 
@@ -101,7 +122,7 @@ The retained French award leaders stayed highly involved, especially Olise's mov
 
 ## What the larger professional comparison changes
 
-The original comparison had only 20 historical World Cup third-place matches and 15 Soccer Aid matches. Version 2 adds a professional score backbone and constructs a primary sample of **173 neutral matched pairs** from 1991–2023.
+The original comparison had only 20 historical World Cup third-place matches and 15 Soccer Aid matches. Version 2 adds a professional score backbone, constructs a primary sample of **173 neutral matched pairs** from 1991–2023, and expands the charity/exhibition context to **41 regulation-score matches**.
 
 Every pair contains:
 
@@ -144,6 +165,7 @@ A smoothed count model estimated the probability of at least ten goals as:
 - **0.076%** in matched professional friendlies.
 - **0.114%** in the first 102 matches of the 2026 World Cup.
 - **3.69%** in the small Soccer Aid benchmark.
+- **25.82%** in the expanded 41-match charity/exhibition benchmark; this mixed-format estimate is not a single-population probability.
 
 The friendly estimate is about 2.8 times the matched official estimate, but both are below one-tenth of one percent. Therefore, ten goals are slightly more compatible with the friendly model in relative terms while remaining far outside an ordinary elite-friendly range in absolute terms.
 
@@ -317,9 +339,9 @@ The match was already unusually open by half-time, before the entire second-half
 
 ## Role of the charity comparison
 
-Soccer Aid averaged 5.13 goals across 15 saved matches and had a previous maximum of nine. England–France exceeded all of them.
+Soccer Aid averaged 5.13 goals across 15 saved matches and had a previous maximum of nine. The expanded benchmark now contains 41 regulation-score matches, with an overall average of 7.15 goals and a maximum of 20. The event-level means range from 5.08 in Corazón Classic to 12.67 in Match for Hope and 12.14 in Sidemen Charity.
 
-This remains useful as a face-validity anchor: the bronze match reached an exhibition-like scoring level. It is not evidence that the football itself was equivalent. Soccer Aid combines celebrities and former professionals, uses different roster construction, and has different incentives. Adding more unrelated charity games would improve the precision of the charity average but would not fix that validity problem.
+This remains useful as a face-validity anchor: the bronze match reached an exhibition-like scoring level. It is not evidence that the football itself was equivalent. Soccer Aid combines celebrities and former professionals, while the expanded file also includes retired legends, creator-led formats, and benefit all-star teams. Those formats differ in roster quality, rules, substitutions, and incentives. The added data improve descriptive coverage, but they do not turn charity football into a valid causal control group.
 
 ## Final evidence scorecard
 
@@ -354,4 +376,5 @@ The most important remaining data gap is timestamped event and tracking data. It
 - [Mart Jürisoo international-results repository](https://github.com/martj42/international_results), pinned locally at commit `80f408d2c93ba4f9e06a2c7cdc5effb05fea9680`
 - [JGravier soccer-Elo repository](https://github.com/JGravier/soccer-elo), pinned sibling data at commit `a24d031e0ed81cbb4206ff84a2209bbf000ee6d6`
 - [Fjelstul World Cup Database](https://github.com/jfjelstul/worldcup), pinned sibling data at commit `35a8667f518b07469182ae16d35574dd0e7a00fb`
+- [Expanded charity/exhibition benchmark](../data/exhibition_charity_benchmark.csv), with event-level source URLs and source-tier labels; official examples include [Match for Hope](https://match4hope.com/2024-edition/), [Real Madrid Corazón Classic Match](https://www.realmadrid.com/en-US/news/club/latest-news/cronica-classic-match-07-06-2025), [UEFA Football for Hope](https://www.uefa.com/news-media/news/01a6-0e6c9b861c93-a973f2fa712-1000--stars-shine-at-tsunami-match/), and [Game4Ukraine](https://en.uaf.ua/news/48972)
 - Source paths, coverage rules, and known gaps are recorded in `data/source_manifest_v2.json`.

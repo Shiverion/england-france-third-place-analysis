@@ -22,6 +22,14 @@ France also retained Kylian Mbappé and Michael Olise—its live goal and assist
 
 For H2 specifically: **suggestive but underpowered, with low-moderate confidence**. Mbappe and Olise were selectively retained and highly involved, but the small within-player samples cannot establish intentional stat-padding or prove that the match was primarily played to boost statistics.
 
+## Expanded charity/exhibition benchmark
+
+To address the original 15-match Soccer Aid limitation, the analysis now adds 26 documented matches from Corazón Classic Match, Match for Hope, Sidemen Charity Match, Football for Hope, Game4Ukraine, and a Manchester United/Pompey legends benefit. The combined file has **41 regulation-score matches**. Results are stratified by event and roster profile because the event means range from roughly 5 to 13 goals; a pooled charity average would be misleading.
+
+- [Expanded benchmark data](data/exhibition_charity_benchmark.csv)
+- [Event-level summary and bootstrap intervals](output/tables/v2_exhibition_benchmark_summary.csv)
+- [Target-vs-benchmark descriptive checks](output/tables/v2_exhibition_benchmark_tests.csv)
+
 ## Start here
 
 - [Reader-friendly insight report](output/england_france_2026_third_place_insights_v2.md)
@@ -39,6 +47,7 @@ For H2 specifically: **suggestive but underpowered, with low-moderate confidence
 - [High physical intensity, weak collective control](output/assets/v2_effort_vs_control.png)
 - [They ran, they pressed, they lost control](output/assets/narrative_05_effort_without_control.png)
 - [Award-leader activity and finishing decomposition](output/assets/v2_player_behavior_and_finishing.png)
+- [The expanded charity benchmark](output/assets/narrative_06_expanded_exhibition_benchmark.png)
 
 ## Methods in brief
 
@@ -48,6 +57,7 @@ For H2 specifically: **suggestive but underpowered, with low-moderate confidence
 - Exact paired threshold test for five-plus goals.
 - Sensitivity checks using top-10, top-15, top-20, and friendly-versus-qualifier designs.
 - Smoothed count-model tail probabilities for ten-goal rarity.
+- Expanded charity/exhibition benchmark with event-level means, bootstrap intervals, empirical tails, and source-tier labels.
 - World Cup score-state decomposition using 964 regulation-time matches and match-cluster bootstrap resampling.
 - FIFA Post-Match Summary Report process comparison for matches 1–103.
 - Timestamped before/after audit of live player awards, selection, match contributions, and changed standings.
@@ -76,6 +86,6 @@ The international-results source is tracked as a submodule at the pinned commit 
 
 ## Data and provenance
 
-The project combines public international match results, soccer Elo ratings, World Cup history, FIFA Post-Match Summary Reports, player physical and event tables from 15 official reports, a current-match goal timeline, manually transcribed starting lineups, timestamped player-award evidence, and a small charity-match benchmark. The charity sample is used only as a descriptive external anchor, not as a like-for-like professional control.
+The project combines public international match results, soccer Elo ratings, World Cup history, FIFA Post-Match Summary Reports, player physical and event tables from 15 official reports, a current-match goal timeline, manually transcribed starting lineups, timestamped player-award evidence, and a 41-match charity/exhibition benchmark. The benchmark is stratified by event and roster profile; it is used for descriptive context, not as a like-for-like professional control.
 
 See `data/source_manifest_v2.json` for source URLs, pinned commits, coverage, and known limitations.

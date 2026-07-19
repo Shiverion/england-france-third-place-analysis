@@ -32,7 +32,7 @@ def build_notebook() -> nbf.NotebookNode:
 
             ## tl;dr
 
-            This version replaces the weak charity-only comparison with several stronger layers of evidence.
+            This version replaces the weak charity-only comparison with several stronger layers of evidence and an expanded, stratified exhibition benchmark.
 
             - **Lower selection pressure is visible:** France and England each changed **7 of 11 starters** from their semi-finals.
             - **Individual stakes remained live:** France retained Kylian Mbappe and Michael Olise—its live goal and assist leaders—among only four retained starters. Mbappe moved from **8 to 10 goals**, Olise from **5 to 7 assists**, and substitute Jude Bellingham from **6 to 7 goals**.
@@ -72,7 +72,7 @@ def build_notebook() -> nbf.NotebookNode:
             4. **Player effort-versus-control audit:** official FIFA physical, pressing, movement, and shooting tables for all eight France and all eight England matches, with each player compared with his own earlier-tournament rate.
             5. **Same-provider process benchmark:** official FIFA Post-Match Summary Report metrics for 102 earlier 2026 World Cup matches.
             6. **Game-state benchmark:** regulation-time goal hazards from 964 men's World Cup matches through 2022.
-            7. **External exhibition anchor:** Soccer Aid remains descriptive only; it is not treated as a like-for-like professional control.
+            7. **Expanded exhibition benchmark:** 41 regulation-score charity/exhibition matches are reported by event and roster profile. This improves descriptive coverage while preserving the warning that charity formats are not like-for-like professional controls.
 
             ### Statistical plan
 
@@ -91,7 +91,7 @@ def build_notebook() -> nbf.NotebookNode:
             - The international-results source stores full-time scores including extra time. The neutral official-tournament design is therefore paired with a qualifier sensitivity analysis.
             - The large results backbone has no stage field outside the World Cup source. Other competitions' third-place games are not fabricated or silently pooled.
             - Year-end Elo from year Y−1 is used for matches in year Y, preventing look-ahead but measuring strength less precisely than a match-day rating.
-            - Charity matches differ in roster quality, rules, and incentives.
+            - Charity and exhibition matches differ in roster quality, rules, substitutions, duration, and incentives. The expanded benchmark is stratified by event rather than collapsed into one supposedly homogeneous population.
             - Before/after award movement establishes that an incentive existed and the match changed the outcome; it cannot establish the player's private motive for any action.
             - Physical totals include stoppage time while per-90 denominators use the regulation clock. This is applied consistently across reports; one crowded match-summary row required a separately sourced official substitution time.
 
@@ -182,6 +182,7 @@ def build_notebook() -> nbf.NotebookNode:
             pmsr_base = pd.read_csv(SIBLING / "data" / "processed" / "pmsr_2026_match_features.csv")
             current_goals = pd.read_csv(ROOT / "data" / "current_match_goals.csv")
             soccer_aid = pd.read_csv(ROOT / "data" / "soccer_aid_results.csv")
+            exhibition_benchmark = pd.read_csv(ROOT / "data" / "exhibition_charity_benchmark.csv")
             lineups = pd.read_csv(ROOT / "data" / "lineup_starters.csv")
             player_incentives = pd.read_csv(ROOT / "data" / "player_incentive_evidence.csv")
             player_match = pd.read_csv(PROCESSED / "fifa_2026_france_england_player_match.csv")
@@ -194,6 +195,7 @@ def build_notebook() -> nbf.NotebookNode:
                 ("FIFA PMSR baseline", pmsr_base["match_number"].nunique(), "two team rows per match", "2026 matches 1–96"),
                 ("Current goal timeline", len(current_goals), "one row per goal", "match 103"),
                 ("Soccer Aid", len(soccer_aid), "one row per match", "2006–2026"),
+                ("Expanded charity/exhibition benchmark", len(exhibition_benchmark), "one row per match", "2005–2026; 26 additional matches"),
                 ("Starter audit", len(lineups), "one row per starter", "semi-finals and match 103"),
                 ("Individual incentive audit", len(player_incentives), "one row per player-metric", "timestamped pre/post standings"),
                 ("FIFA player-match audit", len(player_match), "one row per player-match", "all 8 France and all 8 England matches"),
@@ -236,6 +238,9 @@ def build_notebook() -> nbf.NotebookNode:
                 ("PMSR baseline has two team rows per match", int(pmsr_base.groupby("match_number").size().eq(2).sum()), 96, "pass"),
                 ("Starter groups contain exactly 11 players", int(lineup_sizes.eq(11).sum()), len(lineup_sizes), "pass" if lineup_sizes.eq(11).all() else "fail"),
                 ("Current timeline contains ten goals", len(current_goals), 10, "pass" if len(current_goals) == 10 else "fail"),
+                ("Expanded benchmark has 26 additional matches", len(exhibition_benchmark), 26, "pass" if len(exhibition_benchmark) == 26 else "fail"),
+                ("Expanded benchmark source URLs present", int(exhibition_benchmark["source_url"].notna().sum()), len(exhibition_benchmark), "pass" if exhibition_benchmark["source_url"].notna().all() else "fail"),
+                ("Expanded benchmark regulation scores are nonnegative", int(((exhibition_benchmark["team_a_goals"] >= 0) & (exhibition_benchmark["team_b_goals"] >= 0)).sum()), len(exhibition_benchmark), "pass" if ((exhibition_benchmark["team_a_goals"] >= 0) & (exhibition_benchmark["team_b_goals"] >= 0)).all() else "fail"),
                 ("Individual incentive rows reconcile pre + match = post", int(incentive_arithmetic.sum()), len(player_incentives), "pass" if incentive_arithmetic.all() else "fail"),
                 ("FIFA player-match-shirt key unique", player_key_duplicates, 0, "pass" if player_key_duplicates == 0 else "fail"),
                 ("Focal teams each cover eight matches", int(player_match_coverage.eq(8).sum()), 2, "pass" if player_match_coverage.eq(8).all() else "fail"),
@@ -249,6 +254,9 @@ def build_notebook() -> nbf.NotebookNode:
             assert pmsr_base.groupby("match_number").size().eq(2).all()
             assert lineup_sizes.eq(11).all()
             assert len(current_goals) == 10
+            assert len(exhibition_benchmark) == 26
+            assert exhibition_benchmark["source_url"].notna().all()
+            assert ((exhibition_benchmark["team_a_goals"] >= 0) & (exhibition_benchmark["team_b_goals"] >= 0)).all()
             assert not player_incentives.duplicated(["player", "metric"]).any()
             assert incentive_arithmetic.all()
             assert player_key_duplicates == 0
@@ -642,6 +650,9 @@ def build_notebook() -> nbf.NotebookNode:
             world_cup_title = men.loc[men["stage_name"].isin(title_path_stages), "total_goals"].to_numpy()
             world_cup_third = men.loc[men["stage_name"].eq("third-place match"), "total_goals"].to_numpy()
             soccer_aid_goals = (soccer_aid["team_a_goals"] + soccer_aid["team_b_goals"]).to_numpy()
+            exhibition_benchmark["total_goals"] = exhibition_benchmark["team_a_goals"] + exhibition_benchmark["team_b_goals"]
+            additional_exhibition_goals = exhibition_benchmark["total_goals"].to_numpy()
+            expanded_exhibition_goals = np.concatenate([soccer_aid_goals, additional_exhibition_goals])
 
             pmsr_match = pmsr.groupby("match_number").agg(
                 total_goals=("goals", "sum"),
@@ -688,6 +699,7 @@ def build_notebook() -> nbf.NotebookNode:
                 "World Cup title-path · all eras": world_cup_title,
                 "World Cup third-place · all eras": world_cup_third,
                 "Soccer Aid charity · regulation": soccer_aid_goals,
+                "Expanded charity/exhibition · regulation": expanded_exhibition_goals,
                 "2026 World Cup 1–102 · FIFA": pmsr_match.loc[:102, "total_goals"].to_numpy(),
             }
             tail_table = pd.DataFrame([
@@ -699,7 +711,7 @@ def build_notebook() -> nbf.NotebookNode:
 
             fig, ax = plt.subplots(figsize=(9.0, 5.4))
             plot_tail = tail_table.sort_values("tail_probability", ascending=True).reset_index(drop=True)
-            colors = [ORANGE if "Soccer Aid" in name else BLUE for name in plot_tail["context"]]
+            colors = [ORANGE if ("Soccer Aid" in name or "Expanded charity" in name) else BLUE for name in plot_tail["context"]]
             bars = ax.barh(plot_tail["context"], plot_tail["tail_probability_pct"], color=colors, edgecolor=INK, linewidth=0.5)
             ax.set_xscale("log")
             ax.set_xlabel("Modelled probability of at least 10 goals (%) — log scale")
@@ -710,6 +722,138 @@ def build_notebook() -> nbf.NotebookNode:
             ax.spines[["top", "right"]].set_visible(False)
             fig.tight_layout()
             fig.savefig(ASSETS / "v2_predictive_tail.png", dpi=180, bbox_inches="tight")
+            plt.show()
+            """
+        ),
+        markdown(
+            """
+            ## The expanded charity benchmark is larger—but not one homogeneous population
+
+            The original Soccer Aid sample had only 15 matches. The expanded file adds 26 documented charity or exhibition matches from other formats. The important result is not a single larger average: the event groups have different roster profiles and scoring levels.
+
+            We therefore report the event means, uncertainty around each mean, the raw score spread, and the current match's position. The benchmark is a descriptive context check. It cannot establish that an official World Cup third-place match was causally equivalent to a celebrity, legends, or benefit game.
+            """
+        ),
+        code(
+            """
+            # Expanded event-level charity/exhibition benchmark
+            soccer_aid_std = soccer_aid.copy()
+            soccer_aid_std["benchmark_group"] = "soccer_aid"
+            soccer_aid_std["roster_profile"] = "celebrities_and_former_pros"
+            soccer_aid_std["source_tier"] = np.where(soccer_aid_std["year"].ge(2024), "official", "secondary")
+            soccer_aid_std["total_goals"] = soccer_aid_std["team_a_goals"] + soccer_aid_std["team_b_goals"]
+            benchmark_all = pd.concat([
+                soccer_aid_std[["year", "competition", "benchmark_group", "roster_profile", "team_a", "team_b", "team_a_goals", "team_b_goals", "penalty_shootout", "source_tier", "total_goals"]],
+                exhibition_benchmark[["year", "competition", "benchmark_group", "roster_profile", "team_a", "team_b", "team_a_goals", "team_b_goals", "penalty_shootout", "source_tier", "total_goals"]],
+            ], ignore_index=True)
+
+            group_labels = {
+                "soccer_aid": "Soccer Aid",
+                "corazon_classic": "Corazón Classic",
+                "match_for_hope": "Match for Hope",
+                "sidemen": "Sidemen Charity",
+                "benefit_all_star": "Other benefit events",
+            }
+            group_order = ["soccer_aid", "corazon_classic", "match_for_hope", "sidemen", "benefit_all_star"]
+
+            def mean_bootstrap_interval(values: np.ndarray, draws: int = 20_000) -> tuple[float, float]:
+                values = np.asarray(values, dtype=float)
+                draws_values = rng.choice(values, size=(draws, len(values)), replace=True).mean(axis=1)
+                return float(np.quantile(draws_values, 0.025)), float(np.quantile(draws_values, 0.975))
+
+            summary_rows = []
+            for group in group_order:
+                values = benchmark_all.loc[benchmark_all["benchmark_group"].eq(group), "total_goals"].to_numpy()
+                ci_low, ci_high = mean_bootstrap_interval(values)
+                summary_rows.append({
+                    "benchmark_group": group,
+                    "label": group_labels[group],
+                    "matches": len(values),
+                    "mean_goals": float(values.mean()),
+                    "median_goals": float(np.median(values)),
+                    "sd_goals": float(values.std(ddof=1)),
+                    "min_goals": int(values.min()),
+                    "max_goals": int(values.max()),
+                    "five_plus_rate": float(np.mean(values >= 5)),
+                    "ten_plus_count": int(np.sum(values >= 10)),
+                    "mean_bootstrap_ci_low": ci_low,
+                    "mean_bootstrap_ci_high": ci_high,
+                })
+            expanded_values = benchmark_all["total_goals"].to_numpy()
+            expanded_ci_low, expanded_ci_high = mean_bootstrap_interval(expanded_values)
+            summary_rows.append({
+                "benchmark_group": "expanded_all",
+                "label": "All expanded events",
+                "matches": len(expanded_values),
+                "mean_goals": float(expanded_values.mean()),
+                "median_goals": float(np.median(expanded_values)),
+                "sd_goals": float(expanded_values.std(ddof=1)),
+                "min_goals": int(expanded_values.min()),
+                "max_goals": int(expanded_values.max()),
+                "five_plus_rate": float(np.mean(expanded_values >= 5)),
+                "ten_plus_count": int(np.sum(expanded_values >= 10)),
+                "mean_bootstrap_ci_low": expanded_ci_low,
+                "mean_bootstrap_ci_high": expanded_ci_high,
+            })
+            exhibition_summary = pd.DataFrame(summary_rows)
+            target_goals = 10
+            benchmark_tests = pd.DataFrame([
+                {
+                    "comparison": "Target vs Soccer Aid",
+                    "matches": len(soccer_aid_goals),
+                    "benchmark_mean_goals": float(soccer_aid_goals.mean()),
+                    "target_minus_mean": float(target_goals - soccer_aid_goals.mean()),
+                    "benchmark_max_goals": int(soccer_aid_goals.max()),
+                    "benchmark_matches_at_least_target": int(np.sum(soccer_aid_goals >= target_goals)),
+                    "empirical_upper_tail_with_correction": float((1 + np.sum(soccer_aid_goals >= target_goals)) / (len(soccer_aid_goals) + 1)),
+                    "interpretation": "Descriptive only; small single-event sample",
+                },
+                {
+                    "comparison": "Target vs all expanded events",
+                    "matches": len(expanded_values),
+                    "benchmark_mean_goals": float(expanded_values.mean()),
+                    "target_minus_mean": float(target_goals - expanded_values.mean()),
+                    "benchmark_max_goals": int(expanded_values.max()),
+                    "benchmark_matches_at_least_target": int(np.sum(expanded_values >= target_goals)),
+                    "empirical_upper_tail_with_correction": float((1 + np.sum(expanded_values >= target_goals)) / (len(expanded_values) + 1)),
+                    "interpretation": "Descriptive only; event formats are heterogeneous",
+                },
+            ])
+            exhibition_summary.to_csv(TABLES / "v2_exhibition_benchmark_summary.csv", index=False)
+            benchmark_tests.to_csv(TABLES / "v2_exhibition_benchmark_tests.csv", index=False)
+            display(exhibition_summary.round(3))
+            display(benchmark_tests.round(3))
+
+            fig, axes = plt.subplots(1, 2, figsize=(13.2, 6.0), gridspec_kw={"width_ratios": [1.1, 1.55]})
+            plot_summary = exhibition_summary[exhibition_summary["benchmark_group"].isin(group_order)].copy()
+            x = np.arange(len(plot_summary))
+            palette = [BLUE, BLUE_LIGHT, ORANGE, "#8A9BB8", "#C7A86B"]
+            axes[0].bar(x, plot_summary["mean_goals"], color=palette, edgecolor=INK, linewidth=0.6)
+            axes[0].errorbar(x, plot_summary["mean_goals"], yerr=[plot_summary["mean_goals"] - plot_summary["mean_bootstrap_ci_low"], plot_summary["mean_bootstrap_ci_high"] - plot_summary["mean_goals"]], fmt="none", ecolor=INK, capsize=4, linewidth=1.2)
+            axes[0].axhline(target_goals, color=INK, linestyle="--", linewidth=1.2)
+            axes[0].text(0.05, target_goals + 0.25, "England–France: 10", ha="left", color=INK, fontweight="bold")
+            axes[0].set_xticks(x, plot_summary["label"], rotation=25, ha="right")
+            axes[0].set_ylabel("Average regulation-time goals")
+            axes[0].set_ylim(0, max(14, target_goals + 2))
+            axes[0].set_title("Average goals by exhibition format", loc="left", pad=30)
+            axes[0].text(0, 1.01, "Bars show means; whiskers show bootstrap 95% intervals", transform=axes[0].transAxes, color=MUTED)
+            for xi, value, n in zip(x, plot_summary["mean_goals"], plot_summary["matches"]):
+                axes[0].text(xi, value + 0.45, f"{value:.1f}\\nn={n}", ha="center", va="bottom", fontsize=9, color=INK)
+
+            sorted_benchmark = benchmark_all.sort_values(["total_goals", "year"], kind="stable").reset_index(drop=True)
+            color_map = dict(zip(group_order, palette))
+            axes[1].scatter(np.arange(len(sorted_benchmark)), sorted_benchmark["total_goals"], c=sorted_benchmark["benchmark_group"].map(color_map), s=42, edgecolor=INK, linewidth=0.4, alpha=0.9)
+            axes[1].axhline(target_goals, color=INK, linestyle="--", linewidth=1.2)
+            axes[1].text(len(sorted_benchmark) - 0.5, target_goals + 0.35, "Target = 10", ha="right", color=INK, fontweight="bold")
+            axes[1].set_xlabel("41 benchmark matches sorted from fewest to most goals")
+            axes[1].set_ylabel("Regulation-time goals")
+            axes[1].set_title("The expanded sample is highly heterogeneous", loc="left", pad=30)
+            axes[1].text(0, 1.01, "Some creator formats reached 18–20 goals; legends and Soccer Aid were lower", transform=axes[1].transAxes, color=MUTED)
+            axes[1].set_xlim(-1, len(sorted_benchmark))
+            for ax in axes:
+                ax.spines[["top", "right"]].set_visible(False)
+            fig.tight_layout()
+            fig.savefig(ASSETS / "narrative_06_expanded_exhibition_benchmark.png", dpi=180, bbox_inches="tight")
             plt.show()
             """
         ),
@@ -1476,7 +1620,7 @@ def build_notebook() -> nbf.NotebookNode:
                 ("Players broadly coasted physically", "Not supported", f"Among {len(player_effort)} comparable outfielders, high-intensity distance was {player_effort_tests.loc[player_effort_tests['metric'].eq('high_intensity_distance_m'), 'relative_delta_pct'].iloc[0]:+.1f}% and direct pressures were {player_effort_tests.loc[player_effort_tests['metric'].eq('pressures_direct'), 'relative_delta_pct'].iloc[0]:+.1f}% versus their own prior rates; total distance was slightly lower. Raw tests are exploratory and none remains below 0.05 after Holm correction."),
                 ("Award leaders showed unusually aggressive activity", "Suggestive, not conclusive", "Mbappe took 8 shots versus 4.88 per prior player-90; Olise made 17 offers in behind versus 8.34 and 11 direct pressures versus 3.37. Seven-match empirical p-values are coarse (0.25 and 0.125)."),
                 ("Elite friendlies normally score much more", "Not supported", f"Matched difference {primary_test['mean_difference']:+.2f}; 95% CI {primary_test['ci_low']:+.2f} to {primary_test['ci_high']:+.2f}; p={primary_test['permutation_p']:.3f}."),
-                ("Charity-like scoring spectacle", "Supported descriptively", "Ten goals exceeded every matched neutral professional comparison and every Soccer Aid row in the saved benchmark."),
+                ("Charity-like scoring spectacle", "Supported descriptively", f"Ten goals exceeded every Soccer Aid row; the expanded {len(benchmark_all)}-match benchmark shows that creator-led formats can also reach 10+ goals, so event stratification matters."),
                 ("Teams made no defensive effort", "Contradicted", f"Direct pressures were at the {process_percentiles.loc[process_percentiles['metric'].eq('direct_pressures'), 'percentile'].iloc[0]:.0f}th percentile, while high-intensity player distance was above individual baselines."),
                 ("Defensive control was unusually ineffective", "Supported", f"Only {current_process['forced_turnovers']:.0f} turnovers and {current_process['turnovers_per_100_pressures']:.1f} per 100 pressures; the latter was below all 102 earlier matches."),
                 ("Ten goals came only from chance volume", "Not supported", f"Observed goals exceeded 5.33 xG by 4.67; aggregate-Poisson P(10+)≈{100 * finishing.loc[finishing['scope'].eq('Combined'), 'poisson_tail_p'].iloc[0]:.1f}%."),
@@ -1530,6 +1674,12 @@ def build_notebook() -> nbf.NotebookNode:
                 "olise_match_offers_in_behind": int(candidate_behavior.loc[candidate_behavior["player"].eq("Michael Olise"), "offers_in_behind_current"].iloc[0]),
                 "olise_prior_offers_in_behind_per90": float(candidate_behavior.loc[candidate_behavior["player"].eq("Michael Olise"), "offers_in_behind_prior_p90"].iloc[0]),
                 "olise_offers_in_behind_empirical_p": float(candidate_behavior.loc[candidate_behavior["player"].eq("Michael Olise"), "offers_in_behind_empirical_one_sided_p"].iloc[0]),
+                "soccer_aid_matches": int(len(soccer_aid_goals)),
+                "soccer_aid_mean_goals": float(soccer_aid_goals.mean()),
+                "expanded_exhibition_matches": int(len(expanded_exhibition_goals)),
+                "expanded_exhibition_mean_goals": float(expanded_exhibition_goals.mean()),
+                "expanded_exhibition_ten_plus_count": int(np.sum(expanded_exhibition_goals >= 10)),
+                "expanded_exhibition_empirical_upper_tail": float((1 + np.sum(expanded_exhibition_goals >= 10)) / (len(expanded_exhibition_goals) + 1)),
                 "current_total_xg": float(current_process["total_xg"]),
                 "goals_above_xg": float(finishing.loc[finishing["scope"].eq("Combined"), "goals_above_xg"].iloc[0]),
                 "aggregate_poisson_ten_plus_p": float(finishing.loc[finishing["scope"].eq("Combined"), "poisson_tail_p"].iloc[0]),
@@ -1569,7 +1719,7 @@ def build_notebook() -> nbf.NotebookNode:
             6. **The individual-incentive mechanism now has behavioural evidence.** Mbappe's eight attempts were 64% above his prior per-90 rate, while Olise doubled his prior rate of in-behind offers and more than tripled his direct-pressure rate. This is consistent with strong involvement, not proof of conscious stat-padding.
             7. **The game was open from process and amplified by finishing.** It exceeded every earlier 2026 match in total xG and shots on target, then produced ten goals from 5.33 xG. England supplied most of the finishing overperformance with six goals from 2.34 xG.
             8. **Game state amplified the spectacle.** The 4–0 lead raised the historical scoring expectation by roughly one-third, but the state-conditioned expectation remained far below ten.
-            9. **Soccer Aid is still useful only as a visual anchor.** The current match was more extreme than the saved charity sample, but that does not make the competitions equivalent.
+            9. **The expanded benchmark improves context but weakens the shortcut.** England–France's ten goals exceeded all 15 Soccer Aid rows, but creator-led formats in the expanded 41-match file reached 10–20 regulation-time goals. The event-level spread shows why there is no single “charity average” that proves equivalence.
 
             ### Final interpretation
 

@@ -105,6 +105,17 @@
   },
   "charity_benchmark": {
     "path": "data/soccer_aid_results.csv",
-    "use": "Descriptive external anchor only; never treated as a like-for-like professional control."
+    "use": "Original Soccer Aid benchmark; descriptive external anchor only; never treated as a like-for-like professional control."
+  },
+  "expanded_exhibition_benchmark": {
+    "path": "data/exhibition_charity_benchmark.csv",
+    "coverage": "26 additional matches from 2005-2026 across Corazon Classic Match, Match for Hope, Sidemen Charity Match, Football for Hope, Game4Ukraine, and Manchester United Legends v Pompey Legends; 41 matches after combining with 15 Soccer Aid matches.",
+    "source_tiers": {
+      "official": "Event organiser, governing association, club, charity regulator, or official news report.",
+      "secondary": "Public event-history table used only for descriptive score context."
+    },
+    "use": "Expanded exhibition/charity context with event-level stratification and source-tier labels. It improves descriptive precision but is not a causal or like-for-like professional control.",
+    "inclusion_rule": "Include a named charity, solidarity, legends, creator, or benefit event with a documented final regulation score. Penalty shootout outcomes are retained as metadata but shootout kicks are excluded from total-goal calculations.",
+    "known_limitations": "The benchmark is intentionally heterogeneous: celebrity/creator teams, retired legends, and mixed active/former players differ in roster quality, rules, substitutions, and incentives. Corazon Classic Match 2010-2019 and Sidemen results rely on secondary public event-history pages; those rows are not used for high-confidence causal claims."
   }
 }

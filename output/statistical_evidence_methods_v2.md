@@ -148,10 +148,28 @@ The notebook fitted smoothed count models to estimate the probability of reachin
 | 2026 World Cup matches 1–102 | 102 | 2.91 | 8 | 0.114% |
 | World Cup third-place matches, all eras | 20 | 3.80 | 9 | 0.617% |
 | Soccer Aid charity sample | 15 | 5.13 | 9 | 3.69% |
+| Expanded charity/exhibition benchmark | 41 | 7.15 | 20 | 25.82% |
 
-England–France scored **10**, exceeding every saved match in the matched professional groups and every saved Soccer Aid match. Ten goals are relatively more compatible with the friendly model than the official model, but both professional-model probabilities are far below one-tenth of one percent.
+England–France scored **10**, exceeding every saved match in the matched professional groups and every saved Soccer Aid match. It did not exceed every row in the expanded benchmark: creator-led formats reached 10–20 regulation-time goals. The expanded modelled tail is therefore much less useful as a single population estimate because the rows mix different event formats.
 
-The charity comparison is useful as a descriptive exhibition-like anchor, but it is not a valid causal control group: it has different rosters, incentives, player experience, and match conditions.
+The charity comparison is useful as a descriptive exhibition-like anchor, but it is not a valid causal control group: it has different rosters, incentives, player experience, substitutions, and match conditions.
+
+### Expanded exhibition benchmark sensitivity
+
+To address the original Soccer Aid sample-size limitation, the notebook adds 26 documented matches from Corazón Classic Match, Match for Hope, Sidemen Charity Match, Football for Hope, Game4Ukraine, and a Manchester United/Pompey legends benefit. Combined with Soccer Aid, the benchmark contains **41 regulation-score matches**.
+
+| Event group | Matches | Mean goals | 95% bootstrap interval | Maximum |
+|---|---:|---:|---:|---:|
+| Soccer Aid | 15 | 5.13 | 4.20–6.20 | 9 |
+| Corazón Classic | 13 | 5.08 | 3.77–6.54 | 11 |
+| Match for Hope | 3 | 12.67 | 11.00–15.00 | 15 |
+| Sidemen Charity | 7 | 12.14 | 7.71–16.29 | 20 |
+| Other benefit events | 3 | 9.00 | 4.00–14.00 | 14 |
+| All expanded events | 41 | 7.15 | 5.83–8.61 | 20 |
+
+The current ten-goal match is above all 15 Soccer Aid rows, but **9 of 41** expanded matches reached at least ten goals. With the small-sample +1 correction, the descriptive upper-tail rate is **6.25%** for Soccer Aid alone and **23.81%** for the expanded benchmark. This is not a formal p-value: the expanded rows are not a random sample from one well-defined population, and several event series have only three to thirteen observations.
+
+The correct interpretation is therefore stratified. The added data strengthen the claim that England–France reached an exhibition-like scoring environment, while weakening the claim that it was specifically equivalent to Soccer Aid or to all charity football. The professional matched sample remains the primary serious-versus-friendly comparison.
 
 ## 5. Score-state analysis
 
@@ -347,7 +365,7 @@ One expected gap remains: the current match is held in a separate current-match 
 | Players broadly coasted physically | Not supported by high-intensity distance, pressure activity, and same-team ranks; player p-values remain exploratory after Holm correction |
 | Award-candidate activity proves stat-padding | Not supported; activity is suggestive but empirical tests are underpowered and motive is unobserved |
 | Elite friendlies are normally much more goal-heavy | Not supported by matched mean or threshold tests |
-| The match looked exhibition-like in its scoring | Supported descriptively; ten goals exceeded all saved professional and charity comparison rows |
+| The match looked exhibition-like in its scoring | Supported descriptively; ten goals exceeded all saved professional matches and all Soccer Aid rows, but not every expanded creator-format match |
 | The teams made no defensive effort | Not supported; direct pressure was at the 98th percentile |
 | Defensive control was unusually poor | Supported by very low forced-turnover yield and high attacking access |
 | Chance creation alone explains all ten goals | Not supported; ten goals exceeded 5.33 xG by 4.67, with England six from 2.34 xG |
@@ -372,5 +390,8 @@ One expected gap remains: the current match is held in a separate current-match 
 - Hypothesis verdict table: `output/tables/v2_hypothesis_verdict.csv`
 - Score-state decomposition: `output/tables/v2_score_state_decomposition.csv`
 - Tail probabilities: `output/tables/v2_ten_goal_tail_probabilities.csv`
+- Expanded charity/exhibition benchmark: `data/exhibition_charity_benchmark.csv`
+- Expanded benchmark summary: `output/tables/v2_exhibition_benchmark_summary.csv`
+- Expanded benchmark descriptive checks: `output/tables/v2_exhibition_benchmark_tests.csv`
 
 The notebook was executed top-to-bottom successfully before these results were documented.
