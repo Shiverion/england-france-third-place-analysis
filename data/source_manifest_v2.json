@@ -1,0 +1,55 @@
+{
+  "analysis_as_of": "2026-07-19",
+  "international_results": {
+    "path": "data/international_results_raw/results.csv",
+    "repository": "https://github.com/martj42/international_results",
+    "commit": "80f408d2c93ba4f9e06a2c7cdc5effb05fea9680",
+    "use": "Senior men's full-international score backbone; primary matched comparison is restricted to complete 1991-2023 rows."
+  },
+  "team_strength": {
+    "path": "../Argentina Comeback Analysis/data/raw/jgravier/ranking_soccer_1901-2023.csv",
+    "repository": "https://github.com/JGravier/soccer-elo",
+    "commit": "a24d031e0ed81cbb4206ff84a2209bbf000ee6d6",
+    "license": "CC-BY-4.0",
+    "use": "Year-end Elo ratings; a match in year Y receives the Y-1 rating to prevent look-ahead."
+  },
+  "world_cup_history": {
+    "path": "../Argentina Comeback Analysis/data/raw/fjelstul",
+    "repository": "https://github.com/jfjelstul/worldcup",
+    "commit": "35a8667f518b07469182ae16d35574dd0e7a00fb",
+    "license": "CC-BY-SA-4.0",
+    "use": "Men's World Cup stage labels, scores, and regulation-time goal events through 2022."
+  },
+  "fifa_2026_pmsr_baseline": {
+    "path": "../Argentina Comeback Analysis/data/processed/pmsr_2026_match_features.csv",
+    "source": "https://www.fifatrainingcentre.com/",
+    "coverage": "Matches 1-96",
+    "use": "Same-provider FIFA match-summary process metrics."
+  },
+  "fifa_2026_pmsr_extension": {
+    "path": "data/fifa",
+    "coverage": "Matches 97-103",
+    "urls": [
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M97-FRA-V-MAR.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M98-ESP-V-BEL.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M99-NOR-V-ENG.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M100-ARG-V-SUI.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M101-FRA-V-ESP.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M102-ENG-V-ARG.pdf",
+      "https://www.fifatrainingcentre.com/media/native/tournaments/fifa-world-cup/2026/PMSR-M103-FRA-V-ENG.pdf"
+    ]
+  },
+  "current_goal_timeline": {
+    "path": "data/current_match_goals.csv",
+    "source": "https://www.11v11.com/matches/france-v-england-18-july-2026-393896/"
+  },
+  "lineups": {
+    "path": "data/lineup_starters.csv",
+    "source": "Official FIFA PMSR team-summary pages for matches 101-103",
+    "method": "Manual transcription of starting XIs; notebook checks exactly 11 starters per team-match."
+  },
+  "charity_benchmark": {
+    "path": "data/soccer_aid_results.csv",
+    "use": "Descriptive external anchor only; never treated as a like-for-like professional control."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "analysis_as_of": "2026-07-19",
+  "primary_matched_pairs": 173,
+  "primary_friendly_mean_goals": 2.4508670520231215,
+  "primary_official_mean_goals": 2.491329479768786,
+  "primary_mean_difference": -0.04046242774566474,
+  "primary_ci_low": -0.35260115606936415,
+  "primary_ci_high": 0.2658959537572254,
+  "primary_permutation_p": 0.823958802059897,
+  "primary_mcnemar_p": 0.34492845088243484,
+  "france_starter_changes": 7,
+  "england_starter_changes": 7,
+  "current_total_xg": 5.33,
+  "current_shots_on_target": 20,
+  "current_direct_pressures": 119,
+  "current_forced_turnovers": 62,
+  "current_turnovers_per_100_pressures": 11.11111111111111,
+  "level_state_expected_goals": 2.4520123257400934,
+  "observed_state_expected_goals": 3.2973433666343883,
+  "observed_goals": 10
+}

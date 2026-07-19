@@ -1,0 +1,13 @@
+team,metric,current,prior_tournament_mean,prior_matches
+France,xg,2.99,1.9714285714285713,7
+France,attempts_at_goal,19.0,17.142857142857142,7
+France,shots_on_target,9.0,7.142857142857143,7
+France,defensive_pressures,335.0,233.85714285714286,7
+France,direct_pressures,75.0,38.285714285714285,7
+France,forced_turnovers,30.0,42.857142857142854,7
+England,xg,2.34,1.812857142857143,7
+England,attempts_at_goal,19.0,14.142857142857142,7
+England,shots_on_target,11.0,5.857142857142857,7
+England,defensive_pressures,223.0,244.0,7
+England,direct_pressures,44.0,42.0,7
+England,forced_turnovers,32.0,34.57142857142857,7

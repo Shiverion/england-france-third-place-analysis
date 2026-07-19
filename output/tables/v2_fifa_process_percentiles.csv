@@ -1,0 +1,10 @@
+metric,label,current_value,earlier_median,earlier_min,earlier_max,percentile
+total_goals,Goals,10.0,3.0,0.0,8.0,100.0
+total_xg,Total xG,5.33,2.4450000000000003,0.97,4.57,100.0
+attempts,Attempts,38.0,24.0,11.0,41.0,95.09803921568627
+shots_on_target,Shots on target,20.0,8.0,2.0,18.0,100.0
+line_breaks,Completed line breaks,221.0,182.5,134.0,252.0,91.17647058823529
+pressures,Defensive pressures,558.0,520.5,363.0,704.0,67.64705882352942
+direct_pressures,Direct pressures,119.0,88.0,50.0,124.0,98.0392156862745
+forced_turnovers,Forced turnovers,62.0,83.0,54.0,109.0,4.901960784313726
+turnovers_per_100_pressures,Turnovers per 100 pressures,11.11111111111111,15.638586956521738,11.262798634812286,27.823691460055098,0.0
