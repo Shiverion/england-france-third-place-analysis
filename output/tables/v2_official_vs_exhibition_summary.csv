@@ -1,0 +1,11 @@
+sample_type,metric,label,matches,mean,median,q1,q3,sd
+Official World Cup,total_goals,Goals,102,2.911764705882353,3.0,2.0,4.0,1.7354940014984326
+Official World Cup,total_shots,Total shots,102,24.61764705882353,24.0,19.0,29.0,6.716381801823252
+Official World Cup,shots_on_target,Shots on target,102,8.382352941176471,8.0,6.0,10.0,3.2458476677318018
+Official World Cup,total_fouls,Fouls,102,23.0,22.5,18.0,26.75,6.571766795305597
+Official World Cup,yellow_cards,Yellow cards,102,2.715686274509804,2.5,1.0,4.0,1.8096411272715691
+Exhibition,total_goals,Goals,19,7.526315789473684,6.0,4.0,9.0,5.253236262350112
+Exhibition,total_shots,Total shots,19,41.05263157894737,39.0,35.5,46.0,9.477890554164738
+Exhibition,shots_on_target,Shots on target,19,18.526315789473685,17.0,13.0,21.0,8.092303758322414
+Exhibition,total_fouls,Fouls,19,14.157894736842104,13.0,9.5,18.0,6.5086537086724165
+Exhibition,yellow_cards,Yellow cards,19,0.6842105263157895,1.0,0.0,1.0,0.7492686492653552

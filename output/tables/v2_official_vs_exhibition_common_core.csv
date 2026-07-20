@@ -1,0 +1,123 @@
+sample_type,event_family,source_provider,match_number,is_holdout,total_goals,total_shots,shots_on_target,total_fouls,yellow_cards
+Official World Cup,2026 FIFA World Cup,FIFA,1,False,2,19.0,6.0,23.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,2,False,3,22.0,10.0,25.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,3,False,2,21.0,7.0,30.0,5.0
+Official World Cup,2026 FIFA World Cup,FIFA,4,False,5,25.0,7.0,30.0,6.0
+Official World Cup,2026 FIFA World Cup,FIFA,5,False,1,24.0,4.0,44.0,4.0
+Official World Cup,2026 FIFA World Cup,FIFA,6,False,2,39.0,11.0,16.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,7,False,2,26.0,8.0,30.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,8,False,2,32.0,10.0,23.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,9,False,1,27.0,5.0,23.0,4.0
+Official World Cup,2026 FIFA World Cup,FIFA,10,False,8,34.0,14.0,29.0,0.0
+Official World Cup,2026 FIFA World Cup,FIFA,11,False,4,19.0,8.0,14.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,12,False,6,19.0,9.0,18.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,13,False,2,34.0,13.0,17.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,14,False,0,33.0,8.0,11.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,15,False,4,31.0,12.0,18.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,16,False,2,29.0,7.0,30.0,4.0
+Official World Cup,2026 FIFA World Cup,FIFA,17,False,4,17.0,10.0,14.0,0.0
+Official World Cup,2026 FIFA World Cup,FIFA,18,False,5,22.0,6.0,25.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,19,False,3,17.0,7.0,21.0,0.0
+Official World Cup,2026 FIFA World Cup,FIFA,20,False,4,21.0,8.0,19.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,21,False,1,18.0,6.0,20.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,22,False,6,32.0,16.0,22.0,0.0
+Official World Cup,2026 FIFA World Cup,FIFA,23,False,2,15.0,3.0,19.0,4.0
+Official World Cup,2026 FIFA World Cup,FIFA,24,False,4,23.0,6.0,25.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,25,False,2,31.0,7.0,22.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,26,False,5,18.0,10.0,25.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,27,False,6,35.0,11.0,19.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,28,False,1,17.0,6.0,16.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,29,False,3,14.0,7.0,28.0,4.0
+Official World Cup,2026 FIFA World Cup,FIFA,30,False,1,18.0,2.0,19.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,31,False,1,39.0,7.0,29.0,4.0
+Official World Cup,2026 FIFA World Cup,FIFA,32,False,2,15.0,4.0,28.0,7.0
+Official World Cup,2026 FIFA World Cup,FIFA,33,False,3,25.0,9.0,12.0,0.0
+Official World Cup,2026 FIFA World Cup,FIFA,34,False,0,37.0,18.0,17.0,6.0
+Official World Cup,2026 FIFA World Cup,FIFA,35,False,6,26.0,15.0,21.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,36,False,4,12.0,4.0,23.0,0.0
+Official World Cup,2026 FIFA World Cup,FIFA,37,False,4,29.0,6.0,15.0,4.0
+Official World Cup,2026 FIFA World Cup,FIFA,38,False,4,25.0,10.0,12.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,39,False,0,30.0,10.0,16.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,40,False,4,30.0,12.0,22.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,41,False,5,29.0,11.0,18.0,0.0
+Official World Cup,2026 FIFA World Cup,FIFA,42,False,3,23.0,5.0,12.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,43,False,2,18.0,6.0,26.0,4.0
+Official World Cup,2026 FIFA World Cup,FIFA,44,False,3,25.0,12.0,17.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,45,False,0,21.0,3.0,38.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,46,False,1,14.0,3.0,31.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,47,False,5,24.0,11.0,30.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,48,False,1,27.0,10.0,28.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,49,False,3,35.0,14.0,21.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,50,False,6,31.0,13.0,28.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,51,False,3,19.0,11.0,32.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,52,False,4,23.0,8.0,23.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,53,False,3,24.0,6.0,22.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,54,False,1,21.0,7.0,16.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,55,False,2,18.0,5.0,17.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,56,False,3,18.0,6.0,25.0,4.0
+Official World Cup,2026 FIFA World Cup,FIFA,57,False,2,19.0,8.0,31.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,58,False,4,30.0,11.0,21.0,0.0
+Official World Cup,2026 FIFA World Cup,FIFA,59,False,5,26.0,9.0,26.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,60,False,0,19.0,7.0,15.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,61,False,5,28.0,14.0,20.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,62,False,5,33.0,12.0,21.0,4.0
+Official World Cup,2026 FIFA World Cup,FIFA,63,False,2,28.0,6.0,27.0,7.0
+Official World Cup,2026 FIFA World Cup,FIFA,64,False,6,41.0,12.0,17.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,65,False,0,22.0,5.0,26.0,4.0
+Official World Cup,2026 FIFA World Cup,FIFA,66,False,1,11.0,2.0,28.0,4.0
+Official World Cup,2026 FIFA World Cup,FIFA,67,False,2,30.0,8.0,29.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,68,False,3,14.0,5.0,22.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,69,False,6,22.0,8.0,10.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,70,False,4,18.0,5.0,20.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,71,False,0,37.0,9.0,18.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,72,False,4,22.0,6.0,22.0,5.0
+Official World Cup,2026 FIFA World Cup,FIFA,73,False,1,18.0,8.0,26.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,74,False,2,28.0,9.0,30.0,8.0
+Official World Cup,2026 FIFA World Cup,FIFA,75,False,2,17.0,7.0,33.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,76,False,3,24.0,9.0,17.0,5.0
+Official World Cup,2026 FIFA World Cup,FIFA,77,False,3,33.0,15.0,24.0,0.0
+Official World Cup,2026 FIFA World Cup,FIFA,78,False,3,23.0,9.0,13.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,79,False,2,22.0,4.0,24.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,80,False,3,23.0,9.0,22.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,81,False,2,18.0,5.0,20.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,82,False,5,38.0,10.0,34.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,83,False,3,28.0,9.0,18.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,84,False,3,28.0,10.0,23.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,85,False,2,19.0,7.0,22.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,86,False,5,38.0,17.0,25.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,87,False,1,28.0,8.0,24.0,5.0
+Official World Cup,2026 FIFA World Cup,FIFA,88,False,2,30.0,6.0,26.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,89,False,1,20.0,5.0,24.0,4.0
+Official World Cup,2026 FIFA World Cup,FIFA,90,False,3,15.0,7.0,38.0,8.0
+Official World Cup,2026 FIFA World Cup,FIFA,91,False,3,23.0,9.0,13.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,92,False,5,26.0,10.0,21.0,6.0
+Official World Cup,2026 FIFA World Cup,FIFA,93,False,1,25.0,8.0,22.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,94,False,5,22.0,9.0,20.0,2.0
+Official World Cup,2026 FIFA World Cup,FIFA,95,False,5,24.0,9.0,24.0,6.0
+Official World Cup,2026 FIFA World Cup,FIFA,96,False,0,22.0,5.0,43.0,6.0
+Official World Cup,2026 FIFA World Cup,FIFA,97,False,2,27.0,9.0,23.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,98,False,3,22.0,10.0,31.0,4.0
+Official World Cup,2026 FIFA World Cup,FIFA,99,False,3,27.0,11.0,18.0,1.0
+Official World Cup,2026 FIFA World Cup,FIFA,100,False,4,33.0,12.0,32.0,5.0
+Official World Cup,2026 FIFA World Cup,FIFA,101,False,2,20.0,5.0,23.0,3.0
+Official World Cup,2026 FIFA World Cup,FIFA,102,False,3,20.0,7.0,26.0,4.0
+Exhibition,Sidemen Charity Match,FotMob,,False,15,46.0,27.0,8.0,1.0
+Exhibition,Sidemen Charity Match,FotMob,,False,13,54.0,23.0,11.0,1.0
+Exhibition,Sidemen Charity Match,FotMob,,False,18,65.0,39.0,9.0,1.0
+Exhibition,Sidemen Charity Match,FotMob,,False,20,50.0,36.0,13.0,1.0
+Exhibition,Soccer Aid,FotMob,,False,3,25.0,11.0,27.0,0.0
+Exhibition,Soccer Aid,FotMob,,False,7,39.0,17.0,17.0,1.0
+Exhibition,Soccer Aid,FotMob,,False,4,29.0,12.0,15.0,0.0
+Exhibition,Soccer Aid,FotMob,,False,4,45.0,19.0,10.0,1.0
+Exhibition,Soccer Aid,FotMob,,False,6,30.0,14.0,27.0,2.0
+Exhibition,Soccer Aid,FotMob,,False,5,39.0,12.0,19.0,2.0
+Exhibition,Soccer Aid,FotMob,,False,6,39.0,14.0,5.0,0.0
+Exhibition,Soccer Aid,FotMob,,False,4,38.0,17.0,4.0,0.0
+Exhibition,Soccer Aid,FotMob,,False,2,32.0,11.0,19.0,0.0
+Exhibition,Soccer Aid,FotMob,,False,3,46.0,10.0,15.0,1.0
+Exhibition,Soccer Aid,FotMob,,False,4,39.0,15.0,12.0,0.0
+Exhibition,Soccer Aid,FotMob,,False,6,44.0,23.0,11.0,0.0
+Exhibition,Soccer Aid,FotMob,,False,9,41.0,19.0,21.0,0.0
+Exhibition,Soccer Aid,FotMob,,False,9,33.0,15.0,17.0,2.0
+Exhibition,Soccer Aid,FotMob,,False,5,46.0,18.0,9.0,0.0
+Match 103 holdout,England 6-4 France,FIFA,103,True,10,38.0,20.0,22.0,0.0

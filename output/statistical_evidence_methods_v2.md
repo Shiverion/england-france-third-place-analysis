@@ -31,6 +31,10 @@ H2: Live Golden Boot, assist, and record incentives influenced selection
 H3: Visible action remained high while the usual collective controls and
     disciplinary consequences weakened: a spectacle-first behavioural
     tendency rather than simple low physical effort.
+
+H4: Across the shared observable metrics, Match 103 was closer to the
+    exhibition-match distribution than to the ordinary official-match
+    distribution, even when goals were excluded.
 ```
 
 The competing explanation is that the match had lower team-level stakes and heavy rotation, but physical effort remained; attacking risk, weak coordination, score-state effects, individual incentives, and finishing produced the open score.
@@ -46,11 +50,12 @@ There is no single binary test for H1 because it combines selection, physical ef
 | Lower disciplinary intensity | Card events conditional on tournament phase, foul band, duration, and referee | Suggestive with low-moderate confidence |
 | Defensive control | Pressure-to-turnover conversion and opponent access | Supported with moderate-high confidence |
 | H3 spectacle-first tendency | Directional stack across attack, activity, discipline, control, rotation, and incentives | Supported with moderate-high confidence |
+| H4 exhibition-profile | 102 official matches vs all 19 complete exhibition matches; strict holdout classifier excluding goals | Supported with moderate-high confidence |
 | Individual stat-seeking | Award mechanism plus candidate activity | Supported as incentive/opportunity; intentional attribution suggestive |
 | H2 stronger claim: the match was primarily used to boost statistics | Intentional stat-padding or private motive | Not established; low confidence |
 | Charity equivalence | Like-for-like roster/rule comparison | Not established; low confidence |
 
-**Overall verdict:** literal H1 is partially supported, but **H3 is supported with moderate-high confidence**. The lower-stakes, exhibition-like-openness, and spectacle-first parts fit the evidence. Broad physical coasting does not. Coordinated pre-arrangement remains outside what match statistics can identify.
+**Overall verdict:** literal H1 is partially supported because broad physical coasting is contradicted. **H3 and H4 are supported with moderate-high confidence.** The lower-stakes, exhibition-profile, and spectacle-first parts fit the evidence. Coordinated pre-arrangement remains outside what match statistics can identify.
 
 ## Plain-language guide to the statistics
 
@@ -64,6 +69,11 @@ There is no single binary test for H1 because it combines selection, physical ef
 - **xG/Poisson check:** a rough calculation of how often a Poisson process with mean equal to aggregate expected goals would score at least the observed number. It is an approximation, not an exact shot-level model.
 - **Add-one empirical lower tail:** `(1 + prior matches no higher than observed) / (1 + prior matches)`. It avoids claiming a zero probability when the reference sample is finite.
 - **Negative-binomial zero check:** a predictive probability of zero card events that allows card counts to vary more than a Poisson model would permit.
+- **Mann–Whitney test:** a rank-based two-sample test asking whether values from one population tend to be higher or lower than values from the other without assuming normality.
+- **Cliff's delta:** an effect size from −1 to +1. Positive values mean a random exhibition match is more likely to have a higher value than a random official match; negative values mean lower.
+- **Holm correction:** the five common-metric p-values are adjusted together to control the chance of at least one false positive in that test family.
+- **AUC:** how often the classifier ranks a randomly selected exhibition match above a randomly selected official match. AUC 0.5 is chance; 1.0 is perfect separation.
+- **Exhibition-likeness diagnostic score:** the class-balanced model's output on a 0–1 scale. It is useful for relative profile similarity but is not a real-world probability that the match was fixed, unserious, or intentionally manipulated.
 
 ## 1. Primary professional comparison
 
@@ -179,6 +189,73 @@ To address the original Soccer Aid sample-size limitation, the notebook adds 26 
 The current ten-goal match is above all 15 Soccer Aid rows, but **9 of 41** expanded matches reached at least ten goals. With the small-sample +1 correction, the descriptive upper-tail rate is **6.25%** for Soccer Aid alone and **23.81%** for the expanded benchmark. This is not a formal p-value: the expanded rows are not a random sample from one well-defined population, and several event series have only three to thirteen observations.
 
 The correct interpretation is therefore stratified. The added data strengthen the claim that England–France reached an exhibition-like scoring environment, while weakening the claim that it was specifically equivalent to Soccer Aid or to all charity football. The professional matched sample remains the primary serious-versus-friendly comparison.
+
+## 4A. Formal two-population intensity test
+
+### Why the earlier design was incomplete
+
+Comparing Match 103 with 102 earlier World Cup matches establishes that it was unusual for an official match. It does **not** establish that it resembled exhibition football. That requires two labeled reference distributions.
+
+The corrected design uses:
+
+- **102 official World Cup matches** completed before Match 103;
+- **19 exhibition matches** with complete common-core metrics: all 15 Soccer Aid editions and four Sidemen Charity Matches;
+- **one strict holdout:** England–France, excluded from every training and validation fold.
+
+The source file contains 22 exhibition rows in total. Three older Sidemen matches have documented scores but not the complete intensity core; they remain in the scoring benchmark and are excluded from this model by a pre-declared completeness rule.
+
+### Common metrics and descriptive separation
+
+| Metric | Official median (n=102) | Exhibition median (n=19) | Match 103 | Cliff's delta | Holm-adjusted p |
+|---|---:|---:|---:|---:|---:|
+| Goals | 3.0 | 6.0 | 10 | +0.674 | 5.12×10⁻⁶ |
+| Total shots | 24.0 | 39.0 | 38 | +0.861 | 1.11×10⁻⁸ |
+| Shots on target | 8.0 | 17.0 | 20 | +0.878 | 6.04×10⁻⁹ |
+| Fouls | 22.5 | 13.0 | 22 | −0.671 | 5.12×10⁻⁶ |
+| Yellow cards | 2.5 | 1.0 | 0 | −0.707 | 2.14×10⁻⁶ |
+
+All five population differences remain below 0.05 after Holm correction. The signs are coherent: exhibition matches produce more attacking volume and output, but fewer fouls and cards. These p-values test the **two reference populations**; they are not p-values for the single target match.
+
+Match 103 combines the classes rather than copying either one perfectly. Its 22 fouls sit at the official median, while 38 shots, 20 shots on target, and zero yellow cards sit on the exhibition side. This is the statistical form of the “not contactless—brakeless” interpretation.
+
+### Primary classifier: goals deliberately excluded
+
+The pre-specified primary classifier uses only:
+
+```text
+total shots + shots on target + total fouls + yellow cards
+```
+
+The pipeline standardizes the four features and fits a class-balanced logistic regression with fixed regularization `C=1`. Class weighting prevents the 102-to-19 sample imbalance from making “official” the automatic answer. No feature selection or threshold tuning uses Match 103.
+
+Validation repeats stratified five-fold cross-validation **50 times**. In each repeat, every labeled match receives a prediction from a model that did not train on it. The model is then fitted once to all 121 labeled rows and applied to the untouched target.
+
+| Result | Value |
+|---|---:|
+| Repeated-CV AUC | 0.958 |
+| Repeated-CV balanced accuracy | 0.887 |
+| Repeated-CV Brier score | 0.087 |
+| Match-103 exhibition-likeness score | 0.980 |
+| Match-bootstrap 95% interval | 0.876–0.996 |
+
+The key result is that the model reaches this conclusion **without seeing total goals**. Adding goals raises the target score only slightly, to about 0.990. A rate-based sensitivity model using shot accuracy and cards per ten fouls gives about 0.969.
+
+### Event-family sensitivity
+
+The exhibition class contains two formats with different scoring geometry. The primary model was therefore refitted twice, each time retaining all 102 official rows but using only one exhibition family:
+
+| Exhibition family used | Complete matches | Match-103 score |
+|---|---:|---:|
+| Soccer Aid only | 15 | 0.989 |
+| Sidemen Charity only | 4 | 0.612 |
+
+The Sidemen-only score is lower because those four matches are exceptionally extreme—13 to 20 goals and 23 to 39 shots on target—so England–France is less similar to that creator-led format. The result stays above 0.5, but the wide **0.61–0.99** family range is why confidence is graded moderate-high rather than “near certain.”
+
+### Decision
+
+**H4 is supported with moderate-high confidence as an observable-profile claim.** England–France was not merely a goal outlier. Its non-goal attacking and disciplinary pattern falls on the exhibition side of a classifier that separates the two labeled populations well.
+
+This does not identify intent. FIFA supplies the official-match metrics while FotMob supplies the exhibition metrics, so provider definitions may contribute some separation. Roster quality, substitutions, match format, and event incentives also differ. The score is therefore a diagnostic similarity index—not a posterior probability of fixing, coordination, or deliberate stat-padding.
 
 ## 5. Score-state analysis
 
@@ -425,6 +502,10 @@ The notebook ran consistency checks before promoting results into the report:
 | FIFA baseline has two team rows per match | 96 / 96 |
 | Starter groups contain exactly 11 players | 4 / 4 |
 | Current match timeline contains ten goals | 10 / 10 |
+| Exhibition intensity event-year duplicates | 0 / 0 |
+| Exhibition intensity source URLs present | 22 / 22 |
+| Exhibition complete-core rows | 19 / 19 |
+| Complete-core rows with all five shared metrics | 19 / 19 |
 | Individual-incentive rows reconcile before + match = after | 4 / 4 |
 | Duplicate FIFA player match/team/shirt keys | 0 / 0 |
 | Focal teams cover eight matches each | 2 / 2 |
@@ -450,6 +531,7 @@ One expected gap remains: the current match is held in a separate current-match 
 | Individual rewards created an unusual stat-boost opportunity | Supported as an incentive/opportunity mechanism; intentional attribution remains suggestive |
 | Elite friendlies are normally much more goal-heavy | Not supported by matched mean or threshold tests |
 | The match looked exhibition-like in its scoring | Supported descriptively; ten goals exceeded all saved professional matches and all Soccer Aid rows, but not every expanded creator-format match |
+| The non-goal common-core profile was exhibition-like (H4) | Supported with moderate-high confidence; strict-holdout score 0.980, repeated-CV AUC 0.958, and event-family sensitivity 0.612–0.989 |
 | The teams made no defensive effort | Not supported; direct pressure was at the 98th percentile |
 | Defensive control was unusually poor | Supported by very low forced-turnover yield and high attacking access |
 | Match 103 showed a spectacle-first behavioural tendency | Supported with moderate-high confidence by the aligned attack/activity/control/discipline/incentive stack |
@@ -486,5 +568,12 @@ One expected gap remains: the current match is held in a separate current-match 
 - Expanded charity/exhibition benchmark: `data/exhibition_charity_benchmark.csv`
 - Expanded benchmark summary: `output/tables/v2_exhibition_benchmark_summary.csv`
 - Expanded benchmark descriptive checks: `output/tables/v2_exhibition_benchmark_tests.csv`
+- Exhibition intensity source: `data/exhibition_match_intensity_benchmark.csv`
+- Official/exhibition common-core panel: `output/tables/v2_official_vs_exhibition_common_core.csv`
+- Population summaries: `output/tables/v2_official_vs_exhibition_summary.csv`
+- Mann–Whitney tests, Cliff's delta, and Holm adjustment: `output/tables/v2_official_vs_exhibition_tests.csv`
+- Classifier validation: `output/tables/v2_exhibition_classifier_validation.csv`
+- Match-bootstrap uncertainty summary: `output/tables/v2_exhibition_classifier_uncertainty.csv`
+- Exhibition-family sensitivity: `output/tables/v2_exhibition_classifier_event_sensitivity.csv`
 
 The notebook was executed top-to-bottom successfully before these results were documented.

@@ -9,6 +9,10 @@ Current timeline contains ten goals,10,10,pass
 Expanded benchmark has 26 additional matches,26,26,pass
 Expanded benchmark source URLs present,26,26,pass
 Expanded benchmark regulation scores are nonnegative,26,26,pass
+Exhibition intensity event-year key unique,0,0,pass
+Exhibition intensity source URLs present,22,22,pass
+Exhibition complete-core rows available,19,19,pass
+Exhibition complete-core metrics populated,19,19,pass
 Individual incentive rows reconcile pre + match = post,4,4,pass
 FIFA player-match-shirt key unique,0,0,pass
 Focal teams each cover eight matches,2,2,pass

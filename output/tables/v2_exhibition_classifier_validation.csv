@@ -1,0 +1,4 @@
+model,features,official_matches,exhibition_matches,repeated_cv_auc_mean,repeated_cv_auc_p05,repeated_cv_auc_p95,repeated_cv_balanced_accuracy_mean,repeated_cv_brier_mean,target_exhibition_likeness_score
+Process only (no goals),"total_shots, shots_on_target, total_fouls, yellow_cards",102,19,0.9575541795665634,0.9455366357069144,0.9657120743034056,0.8867079463364295,0.08715152439140895,0.979876995483466
+Process rates (no goals),"total_shots, shot_accuracy, total_fouls, cards_per_10_fouls",102,19,0.9570691434468523,0.9444530443756449,0.9643962848297214,0.870361197110423,0.08790881345266904,0.9690846656692065
+Process plus goals,"total_goals, total_shots, shots_on_target, total_fouls, yellow_cards",102,19,0.9567389060887515,0.9463364293085654,0.9649638802889576,0.8854643962848298,0.08527764278464385,0.9903976307019606

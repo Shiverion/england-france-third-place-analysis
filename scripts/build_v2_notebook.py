@@ -41,11 +41,12 @@ def build_notebook() -> nbf.NotebookNode:
             - **The match process was extraordinarily open:** against the first 102 matches of the 2026 World Cup using the same official FIFA provider, England–France set new highs for **goals (10), total xG (5.33), and shots on target (20)**.
             - **“No defensive effort” is too simple:** the match was at the **98th percentile for direct pressures**, but produced only **62 forced turnovers** (about the 5th percentile). Its derived turnover yield—**11.1 per 100 pressures**—was below all 102 earlier matches.
             - **The new contact evidence reveals the sharper anomaly:** Match 103 had **22 fouls**, almost identical to the first-102 mean of **23**, but **zero cards** versus an earlier mean of **2.86**. It was only the second cardless knockout match through Match 103. The all-match empirical lower tail is **p≈0.097** and the knockout-only tail **p≈0.065**—suggestive, not conclusive by itself.
+            - **The corrected all-versus-all test is much stronger:** the comparison now uses **102 official matches versus 19 exhibition matches with complete intensity data**, with Match 103 held out. A classifier using shots, shots on target, fouls, and yellow cards—but **not goals**—assigns the target an exhibition-likeness diagnostic score of about **0.98**; repeated-CV AUC is about **0.958**.
             - **Activity rose while control outcomes collapsed:** across the two teams, tackles attempted were **61% above** their own earlier-tournament baselines, direct pressures **52% above**, and high-intensity distance **16% above**. Yet clearances were **65% lower**, possession contests won **53% lower**, and aerial duels won **53% lower**.
             - **The 4–0 game state mattered but does not explain everything:** historical World Cup minute rates imply about **2.45 goals** for a level-state path and **3.30** for the score-state path actually experienced. Ten goals remain roughly three times the state-conditioned expectation.
             - **Exceptional finishing amplified exceptional openness:** ten goals came from **5.33 xG**. A rough Poisson check gives about a **4.5%** chance of at least ten goals at that expectation; England alone scored six from 2.34 xG.
 
-            **Best verdict:** Match 103 showed a **spectacle-first tendency**. Players still ran, pressed, tackled, and fouled, but the match maximized visible attacking output while the usual collective controls and disciplinary consequences weakened sharply. That pattern is consistent with exhibition-like incentives and stat-padding opportunity; it is not evidence that the score was pre-arranged.
+            **Best verdict:** Match 103 had an **exhibition-like observable profile with moderate-high confidence**, even after goals were excluded. Players still ran, pressed, tackled, and fouled, so this was not passive football. It was a spectacle-first official match in which attacking output surged while collective control and disciplinary consequence weakened. That does not establish a pre-arranged score.
             """
         ),
         markdown(
@@ -64,6 +65,8 @@ def build_notebook() -> nbf.NotebookNode:
 
             **H3 (spectacle-first tendency):** observable behaviour shifted toward maximizing visible action—shots, goals, assists, runs, and pressure attempts—rather than minimizing defeat, producing normal contact volume but unusually weak defensive conversion and disciplinary consequence.
 
+            **H4 (exhibition-profile hypothesis):** on match-level measures available for both populations, Match 103 should sit closer to the distribution of genuine exhibition matches than to ordinary official World Cup matches—even when goals are excluded from the classifier.
+
             **H0 / competing explanation:** the match was lower-stakes and heavily rotated, but players still worked physically; the open score was produced by ordinary tactical variance, score-state effects, referee style, and exceptional finishing rather than a systematic spectacle-first shift.
 
             This is a composite hypothesis, so one p-value cannot answer it. The notebook evaluates each component separately and reports a graded verdict: **supported**, **not supported**, **suggestive but underpowered**, or **descriptive only**. Private motivation and “fun” are not directly observable.
@@ -77,6 +80,7 @@ def build_notebook() -> nbf.NotebookNode:
             5. **Same-provider process benchmark:** official FIFA Post-Match Summary Report metrics for 102 earlier 2026 World Cup matches.
             6. **Game-state benchmark:** regulation-time goal hazards from 964 men's World Cup matches through 2022.
             7. **Expanded exhibition benchmark:** 41 regulation-score charity/exhibition matches are reported by event and roster profile. This improves descriptive coverage while preserving the warning that charity formats are not like-for-like professional controls.
+            8. **Two-population intensity test:** 102 earlier official World Cup matches are compared with all 19 exhibition matches that have the complete common core of shots, shots on target, fouls, and yellow cards. Match 103 is a strict holdout, never a training row.
 
             ### Statistical plan
 
@@ -85,6 +89,7 @@ def build_notebook() -> nbf.NotebookNode:
             - Tail probabilities use a method-of-moments negative-binomial model, falling back to Poisson when overdispersion is absent. These are descriptive predictive checks, not causal estimates.
             - FIFA process metrics are empirical percentiles; only metrics from the same provider are compared.
             - Contact and discipline use all 103 official FIFA Full Time Match Reports. Match 103 is compared with the first 102 matches, the first 30 knockout matches, a ±3-foul band, the same referee's earlier matches, and each focal team's seven earlier matches. Add-one empirical tails avoid zero-probability estimates.
+            - The formal exhibition-profile test uses Mann–Whitney rank tests with Cliff's delta and Holm correction across five common metrics. A class-balanced regularized logistic model is evaluated with 50 repeated five-fold splits. The primary model deliberately excludes goals; its output is a diagnostic similarity score, not a causal probability or an integrity verdict.
             - Score-state rates are bootstrapped by World Cup match. Because score state is endogenous, the decomposition is explanatory context, not a causal claim.
             - The individual-incentive audit is mechanism triangulation rather than a hypothesis test: a live award stake, selection, a match contribution, and a material change in the standing must all be visible.
             - Player effort tests compare Match 103 per-90 rates with each outfielder's pooled prior-tournament rate. Eligibility requires at least 45 Match 103 minutes, two prior appearances, and 90 prior minutes. Player bootstrap intervals and sign-flip tests are exploratory because teammates are not fully independent.
@@ -97,6 +102,7 @@ def build_notebook() -> nbf.NotebookNode:
             - The large results backbone has no stage field outside the World Cup source. Other competitions' third-place games are not fabricated or silently pooled.
             - Year-end Elo from year Y−1 is used for matches in year Y, preventing look-ahead but measuring strength less precisely than a match-day rating.
             - Charity and exhibition matches differ in roster quality, rules, substitutions, duration, and incentives. The expanded benchmark is stratified by event rather than collapsed into one supposedly homogeneous population.
+            - Shared metrics come from two providers: FIFA for official World Cup matches and FotMob for exhibition matches. Event-family sensitivity and a rate-based model are reported, but residual provider-definition bias remains possible.
             - Before/after award movement establishes that an incentive existed and the match changed the outcome; it cannot establish the player's private motive for any action.
             - Physical totals include stoppage time while per-90 denominators use the regulation clock. This is applied consistently across reports; one crowded match-summary row required a separately sourced official substitution time.
             - Fouls and cards are aggregate match totals. They cannot isolate tactical fouls by score state, and card issuance depends partly on referee thresholds. The cardless result is supporting evidence, not a standalone test of intent.
@@ -108,6 +114,8 @@ def build_notebook() -> nbf.NotebookNode:
             - [Fjelstul World Cup Database](https://github.com/jfjelstul/worldcup)
             - [FIFA Training Centre Post-Match Summary Reports](https://www.fifatrainingcentre.com/)
             - [StatsBomb Open Data attribution for the reused sibling pipeline](https://github.com/statsbomb/open-data)
+            - [FotMob Soccer Aid archive and statistics](https://www.fotmob.com/en-GB/leagues/11648/stats/soccer-aid)
+            - [FotMob Sidemen Charity Match archive and statistics](https://www.fotmob.com/leagues/10312/stats/sidemen-charity-match/teams?season=2025)
             """
         ),
         code(
@@ -128,6 +136,11 @@ def build_notebook() -> nbf.NotebookNode:
             from IPython.display import display
             from scipy import stats
             from scipy.optimize import linear_sum_assignment
+            from sklearn.linear_model import LogisticRegression
+            from sklearn.metrics import balanced_accuracy_score, brier_score_loss, roc_auc_score
+            from sklearn.model_selection import StratifiedKFold
+            from sklearn.pipeline import make_pipeline
+            from sklearn.preprocessing import StandardScaler
 
             warnings.filterwarnings("ignore", category=FutureWarning)
             SEED = 20260719
@@ -189,6 +202,7 @@ def build_notebook() -> nbf.NotebookNode:
             current_goals = pd.read_csv(ROOT / "data" / "current_match_goals.csv")
             soccer_aid = pd.read_csv(ROOT / "data" / "soccer_aid_results.csv")
             exhibition_benchmark = pd.read_csv(ROOT / "data" / "exhibition_charity_benchmark.csv")
+            exhibition_intensity = pd.read_csv(ROOT / "data" / "exhibition_match_intensity_benchmark.csv")
             lineups = pd.read_csv(ROOT / "data" / "lineup_starters.csv")
             player_incentives = pd.read_csv(ROOT / "data" / "player_incentive_evidence.csv")
             player_match = pd.read_csv(PROCESSED / "fifa_2026_france_england_player_match.csv")
@@ -204,6 +218,7 @@ def build_notebook() -> nbf.NotebookNode:
                 ("Current goal timeline", len(current_goals), "one row per goal", "match 103"),
                 ("Soccer Aid", len(soccer_aid), "one row per match", "2006–2026"),
                 ("Expanded charity/exhibition benchmark", len(exhibition_benchmark), "one row per match", "2005–2026; 26 additional matches"),
+                ("Exhibition match-intensity benchmark", len(exhibition_intensity), "one row per match", "22 Soccer Aid/Sidemen matches; 19 complete common-core rows"),
                 ("Starter audit", len(lineups), "one row per starter", "semi-finals and match 103"),
                 ("Individual incentive audit", len(player_incentives), "one row per player-metric", "timestamped pre/post standings"),
                 ("FIFA player-match audit", len(player_match), "one row per player-match", "all 8 France and all 8 England matches"),
@@ -250,6 +265,11 @@ def build_notebook() -> nbf.NotebookNode:
             discipline_fouls_reconciled = discipline_foul_reconciliation[
                 "fouls_suffered"
             ].eq(discipline_foul_reconciliation["fouls_committed_opponent"])
+            exhibition_core_metrics = [
+                "total_goals", "total_shots", "shots_on_target", "total_fouls", "yellow_cards"
+            ]
+            exhibition_complete = exhibition_intensity["coverage_status"].eq("complete_core")
+            exhibition_complete_rows = exhibition_intensity.loc[exhibition_complete]
 
             quality_checks = pd.DataFrame([
                 ("International result dates parse", int(results["date"].notna().sum()), len(results), "pass" if results["date"].notna().all() else "review"),
@@ -262,6 +282,10 @@ def build_notebook() -> nbf.NotebookNode:
                 ("Expanded benchmark has 26 additional matches", len(exhibition_benchmark), 26, "pass" if len(exhibition_benchmark) == 26 else "fail"),
                 ("Expanded benchmark source URLs present", int(exhibition_benchmark["source_url"].notna().sum()), len(exhibition_benchmark), "pass" if exhibition_benchmark["source_url"].notna().all() else "fail"),
                 ("Expanded benchmark regulation scores are nonnegative", int(((exhibition_benchmark["team_a_goals"] >= 0) & (exhibition_benchmark["team_b_goals"] >= 0)).sum()), len(exhibition_benchmark), "pass" if ((exhibition_benchmark["team_a_goals"] >= 0) & (exhibition_benchmark["team_b_goals"] >= 0)).all() else "fail"),
+                ("Exhibition intensity event-year key unique", int(exhibition_intensity.duplicated(["event", "year"]).sum()), 0, "pass" if not exhibition_intensity.duplicated(["event", "year"]).any() else "fail"),
+                ("Exhibition intensity source URLs present", int(exhibition_intensity["source_url"].notna().sum()), len(exhibition_intensity), "pass" if exhibition_intensity["source_url"].notna().all() else "fail"),
+                ("Exhibition complete-core rows available", int(exhibition_complete.sum()), 19, "pass" if exhibition_complete.sum() == 19 else "fail"),
+                ("Exhibition complete-core metrics populated", int(exhibition_complete_rows[exhibition_core_metrics].notna().all(axis=1).sum()), 19, "pass" if exhibition_complete_rows[exhibition_core_metrics].notna().all(axis=1).sum() == 19 else "fail"),
                 ("Individual incentive rows reconcile pre + match = post", int(incentive_arithmetic.sum()), len(player_incentives), "pass" if incentive_arithmetic.all() else "fail"),
                 ("FIFA player-match-shirt key unique", player_key_duplicates, 0, "pass" if player_key_duplicates == 0 else "fail"),
                 ("Focal teams each cover eight matches", int(player_match_coverage.eq(8).sum()), 2, "pass" if player_match_coverage.eq(8).all() else "fail"),
@@ -282,6 +306,10 @@ def build_notebook() -> nbf.NotebookNode:
             assert len(exhibition_benchmark) == 26
             assert exhibition_benchmark["source_url"].notna().all()
             assert ((exhibition_benchmark["team_a_goals"] >= 0) & (exhibition_benchmark["team_b_goals"] >= 0)).all()
+            assert not exhibition_intensity.duplicated(["event", "year"]).any()
+            assert exhibition_intensity["source_url"].notna().all()
+            assert exhibition_complete.sum() == 19
+            assert exhibition_complete_rows[exhibition_core_metrics].notna().all(axis=1).all()
             assert not player_incentives.duplicated(["player", "metric"]).any()
             assert incentive_arithmetic.all()
             assert player_key_duplicates == 0
@@ -884,6 +912,430 @@ def build_notebook() -> nbf.NotebookNode:
             fig.tight_layout()
             fig.savefig(ASSETS / "narrative_06_expanded_exhibition_benchmark.png", dpi=180, bbox_inches="tight")
             plt.show()
+            """
+        ),
+        markdown(
+            """
+            ## The missing test: all usable exhibition matches versus all earlier official matches
+
+            The earlier analysis asked whether Match 103 was unusual relative to **102 official World Cup matches**. That is an anomaly test, not a serious-versus-exhibition classification test. This section fixes the denominator:
+
+            - **Official class:** all 102 World Cup matches completed before the bronze final.
+            - **Exhibition class:** all 19 Soccer Aid or Sidemen Charity matches with a complete shared core of goals, shots, shots on target, fouls, and yellow cards.
+            - **Strict holdout:** England-France is excluded from model fitting and validation, then scored once at the end.
+
+            The primary classifier intentionally excludes goals. It asks whether the *way the match generated action and discipline* looked exhibition-like, rather than merely rediscovering the 6-4 score. The 22-row exhibition file also retains three older Sidemen matches with score-only coverage; they remain in the 41-match scoring analysis but cannot enter this intensity model.
+            """
+        ),
+        code(
+            """
+            # Two-population common-core comparison with Match 103 as a strict holdout
+            common_features = [
+                "total_goals", "total_shots", "shots_on_target", "total_fouls", "yellow_cards"
+            ]
+            common_labels = {
+                "total_goals": "Goals",
+                "total_shots": "Total shots",
+                "shots_on_target": "Shots on target",
+                "total_fouls": "Fouls",
+                "yellow_cards": "Yellow cards",
+            }
+
+            official_common = (
+                pmsr_match.loc[1:102, ["total_goals", "attempts", "shots_on_target"]]
+                .rename(columns={"attempts": "total_shots"})
+                .reset_index()
+                .merge(
+                    match_discipline.loc[
+                        match_discipline["match_number"].le(102),
+                        ["match_number", "total_fouls", "total_yellow_cards"],
+                    ],
+                    on="match_number",
+                    how="inner",
+                    validate="one_to_one",
+                )
+                .rename(columns={"total_yellow_cards": "yellow_cards"})
+            )
+            official_common["sample_type"] = "Official World Cup"
+            official_common["event_family"] = "2026 FIFA World Cup"
+            official_common["source_provider"] = "FIFA"
+            official_common["is_holdout"] = False
+
+            exhibition_common = exhibition_intensity.loc[
+                exhibition_intensity["coverage_status"].eq("complete_core"),
+                ["event", "year", "source_provider", *common_features],
+            ].copy()
+            exhibition_common = exhibition_common.rename(columns={"event": "event_family"})
+            exhibition_common["match_number"] = pd.NA
+            exhibition_common["sample_type"] = "Exhibition"
+            exhibition_common["is_holdout"] = False
+
+            holdout_common = (
+                pmsr_match.loc[[103], ["total_goals", "attempts", "shots_on_target"]]
+                .rename(columns={"attempts": "total_shots"})
+                .reset_index()
+                .merge(
+                    match_discipline.loc[
+                        match_discipline["match_number"].eq(103),
+                        ["match_number", "total_fouls", "total_yellow_cards"],
+                    ],
+                    on="match_number",
+                    how="inner",
+                    validate="one_to_one",
+                )
+                .rename(columns={"total_yellow_cards": "yellow_cards"})
+            )
+            holdout_common["sample_type"] = "Match 103 holdout"
+            holdout_common["event_family"] = "England 6-4 France"
+            holdout_common["source_provider"] = "FIFA"
+            holdout_common["is_holdout"] = True
+
+            official_train = official_common[["sample_type", "event_family", "source_provider", "match_number", "is_holdout", *common_features]].copy()
+            exhibition_train = exhibition_common[["sample_type", "event_family", "source_provider", "match_number", "is_holdout", *common_features]].copy()
+            target_row = holdout_common.iloc[0]
+            comparison_panel = pd.concat([
+                official_train,
+                exhibition_train,
+                holdout_common[["sample_type", "event_family", "source_provider", "match_number", "is_holdout", *common_features]],
+            ], ignore_index=True)
+
+            assert len(official_train) == 102
+            assert len(exhibition_train) == 19
+            assert comparison_panel["is_holdout"].sum() == 1
+            assert comparison_panel.loc[~comparison_panel["is_holdout"], "match_number"].dropna().astype(int).max() == 102
+            assert official_train[common_features].notna().all(axis=1).all()
+            assert exhibition_train[common_features].notna().all(axis=1).all()
+
+            comparison_summary_rows = []
+            for sample_name, frame in (("Official World Cup", official_train), ("Exhibition", exhibition_train)):
+                for metric in common_features:
+                    values = frame[metric].astype(float)
+                    comparison_summary_rows.append({
+                        "sample_type": sample_name,
+                        "metric": metric,
+                        "label": common_labels[metric],
+                        "matches": len(values),
+                        "mean": float(values.mean()),
+                        "median": float(values.median()),
+                        "q1": float(values.quantile(0.25)),
+                        "q3": float(values.quantile(0.75)),
+                        "sd": float(values.std(ddof=1)),
+                    })
+            comparison_summary = pd.DataFrame(comparison_summary_rows)
+
+            test_rows = []
+            for metric in common_features:
+                exhibition_values = exhibition_train[metric].astype(float).to_numpy()
+                official_values = official_train[metric].astype(float).to_numpy()
+                u_stat, p_value = stats.mannwhitneyu(
+                    exhibition_values,
+                    official_values,
+                    alternative="two-sided",
+                    method="asymptotic",
+                )
+                cliffs_delta = 2 * u_stat / (len(exhibition_values) * len(official_values)) - 1
+                test_rows.append({
+                    "metric": metric,
+                    "label": common_labels[metric],
+                    "official_median": float(np.median(official_values)),
+                    "exhibition_median": float(np.median(exhibition_values)),
+                    "target_value": float(target_row[metric]),
+                    "mann_whitney_u": float(u_stat),
+                    "raw_p": float(p_value),
+                    "cliffs_delta_exhibition_minus_official": float(cliffs_delta),
+                    "target_percentile_within_official": float(stats.percentileofscore(official_values, target_row[metric], kind="weak")),
+                    "target_percentile_within_exhibition": float(stats.percentileofscore(exhibition_values, target_row[metric], kind="weak")),
+                })
+            common_tests = pd.DataFrame(test_rows)
+            raw_common_p = common_tests["raw_p"].to_numpy()
+            common_p_order = np.argsort(raw_common_p)
+            common_p_sorted_adjusted = np.maximum.accumulate(
+                (len(raw_common_p) - np.arange(len(raw_common_p))) * raw_common_p[common_p_order]
+            )
+            common_p_adjusted = np.empty_like(raw_common_p)
+            common_p_adjusted[common_p_order] = np.minimum(common_p_sorted_adjusted, 1.0)
+            common_tests["holm_adjusted_p"] = common_p_adjusted
+
+            model_train = pd.concat([
+                official_train.assign(exhibition_label=0),
+                exhibition_train.assign(exhibition_label=1),
+            ], ignore_index=True)
+
+            def add_comparison_rates(frame: pd.DataFrame) -> pd.DataFrame:
+                enriched = frame.copy()
+                enriched["shot_accuracy"] = enriched["shots_on_target"] / enriched["total_shots"]
+                enriched["goal_conversion"] = enriched["total_goals"] / enriched["total_shots"]
+                enriched["cards_per_10_fouls"] = 10 * enriched["yellow_cards"] / enriched["total_fouls"]
+                return enriched
+
+            model_train = add_comparison_rates(model_train)
+            target_model = add_comparison_rates(pd.DataFrame([target_row]))
+
+            model_specs = {
+                "Process only (no goals)": ["total_shots", "shots_on_target", "total_fouls", "yellow_cards"],
+                "Process rates (no goals)": ["total_shots", "shot_accuracy", "total_fouls", "cards_per_10_fouls"],
+                "Process plus goals": common_features,
+            }
+
+            def new_exhibition_model():
+                return make_pipeline(
+                    StandardScaler(),
+                    LogisticRegression(
+                        C=1.0,
+                        class_weight="balanced",
+                        solver="liblinear",
+                        random_state=SEED,
+                    ),
+                )
+
+            y_model = model_train["exhibition_label"].astype(int).to_numpy()
+            model_validation_rows = []
+            model_oof_scores = {}
+            fitted_models = {}
+            for model_name, model_features in model_specs.items():
+                X_model = model_train[model_features]
+                repeat_metrics = []
+                repeated_oof = []
+                for repeat in range(50):
+                    fold_predictions = np.zeros(len(model_train), dtype=float)
+                    splitter = StratifiedKFold(
+                        n_splits=5,
+                        shuffle=True,
+                        random_state=SEED + repeat,
+                    )
+                    for train_index, test_index in splitter.split(X_model, y_model):
+                        fold_model = new_exhibition_model()
+                        fold_model.fit(X_model.iloc[train_index], y_model[train_index])
+                        fold_predictions[test_index] = fold_model.predict_proba(X_model.iloc[test_index])[:, 1]
+                    repeat_metrics.append({
+                        "auc": roc_auc_score(y_model, fold_predictions),
+                        "balanced_accuracy": balanced_accuracy_score(y_model, fold_predictions >= 0.5),
+                        "brier_score": brier_score_loss(y_model, fold_predictions),
+                    })
+                    repeated_oof.append(fold_predictions)
+
+                repeat_metrics = pd.DataFrame(repeat_metrics)
+                average_oof = np.mean(np.vstack(repeated_oof), axis=0)
+                fitted_model = new_exhibition_model().fit(X_model, y_model)
+                target_score = float(fitted_model.predict_proba(target_model[model_features])[:, 1][0])
+                fitted_models[model_name] = fitted_model
+                model_oof_scores[model_name] = average_oof
+                model_validation_rows.append({
+                    "model": model_name,
+                    "features": ", ".join(model_features),
+                    "official_matches": int((y_model == 0).sum()),
+                    "exhibition_matches": int((y_model == 1).sum()),
+                    "repeated_cv_auc_mean": float(repeat_metrics["auc"].mean()),
+                    "repeated_cv_auc_p05": float(repeat_metrics["auc"].quantile(0.05)),
+                    "repeated_cv_auc_p95": float(repeat_metrics["auc"].quantile(0.95)),
+                    "repeated_cv_balanced_accuracy_mean": float(repeat_metrics["balanced_accuracy"].mean()),
+                    "repeated_cv_brier_mean": float(repeat_metrics["brier_score"].mean()),
+                    "target_exhibition_likeness_score": target_score,
+                })
+            model_validation = pd.DataFrame(model_validation_rows)
+
+            primary_model_name = "Process only (no goals)"
+            primary_features = model_specs[primary_model_name]
+            primary_target_score = float(
+                model_validation.loc[
+                    model_validation["model"].eq(primary_model_name),
+                    "target_exhibition_likeness_score",
+                ].iloc[0]
+            )
+
+            bootstrap_rng = np.random.default_rng(SEED + 404)
+            official_model_rows = model_train[model_train["exhibition_label"].eq(0)].reset_index(drop=True)
+            exhibition_model_rows = model_train[model_train["exhibition_label"].eq(1)].reset_index(drop=True)
+            target_bootstrap_scores = []
+            for _ in range(2_000):
+                official_indices = bootstrap_rng.integers(0, len(official_model_rows), len(official_model_rows))
+                exhibition_indices = bootstrap_rng.integers(0, len(exhibition_model_rows), len(exhibition_model_rows))
+                bootstrap_sample = pd.concat([
+                    official_model_rows.iloc[official_indices],
+                    exhibition_model_rows.iloc[exhibition_indices],
+                ], ignore_index=True)
+                bootstrap_model = new_exhibition_model().fit(
+                    bootstrap_sample[primary_features],
+                    bootstrap_sample["exhibition_label"].astype(int),
+                )
+                target_bootstrap_scores.append(float(
+                    bootstrap_model.predict_proba(target_model[primary_features])[:, 1][0]
+                ))
+            target_bootstrap_scores = np.asarray(target_bootstrap_scores)
+            primary_score_ci = np.quantile(target_bootstrap_scores, [0.025, 0.975])
+            classifier_uncertainty = pd.DataFrame([{
+                "model": primary_model_name,
+                "bootstrap_draws": len(target_bootstrap_scores),
+                "target_score_median": float(np.median(target_bootstrap_scores)),
+                "target_score_p025": float(primary_score_ci[0]),
+                "target_score_p975": float(primary_score_ci[1]),
+            }])
+
+            event_sensitivity_rows = []
+            for event_family in ["Soccer Aid", "Sidemen Charity Match"]:
+                event_rows = model_train[
+                    model_train["sample_type"].eq("Exhibition")
+                    & model_train["event_family"].eq(event_family)
+                ]
+                event_training = pd.concat([official_model_rows, event_rows], ignore_index=True)
+                event_model = new_exhibition_model().fit(
+                    event_training[primary_features],
+                    event_training["exhibition_label"].astype(int),
+                )
+                event_sensitivity_rows.append({
+                    "exhibition_family_used": event_family,
+                    "exhibition_matches": len(event_rows),
+                    "official_matches": len(official_model_rows),
+                    "target_exhibition_likeness_score": float(
+                        event_model.predict_proba(target_model[primary_features])[:, 1][0]
+                    ),
+                })
+            event_sensitivity = pd.DataFrame(event_sensitivity_rows)
+
+            comparison_panel.to_csv(TABLES / "v2_official_vs_exhibition_common_core.csv", index=False)
+            comparison_summary.to_csv(TABLES / "v2_official_vs_exhibition_summary.csv", index=False)
+            common_tests.to_csv(TABLES / "v2_official_vs_exhibition_tests.csv", index=False)
+            model_validation.to_csv(TABLES / "v2_exhibition_classifier_validation.csv", index=False)
+            event_sensitivity.to_csv(TABLES / "v2_exhibition_classifier_event_sensitivity.csv", index=False)
+            classifier_uncertainty.to_csv(TABLES / "v2_exhibition_classifier_uncertainty.csv", index=False)
+
+            display(comparison_summary.pivot(index="label", columns="sample_type", values=["matches", "mean", "median"]).round(2))
+            display(common_tests.round(5))
+            display(model_validation.round(4))
+            display(event_sensitivity.round(4))
+            print(
+                f"Primary holdout score (goals excluded): {primary_target_score:.3f}; "
+                f"match-bootstrap 95% interval {primary_score_ci[0]:.3f} to {primary_score_ci[1]:.3f}."
+            )
+
+            # Technical visual: distributions plus the held-out classifier score
+            plot_rng = np.random.default_rng(SEED + 505)
+            fig, axes = plt.subplots(2, 3, figsize=(14.8, 8.6))
+            for ax, metric in zip(axes.flat[:5], common_features):
+                official_values = official_train[metric].astype(float).to_numpy()
+                exhibition_values = exhibition_train[metric].astype(float).to_numpy()
+                boxes = ax.boxplot(
+                    [official_values, exhibition_values],
+                    positions=[0, 1],
+                    widths=0.48,
+                    patch_artist=True,
+                    showfliers=False,
+                    medianprops={"color": INK, "linewidth": 1.5},
+                    whiskerprops={"color": MUTED},
+                    capprops={"color": MUTED},
+                )
+                boxes["boxes"][0].set(facecolor=BLUE_LIGHT, edgecolor=BLUE)
+                boxes["boxes"][1].set(facecolor=ORANGE_LIGHT, edgecolor=ORANGE)
+                ax.scatter(plot_rng.normal(0, 0.055, len(official_values)), official_values, color=BLUE, s=14, alpha=0.42, linewidth=0)
+                ax.scatter(plot_rng.normal(1, 0.055, len(exhibition_values)), exhibition_values, color=ORANGE, s=25, alpha=0.72, linewidth=0)
+                ax.scatter([2], [target_row[metric]], marker="D", s=82, color=INK, edgecolor="white", linewidth=0.9, zorder=5)
+                ax.set_xticks([0, 1, 2], ["Official\\nn=102", "Exhibition\\nn=19", "Match 103\\nholdout"])
+                ax.set_title(common_labels[metric], loc="left")
+                ax.grid(axis="x", visible=False)
+                ax.spines[["top", "right"]].set_visible(False)
+
+            score_ax = axes.flat[5]
+            primary_oof = model_oof_scores[primary_model_name]
+            official_scores = primary_oof[y_model == 0]
+            exhibition_scores = primary_oof[y_model == 1]
+            score_boxes = score_ax.boxplot(
+                [official_scores, exhibition_scores],
+                positions=[0, 1],
+                widths=0.48,
+                patch_artist=True,
+                showfliers=False,
+                medianprops={"color": INK, "linewidth": 1.5},
+            )
+            score_boxes["boxes"][0].set(facecolor=BLUE_LIGHT, edgecolor=BLUE)
+            score_boxes["boxes"][1].set(facecolor=ORANGE_LIGHT, edgecolor=ORANGE)
+            score_ax.scatter(plot_rng.normal(0, 0.055, len(official_scores)), official_scores, color=BLUE, s=14, alpha=0.42, linewidth=0)
+            score_ax.scatter(plot_rng.normal(1, 0.055, len(exhibition_scores)), exhibition_scores, color=ORANGE, s=25, alpha=0.72, linewidth=0)
+            score_ax.scatter([2], [primary_target_score], marker="D", s=82, color=INK, edgecolor="white", linewidth=0.9, zorder=5)
+            score_ax.vlines(2, primary_score_ci[0], primary_score_ci[1], color=INK, linewidth=2)
+            score_ax.set_xticks([0, 1, 2], ["Official\\nOOF", "Exhibition\\nOOF", "Match 103\\nholdout"])
+            score_ax.set_ylim(-0.04, 1.04)
+            score_ax.set_ylabel("Exhibition-likeness diagnostic score")
+            score_ax.set_title("Primary model - goals excluded", loc="left")
+            score_ax.text(
+                0.02,
+                0.96,
+                f"Repeated-CV AUC {model_validation.loc[model_validation['model'].eq(primary_model_name), 'repeated_cv_auc_mean'].iloc[0]:.3f}",
+                transform=score_ax.transAxes,
+                va="top",
+                color=MUTED,
+            )
+            score_ax.grid(axis="x", visible=False)
+            score_ax.spines[["top", "right"]].set_visible(False)
+
+            fig.suptitle("One held-out match against two labeled populations", x=0.06, ha="left", fontsize=18, fontweight="bold", color=INK)
+            fig.text(0.06, 0.925, "Five common metrics; black diamonds are England-France and were never used to train the classifier", color=MUTED, fontsize=11)
+            fig.tight_layout(rect=[0, 0, 1, 0.91])
+            fig.savefig(ASSETS / "v2_official_vs_exhibition_holdout.png", dpi=180, bbox_inches="tight")
+            plt.show()
+
+            # Reader-facing narrative card
+            from matplotlib.patches import FancyBboxPatch
+
+            narrative_fig, narrative_ax = plt.subplots(figsize=(16, 9), facecolor="#08111F")
+            narrative_ax.set_facecolor("#08111F")
+            narrative_ax.axis("off")
+            narrative_ax.text(0.055, 0.92, "BUKAN LAGI 1 PERTANDINGAN vs 102 NORMAL", color="white", fontsize=25, fontweight="bold", transform=narrative_ax.transAxes)
+            narrative_ax.text(0.055, 0.865, "Sekarang: 102 laga resmi vs 19 exhibition lengkap | England-France murni holdout", color="#AFC2DB", fontsize=14, transform=narrative_ax.transAxes)
+
+            official_medians = official_train[common_features].median()
+            exhibition_medians = exhibition_train[common_features].median()
+            cards = [
+                (0.055, "LAGA RESMI", "n=102 | median", BLUE, official_medians),
+                (0.365, "ENGLAND 6-4 FRANCE", "holdout | aktual", "#F4C95D", target_row),
+                (0.675, "EXHIBITION", "n=19 | median", ORANGE, exhibition_medians),
+            ]
+            for x0, title, subtitle, color, values in cards:
+                narrative_ax.add_patch(FancyBboxPatch(
+                    (x0, 0.36), 0.27, 0.41,
+                    boxstyle="round,pad=0.012,rounding_size=0.018",
+                    facecolor="#101D30", edgecolor=color, linewidth=2,
+                    transform=narrative_ax.transAxes,
+                ))
+                narrative_ax.text(x0 + 0.02, 0.715, title, color=color, fontsize=16, fontweight="bold", transform=narrative_ax.transAxes)
+                narrative_ax.text(x0 + 0.02, 0.675, subtitle, color="#8FA6C2", fontsize=11, transform=narrative_ax.transAxes)
+                narrative_lines = [
+                    ("Gol", values["total_goals"]),
+                    ("Tembakan", values["total_shots"]),
+                    ("Tepat sasaran", values["shots_on_target"]),
+                    ("Foul", values["total_fouls"]),
+                    ("Kartu kuning", values["yellow_cards"]),
+                ]
+                for line_no, (label, value) in enumerate(narrative_lines):
+                    y0 = 0.61 - line_no * 0.052
+                    narrative_ax.text(x0 + 0.02, y0, label, color="#B7C7DA", fontsize=12, transform=narrative_ax.transAxes)
+                    narrative_ax.text(x0 + 0.235, y0, f"{value:g}", color="white", fontsize=14, fontweight="bold", ha="right", transform=narrative_ax.transAxes)
+
+            auc_value = model_validation.loc[model_validation["model"].eq(primary_model_name), "repeated_cv_auc_mean"].iloc[0]
+            family_low = event_sensitivity["target_exhibition_likeness_score"].min()
+            family_high = event_sensitivity["target_exhibition_likeness_score"].max()
+            narrative_ax.add_patch(FancyBboxPatch(
+                (0.055, 0.12), 0.89, 0.16,
+                boxstyle="round,pad=0.014,rounding_size=0.018",
+                facecolor="#172A43", edgecolor="#345A84", linewidth=1.4,
+                transform=narrative_ax.transAxes,
+            ))
+            narrative_ax.text(0.075, 0.225, "Bahkan tanpa gol: skor exhibition-like = {:.2f}/1".format(primary_target_score), color="white", fontsize=21, fontweight="bold", transform=narrative_ax.transAxes)
+            narrative_ax.text(0.075, 0.177, f"Validasi silang AUC {auc_value:.2f} | sensitivitas keluarga event {family_low:.2f}-{family_high:.2f}", color="#AFC2DB", fontsize=13, transform=narrative_ax.transAxes)
+            narrative_ax.text(0.075, 0.138, "Bold insight: aksi exhibition-like - foul normal, serangan meledak, kartu lenyap.", color="#F4C95D", fontsize=13.5, fontweight="bold", transform=narrative_ax.transAxes)
+            narrative_ax.text(0.055, 0.055, "Skor diagnostik bukan probabilitas settingan. Ini menguji kemiripan perilaku observabel, bukan niat atau koordinasi.", color="#7F96B3", fontsize=11.5, transform=narrative_ax.transAxes)
+            narrative_fig.savefig(ASSETS / "narrative_08_two_population_verdict.png", dpi=180, bbox_inches="tight", facecolor=narrative_fig.get_facecolor())
+            plt.show()
+            """
+        ),
+        markdown(
+            """
+            ### Two-population verdict
+
+            This is the direct answer the earlier design could not provide. The exhibition and official distributions differ in all five shared metrics after Holm correction. Exhibition matches had more shots, more shots on target, and more goals, but fewer fouls and fewer yellow cards. Englandâ€“France combined an exhibition-level attacking profile with an ordinary official-match foul count and an exhibition-side card profile.
+
+            The primary **no-goals** model produced a held-out exhibition-likeness score of about **0.98**. Its repeated five-fold validation AUC was about **0.958** with balanced accuracy about **0.887**. Adding goals barely changed the conclusion. Event-family sensitivity was widerâ€”about **0.61** when Sidemen alone defined exhibition and **0.99** when Soccer Aid alone didâ€”because only four Sidemen matches have complete intensity data and their scoring is much more extreme.
+
+            **H4 verdict: supported with moderate-high confidence as an observable match profile.** The match did not merely have an exhibition-like score; its non-goal action-and-discipline geometry was also on the exhibition side. This does not mean the teams were physically idle, and the diagnostic score is not a probability of fixing, coordination, or private intent.
             """
         ),
         code(
@@ -1960,6 +2412,7 @@ def build_notebook() -> nbf.NotebookNode:
                 ("Award leaders showed unusually aggressive activity", "Suggestive, not conclusive", "Mbappe took 8 shots versus 4.88 per prior player-90; Olise made 17 offers in behind versus 8.34 and 11 direct pressures versus 3.37. Seven-match empirical p-values are coarse (0.25 and 0.125)."),
                 ("Elite friendlies normally score much more", "Not supported", f"Matched difference {primary_test['mean_difference']:+.2f}; 95% CI {primary_test['ci_low']:+.2f} to {primary_test['ci_high']:+.2f}; p={primary_test['permutation_p']:.3f}."),
                 ("Charity-like scoring spectacle", "Supported descriptively", f"Ten goals exceeded every Soccer Aid row; the expanded {len(benchmark_all)}-match benchmark shows that creator-led formats can also reach 10+ goals, so event stratification matters."),
+                ("Non-goal match profile was exhibition-like", "Supported", f"The strict-holdout process model used 102 official and 19 exhibition matches, excluded goals, and scored Match 103 at {primary_target_score:.3f}; repeated-CV AUC was {model_validation.loc[model_validation['model'].eq(primary_model_name), 'repeated_cv_auc_mean'].iloc[0]:.3f}."),
                 ("Teams made no defensive effort", "Contradicted", f"Direct pressures were at the {process_percentiles.loc[process_percentiles['metric'].eq('direct_pressures'), 'percentile'].iloc[0]:.0f}th percentile, while high-intensity player distance was above individual baselines."),
                 ("Contact intensity disappeared", "Contradicted", f"Match 103 had {current_discipline['total_fouls']:.0f} fouls versus {reference_90['total_fouls'].mean():.2f} in earlier regulation-time matches; tackles attempted were {contact_control_split.loc[contact_control_split['metric'].eq('tackles_made'), 'relative_delta_pct'].iloc[0]:+.0f}% versus the focal teams' own prior rates."),
                 ("Disciplinary consequence weakened", "Supported as a secondary signal", f"Zero cards versus {reference_90['total_card_events'].mean():.2f} earlier regulation-time mean; add-one empirical p={discipline_tests.loc[discipline_tests['reference'].eq('All earlier knockout matches'), 'add_one_empirical_lower_tail_p'].iloc[0]:.3f} for all earlier knockout matches and {discipline_tests.loc[discipline_tests['reference'].eq('Regulation-only knockout matches'), 'add_one_empirical_lower_tail_p'].iloc[0]:.3f} after excluding extra time."),
@@ -1979,6 +2432,7 @@ def build_notebook() -> nbf.NotebookNode:
                 ("Contact intensity was broadly lower", "Not supported", "Twenty-two fouls were normal and tackles attempted, blocks, pressure attempts, and high-intensity distance were elevated.", "Moderate-high"),
                 ("Disciplinary intensity was lower", "Suggestive", "The match was cardless despite normal foul volume; knockout empirical tails are about 0.065–0.087 and referee/foul-band sensitivities are weaker.", "Low-moderate"),
                 ("H3: spectacle-first behavioural tendency", "Supported", "Visible activity remained high while attacking output peaked and collective defensive conversion, clearances, duel control, and card consequence fell.", "Moderate-high"),
+                ("H4: observable profile was closer to exhibition football", "Supported", f"All 19 complete-core exhibition matches were compared with 102 official matches; the no-goals holdout score was {primary_target_score:.3f}, with repeated-CV AUC {model_validation.loc[model_validation['model'].eq(primary_model_name), 'repeated_cv_auc_mean'].iloc[0]:.3f}. Cross-provider and event-family sensitivity limit causal interpretation.", "Moderate-high"),
                 ("H2: individual rewards affected selection and attacking involvement", "Supported as an incentive/opportunity mechanism; player attribution remains suggestive", "Mbappe and Olise were selectively retained, highly involved, and materially changed award standings; small within-player samples and unobserved motive limit attribution.", "Moderate"),
                 ("H2 stronger claim: the match was primarily used to farm statistics", "Not established", "Award totals changed, but the evidence cannot distinguish intentional stat-seeking from normal attacking opportunity or private motive.", "Low"),
                 ("The match was equivalent to a charity match", "Not established", "The scoring was charity-like descriptively, but roster quality, incentives, and rules are not comparable.", "Low"),
@@ -2025,6 +2479,20 @@ def build_notebook() -> nbf.NotebookNode:
                 "expanded_exhibition_mean_goals": float(expanded_exhibition_goals.mean()),
                 "expanded_exhibition_ten_plus_count": int(np.sum(expanded_exhibition_goals >= 10)),
                 "expanded_exhibition_empirical_upper_tail": float((1 + np.sum(expanded_exhibition_goals >= 10)) / (len(expanded_exhibition_goals) + 1)),
+                "exhibition_intensity_rows": int(len(exhibition_intensity)),
+                "exhibition_intensity_complete_rows": int(len(exhibition_train)),
+                "official_classifier_training_matches": int(len(official_train)),
+                "exhibition_classifier_training_matches": int(len(exhibition_train)),
+                "primary_exhibition_classifier_features": primary_features,
+                "primary_exhibition_likeness_score": primary_target_score,
+                "primary_exhibition_likeness_bootstrap_ci_low": float(primary_score_ci[0]),
+                "primary_exhibition_likeness_bootstrap_ci_high": float(primary_score_ci[1]),
+                "primary_exhibition_classifier_cv_auc": float(model_validation.loc[model_validation["model"].eq(primary_model_name), "repeated_cv_auc_mean"].iloc[0]),
+                "primary_exhibition_classifier_cv_balanced_accuracy": float(model_validation.loc[model_validation["model"].eq(primary_model_name), "repeated_cv_balanced_accuracy_mean"].iloc[0]),
+                "exhibition_event_family_sensitivity_low": float(event_sensitivity["target_exhibition_likeness_score"].min()),
+                "exhibition_event_family_sensitivity_high": float(event_sensitivity["target_exhibition_likeness_score"].max()),
+                "exhibition_profile_hypothesis_verdict": "Supported as an observable profile",
+                "exhibition_profile_hypothesis_confidence": "Moderate-high",
                 "current_total_xg": float(current_process["total_xg"]),
                 "goals_above_xg": float(finishing.loc[finishing["scope"].eq("Combined"), "goals_above_xg"].iloc[0]),
                 "aggregate_poisson_ten_plus_p": float(finishing.loc[finishing["scope"].eq("Combined"), "poisson_tail_p"].iloc[0]),
@@ -2068,24 +2536,25 @@ def build_notebook() -> nbf.NotebookNode:
             ## Takeaways
 
             1. **The stronger professional sample removes the original power problem for the friendly comparison.** With 173 neutral matched pairs, there is no evidence of a large general scoring difference between elite friendlies and official tournament matches. The result remains small and unstable across stricter rank cutoffs.
-            2. **Selection clearly signalled lower priority.** Both teams replaced seven semi-final starters, consistent with fatigue management, experimentation, and reduced consequence.
-            3. **Individual rewards survived the fall in team-level pressure.** France retained Mbappe and Olise despite seven changes; both materially improved live award positions. Bellingham also set an England record after coming off the bench. Kane's unchanged total prevents this from becoming a universal stat-padding claim.
-            4. **The new physical data reject a simple coasting explanation.** Comparable outfielders covered slightly less total distance, but 12% more distance at 20+ km/h and applied 63% more direct pressures than their own prior rates. France's high-intensity distance ranked second of eight and England's third. The player-level tests are exploratory; none remains below 0.05 after Holm correction.
-            5. **Effort and control separated.** France produced its highest direct-pressure count but worst turnover yield; both teams conceded their highest opponent xG of the tournament. The players ran and pressed, but the collective defensive system did not convert that work into control.
-            6. **Contact did not disappear; consequence did.** Match 103 had 22 fouls versus 22.39 in earlier regulation-time matches, but zero cards versus 2.79. The cardless knockout tail is suggestive rather than conclusive (empirical p≈0.065–0.087), especially after referee and foul-band sensitivity checks.
-            7. **The action-to-control split is the boldest insight.** Across both teams, tackles attempted rose 61%, direct pressures 52%, and high-intensity distance 16%; clearances fell 65%, possession contests won 53%, and aerial duels won 53%. Tackles won rose 53%, showing reactive engagement rather than passivity.
-            8. **The individual-incentive mechanism now has behavioural evidence.** Mbappe's eight attempts were 64% above his prior per-90 rate, while Olise doubled his prior rate of in-behind offers and more than tripled his direct-pressure rate. This supports a stat-opportunity mechanism, not proof of conscious intent.
-            9. **The game was open from process and amplified by finishing.** It exceeded every earlier 2026 match in total xG and shots on target, then produced ten goals from 5.33 xG. England supplied most of the finishing overperformance with six goals from 2.34 xG.
-            10. **Game state amplified the spectacle.** The 4–0 lead raised the historical scoring expectation by roughly one-third, but the state-conditioned expectation remained far below ten.
-            11. **The expanded benchmark improves context but weakens the shortcut.** England–France's ten goals exceeded all 15 Soccer Aid rows, but creator-led formats in the expanded 41-match file reached 10–20 regulation-time goals. The event-level spread shows why there is no single “charity average” that proves equivalence.
+            2. **The corrected two-population test answers the actual question.** Across 102 official matches and all 19 exhibition matches with complete intensity data, the no-goals model scored Match 103 at about 0.98 on the exhibition side. Repeated-CV AUC was about 0.958, and all five common metrics differed after Holm correction.
+            3. **Selection clearly signalled lower priority.** Both teams replaced seven semi-final starters, consistent with fatigue management, experimentation, and reduced consequence.
+            4. **Individual rewards survived the fall in team-level pressure.** France retained Mbappe and Olise despite seven changes; both materially improved live award positions. Bellingham also set an England record after coming off the bench. Kane's unchanged total prevents this from becoming a universal stat-padding claim.
+            5. **The new physical data reject a simple coasting explanation.** Comparable outfielders covered slightly less total distance, but 12% more distance at 20+ km/h and applied 63% more direct pressures than their own prior rates. France's high-intensity distance ranked second of eight and England's third. The player-level tests are exploratory; none remains below 0.05 after Holm correction.
+            6. **Effort and control separated.** France produced its highest direct-pressure count but worst turnover yield; both teams conceded their highest opponent xG of the tournament. The players ran and pressed, but the collective defensive system did not convert that work into control.
+            7. **Contact did not disappear; consequence did.** Match 103 had 22 fouls versus 22.39 in earlier regulation-time matches, but zero cards versus 2.79. The cardless knockout tail is suggestive rather than conclusive (empirical p≈0.065–0.087), especially after referee and foul-band sensitivity checks.
+            8. **The action-to-control split is the boldest insight.** Across both teams, tackles attempted rose 61%, direct pressures 52%, and high-intensity distance 16%; clearances fell 65%, possession contests won 53%, and aerial duels won 53%. Tackles won rose 53%, showing reactive engagement rather than passivity.
+            9. **The individual-incentive mechanism now has behavioural evidence.** Mbappe's eight attempts were 64% above his prior per-90 rate, while Olise doubled his prior rate of in-behind offers and more than tripled his direct-pressure rate. This supports a stat-opportunity mechanism, not proof of conscious intent.
+            10. **The game was open from process and amplified by finishing.** It exceeded every earlier 2026 match in total xG and shots on target, then produced ten goals from 5.33 xG. England supplied most of the finishing overperformance with six goals from 2.34 xG.
+            11. **Game state amplified the spectacle.** The 4–0 lead raised the historical scoring expectation by roughly one-third, but the state-conditioned expectation remained far below ten.
+            12. **The expanded benchmark improves context but weakens the shortcut.** England–France's ten goals exceeded all 15 Soccer Aid rows, but creator-led formats in the expanded 41-match file reached 10–20 regulation-time goals. The event-level spread shows why there is no single “charity average” that proves equivalence.
 
             ### Final interpretation
 
-            The evidence supports calling England–France a **spectacle-first official match**: lower collective stakes, normal contact, high physical and attacking activity, live individual rewards, weak disciplinary consequence, and an extraordinary collapse in collective defensive control. The teams did not stop working; they stopped behaving as if preventing the next goal was the dominant objective. This is an evidence-backed tendency toward exhibition-like incentive alignment, not evidence of a pre-arranged score.
+            The evidence supports calling England–France an **exhibition-profile, spectacle-first official match**. The all-versus-all classifier reaches that conclusion without using goals: attacking action and disciplinary restraint sit on the exhibition side, while the normal foul count and high physical activity show that players did not simply stop working. They stopped behaving as if preventing the next goal was the dominant objective. This is not evidence of a pre-arranged score.
 
             ### Hypothesis verdict
 
-            **Overall: literal H1 is partially supported; the sharper H3 spectacle-first hypothesis is supported with moderate-high confidence. H2 is supported as an incentive/opportunity mechanism with moderate confidence, while intentional stat-padding remains suggestive.** The statistics show a coherent direction—more visible action and personal-output opportunity, less collective control and disciplinary consequence. They do not prove coordination, an agreed score, or private motive.
+            **Overall: literal H1 is partially supported because broad physical coasting is contradicted. H4—the observable exhibition-profile hypothesis—is supported with moderate-high confidence, as is H3's spectacle-first tendency. H2 is supported as an incentive/opportunity mechanism with moderate confidence, while intentional stat-padding remains suggestive.** The statistics show a coherent direction—more visible action and personal-output opportunity, less collective control and disciplinary consequence. They do not prove coordination, an agreed score, or private motive.
 
             ### Remaining data gap
 

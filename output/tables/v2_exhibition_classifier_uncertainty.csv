@@ -1,0 +1,2 @@
+model,bootstrap_draws,target_score_median,target_score_p025,target_score_p975
+Process only (no goals),2000,0.97781553599564,0.8762750855636431,0.9958765783908521

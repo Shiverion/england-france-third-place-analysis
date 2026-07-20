@@ -133,5 +133,14 @@
     "use": "Expanded exhibition/charity context with event-level stratification and source-tier labels. It improves descriptive precision but is not a causal or like-for-like professional control.",
     "inclusion_rule": "Include a named charity, solidarity, legends, creator, or benefit event with a documented final regulation score. Penalty shootout outcomes are retained as metadata but shootout kicks are excluded from total-goal calculations.",
     "known_limitations": "The benchmark is intentionally heterogeneous: celebrity/creator teams, retired legends, and mixed active/former players differ in roster quality, rules, substitutions, and incentives. Corazon Classic Match 2010-2019 and Sidemen results rely on secondary public event-history pages; those rows are not used for high-confidence causal claims."
+  },
+  "exhibition_match_intensity_benchmark": {
+    "path": "data/exhibition_match_intensity_benchmark.csv",
+    "coverage": "22 event-year matches: all 15 Soccer Aid editions from 2006-2026 and seven Sidemen Charity Matches from 2016-2026. Nineteen rows have the complete common core; three older Sidemen rows retain score-only coverage.",
+    "source_provider": "FotMob match-stat pages; every row stores its direct fixture URL.",
+    "provider_context": "https://www.fotmob.com/uk/topnews/28335-preview-soccer-aid-unicef-2026",
+    "method": "Bounded manual transcription of visible match-level totals. Regulation scores exclude shootout kicks. Complete-core eligibility requires non-missing total goals, total shots, shots on target, total fouls, and yellow cards.",
+    "use": "Formal labeled comparison of all 102 pre-target World Cup matches against all 19 exhibition matches with complete common metrics. Match 103 is held out. The primary diagnostic classifier excludes goals.",
+    "known_limitations": "The exhibition class has only two event families and just four complete Sidemen rows. Exhibition metrics and FIFA World Cup metrics come from different providers, so event-family sensitivity and a rate-based specification are reported. The resulting classifier score measures observable profile similarity, not intent, fixing, or a real-world posterior probability."
   }
 }

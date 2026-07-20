@@ -6,7 +6,9 @@ Reproducible analysis of whether England 6–4 France played like a relaxed exhi
 
 The evidence supports a bolder interpretation than “nobody tried”:
 
-> **Match 103 showed a spectacle-first tendency.** Players kept running, pressing, tackling, and fouling, but the usual collective controls and disciplinary consequences weakened sharply. The match behaved more like it was maximizing visible action and stat opportunity than minimizing defeat—without providing evidence that the score was pre-arranged.
+> **Match 103 had an exhibition-like observable profile with moderate-high confidence.** Players kept running, pressing, tackling, and fouling, but the usual collective controls and disciplinary consequences weakened sharply. The match behaved more like it was maximizing visible action and stat opportunity than minimizing defeat—without providing evidence that the score was pre-arranged.
+
+The corrected comparison is no longer one target match against 102 normal matches. It trains on **102 earlier official World Cup matches and all 19 exhibition matches with complete common-core intensity data**, while keeping Match 103 as a strict holdout. The primary model excludes goals and uses shots, shots on target, fouls, and yellow cards. Its held-out exhibition-likeness diagnostic score is about **0.98**, with repeated five-fold cross-validation AUC about **0.958**. Event-family sensitivity spans roughly **0.61–0.99**, so this is strong profile evidence, not a 98% probability of fixing or intent.
 
 The matched professional comparison found no general goal-scoring advantage for elite friendlies over official tournament matches. The current match was still an extreme ten-goal outlier, and the 4–0 score state explains only part of its openness. Player-level FIFA data sharpen the diagnosis: comparable outfielders produced 12% more high-intensity distance and 63% more direct pressures than their own earlier-tournament rates, while both teams conceded their worst opponent xG of the tournament. The raw player tests are exploratory and do not survive correction for four related outcomes, but the same-team rankings strongly reject a simple “everyone jogged” story.
 
@@ -22,7 +24,9 @@ France also retained Kylian Mbappé and Michael Olise—its live goal and assist
 
 **H3:** visible action remained high while defensive conversion and disciplinary consequence weakened—a spectacle-first behavioural tendency.
 
-**Verdict:** literal H1 is partially supported, while **H3 is supported with moderate-high confidence**. Lower stakes, exhibition-like openness, weak collective control, normal contact, and low disciplinary consequence align. Broad physical coasting is contradicted. Exact charity equivalence and coordinated pre-arrangement are not established.
+**H4:** across metrics available for both populations, Match 103 was closer to genuine exhibition matches than to ordinary official World Cup matches, even without using goals.
+
+**Verdict:** literal H1 is partially supported because broad physical coasting is contradicted. **H3 and H4 are supported with moderate-high confidence.** Lower stakes, exhibition-like attacking volume, weak collective control, normal foul volume, and low disciplinary consequence align. Coordinated pre-arrangement is not established.
 
 For H2 specifically: **supported as an incentive/opportunity mechanism with moderate confidence; intentional attribution remains suggestive**. Mbappe and Olise were selectively retained, highly involved, and improved award totals, but match data cannot establish private motive or coordination.
 
@@ -33,6 +37,13 @@ To address the original 15-match Soccer Aid limitation, the analysis now adds 26
 - [Expanded benchmark data](data/exhibition_charity_benchmark.csv)
 - [Event-level summary and bootstrap intervals](output/tables/v2_exhibition_benchmark_summary.csv)
 - [Target-vs-benchmark descriptive checks](output/tables/v2_exhibition_benchmark_tests.csv)
+
+The formal intensity subset adds every Soccer Aid edition and every Sidemen Charity Match for which FotMob exposes the shared statistics. Nineteen of 22 rows have complete goals, shots, shots-on-target, foul, and yellow-card data; three older Sidemen rows remain score-only.
+
+- [Exhibition intensity data](data/exhibition_match_intensity_benchmark.csv)
+- [Official-vs-exhibition common-core panel](output/tables/v2_official_vs_exhibition_common_core.csv)
+- [Distribution tests and effect sizes](output/tables/v2_official_vs_exhibition_tests.csv)
+- [Held-out classifier validation](output/tables/v2_exhibition_classifier_validation.csv)
 
 ## Start here
 
@@ -54,6 +65,8 @@ To address the original 15-match Soccer Aid limitation, the analysis now adds 26
 - [The expanded charity benchmark](output/assets/narrative_06_expanded_exhibition_benchmark.png)
 - [Not contactless—brakeless](output/assets/narrative_07_spectacle_without_brakes.png)
 - [Contact, discipline, and control](output/assets/v2_contact_discipline_and_control.png)
+- [Two labeled populations and one holdout](output/assets/v2_official_vs_exhibition_holdout.png)
+- [Plain-language two-population verdict](output/assets/narrative_08_two_population_verdict.png)
 
 ## Methods in brief
 
@@ -64,6 +77,8 @@ To address the original 15-match Soccer Aid limitation, the analysis now adds 26
 - Sensitivity checks using top-10, top-15, top-20, and friendly-versus-qualifier designs.
 - Smoothed count-model tail probabilities for ten-goal rarity.
 - Expanded charity/exhibition benchmark with event-level means, bootstrap intervals, empirical tails, and source-tier labels.
+- All-versus-all common-core comparison: 102 official matches versus 19 complete exhibition matches, with Match 103 held out.
+- Mann–Whitney tests, Cliff's delta, Holm correction, repeated stratified cross-validation, match bootstrap, and event-family sensitivity.
 - World Cup score-state decomposition using 964 regulation-time matches and match-cluster bootstrap resampling.
 - FIFA Post-Match Summary Report process comparison for matches 1–103.
 - FIFA Full Time Match Report foul/card panel for all 103 completed matches, with knockout, regulation-only, foul-band, and same-referee sensitivity checks.
@@ -79,7 +94,7 @@ Statistical tests describe the match’s observable scoring and process profile.
 
 ## Reproduction notes
 
-The notebook was executed top-to-bottom successfully before publication. To rerun the analysis, use a Python environment with pandas, NumPy, SciPy, matplotlib, PyMuPDF, and nbclient installed, then run:
+The notebook was executed top-to-bottom successfully before publication. To rerun the analysis, use a Python environment with pandas, NumPy, SciPy, scikit-learn, matplotlib, PyMuPDF, and nbclient installed, then run:
 
 ```powershell
 python scripts/build_player_effort_data.py
@@ -95,6 +110,6 @@ The international-results source is tracked as a submodule at the pinned commit 
 
 ## Data and provenance
 
-The project combines public international match results, soccer Elo ratings, World Cup history, FIFA Post-Match Summary Reports, player physical and event tables from 15 official reports, foul/card/contact data from **103 official Full Time Match Reports**, a current-match goal timeline, manually transcribed starting lineups, timestamped player-award evidence, and a 41-match charity/exhibition benchmark. The benchmark is stratified by event and roster profile; it is used for descriptive context, not as a like-for-like professional control.
+The project combines public international match results, soccer Elo ratings, World Cup history, FIFA Post-Match Summary Reports, player physical and event tables from 15 official reports, foul/card/contact data from **103 official Full Time Match Reports**, a current-match goal timeline, manually transcribed starting lineups, timestamped player-award evidence, a 41-match scoring benchmark, and a 22-match exhibition-intensity file with 19 complete common-core rows. Cross-provider definitions remain a documented limitation.
 
 See `data/source_manifest_v2.json` for source URLs, pinned commits, coverage, and known limitations.

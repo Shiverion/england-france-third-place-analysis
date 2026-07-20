@@ -1,7 +1,7 @@
 # England 6–4 France: deeper third-place-match analysis
 
 Analysis date: 19 July 2026  
-Primary notebook: `output/jupyter-notebook/england_france_2026_third_place_analysis_v2.ipynb`
+Primary notebook: `jupyter-notebook/england_france_2026_third_place_analysis_v2.ipynb`
 
 Statistical tests, evidence definitions, assumptions, and reproducibility notes: [statistical evidence and methods appendix](statistical_evidence_methods_v2.md)
 
@@ -12,6 +12,8 @@ England–France was not statistically similar to an ordinary elite friendly. Th
 The stronger evidence supports a more precise description:
 
 > **This was not a match without effort or contact. It was a match without brakes: high running, pressing, tackling, and ordinary foul volume coexisted with tournament-leading attack, zero cards, and collapsing collective control. The observable pattern tilted toward spectacle and stat opportunity rather than minimizing defeat.**
+
+The corrected design now answers the direct question with two labeled populations. It compares **all 102 earlier official World Cup matches with all 19 exhibition matches that have complete shared intensity statistics**, while keeping England–France completely out of training. Even after goals are removed, the held-out match receives an **exhibition-likeness diagnostic score of 0.980**. Repeated five-fold cross-validation gives **AUC 0.958** and balanced accuracy **0.887**; a match bootstrap gives a **0.876–0.996** interval. This is strong evidence about observable match profile—not a 98% probability of fixing or deliberate intent.
 
 Both countries changed seven starters from their semi-finals. The match then produced more goals, expected goals, and shots on target than any of the first 102 matches of the 2026 World Cup. At the same time, FIFA recorded an exceptionally high number of direct pressures but exceptionally few forced turnovers relative to those pressures. Player-level data reinforce that distinction: comparable outfielders produced 12% more high-intensity distance and 63% more direct pressures per 90 than their own earlier-tournament rates. That combination indicates failed or poorly protected pressure—not an absence of physical activity.
 
@@ -29,6 +31,8 @@ The 4–0 score state materially opened the second half, but historical World Cu
 
 **H3:** observable behaviour shifted toward maximizing visible action—shots, goals, assists, runs, tackles, and pressure attempts—rather than minimizing defeat. This **spectacle-first tendency** predicts normal or high activity alongside weak defensive conversion and disciplinary consequence.
 
+**H4:** across match-level measures available for both populations, England–France was closer to genuine exhibition football than to ordinary official World Cup football, even when total goals were excluded.
+
 **Competing explanation:** the match was lower-stakes and heavily rotated, but players still worked physically; attacking risk, weak collective control, score-state effects, individual incentives, and exceptional finishing created the spectacle.
 
 Because H1 is composite, it cannot be answered by one p-value. Each component receives its own evidence judgment:
@@ -37,6 +41,7 @@ Because H1 is composite, it cannot be answered by one p-value. Each component re
 |---|---|---|---|
 | Lower team-level stakes | **Supported** | High | Both teams changed seven of eleven semi-final starters. |
 | Exhibition-like openness | **Supported descriptively** | Moderate | Ten goals, 5.33 xG, and 20 shots on target exceeded the earlier World Cup matches. |
+| Exhibition-like common-core profile (H4) | **Supported** | Moderate-high | A no-goals model trained on 102 official and 19 exhibition matches scored the untouched target at 0.980; repeated-CV AUC was 0.958. |
 | Broad physical coasting or no defending | **Not supported** | Moderate | High-intensity distance and direct pressures rose; the player tests are exploratory and Holm-adjusted p-values exceed 0.05. |
 | Lower contact intensity | **Not supported** | Moderate-high | Twenty-two fouls were normal; tackles attempted, blocks, and pressure attempts rose. |
 | Lower disciplinary intensity | **Suggestive** | Low-moderate | Zero cards were unusual for a knockout match, but empirical tails are 0.065–0.087 and referee/foul-band checks are weaker. |
@@ -47,7 +52,7 @@ Because H1 is composite, it cannot be answered by one p-value. Each component re
 
 ### Overall verdict
 
-**Literal H1 is only partially supported, but the sharper H3 is supported with moderate-high confidence.** The teams did not stop working. They behaved as if preventing the next goal was no longer the dominant objective. That is a bold, evidence-backed tendency toward exhibition-like incentive alignment—not a claim that the score was agreed in advance.
+**Literal H1 is only partially supported because broad physical coasting is contradicted. H3 and H4 are supported with moderate-high confidence.** The teams did not stop working, but their attack-and-discipline geometry sat on the exhibition side. They behaved as if preventing the next goal was no longer the dominant objective. That is not a claim that the score was agreed in advance.
 
 ### H2: did the match boost individual statistics?
 
@@ -108,6 +113,49 @@ England–France's ten goals exceeded every Soccer Aid match, but it was not unu
 This improves the narrative in two directions. It strengthens the claim that the match reached an exhibition-like scoring environment, but it weakens the stronger claim that England–France was specifically equivalent to Soccer Aid or to all charity football. The event-level spread is evidence that format, roster, and incentive structure matter. The professional matched sample therefore remains the primary comparison for serious-versus-friendly scoring; the charity/exhibition benchmark is context only.
 
 ![The expanded charity benchmark by event format](assets/narrative_06_expanded_exhibition_benchmark.png)
+
+### 3b. The direct all-versus-all answer
+
+The key methodological correction is simple: “unusual versus normal” and “similar to exhibition” are different questions. The new common-core panel contains:
+
+| Role | Matches | Data used |
+|---|---:|---|
+| Official reference class | 102 | Every World Cup match before Match 103 |
+| Exhibition reference class | 19 | Every Soccer Aid/Sidemen match with complete common metrics |
+| Target holdout | 1 | England 6–4 France; never used for fitting or validation |
+
+The five shared metrics show large, coherent population differences:
+
+| Metric | Official median | Exhibition median | England–France |
+|---|---:|---:|---:|
+| Goals | 3.0 | 6.0 | **10** |
+| Total shots | 24.0 | 39.0 | **38** |
+| Shots on target | 8.0 | 17.0 | **20** |
+| Fouls | 22.5 | 13.0 | **22** |
+| Yellow cards | 2.5 | 1.0 | **0** |
+
+All five official-versus-exhibition differences remain statistically significant after Holm correction (**adjusted p ≤ 5.2×10⁻⁶**). The attacking effect sizes are large: Cliff's delta is **+0.861 for shots** and **+0.878 for shots on target**. Exhibition matches also have fewer fouls (**−0.671**) and fewer yellow cards (**−0.707**).
+
+England–France is a revealing hybrid. Its **foul count is exactly ordinary-official**, but its shot volume is at the exhibition median, its shots on target exceed the exhibition median, and its zero-card result sits on the exhibition side. So the bold insight is not “nobody made contact.” It is:
+
+> **Normal contact remained, but attacking restraint and disciplinary consequence disappeared. The non-goal profile itself is exhibition-like.**
+
+The primary classifier deliberately omits goals and uses only total shots, shots on target, fouls, and yellow cards:
+
+| Diagnostic result | Value |
+|---|---:|
+| Match-103 exhibition-likeness score | **0.980** |
+| Match-bootstrap 95% interval | **0.876–0.996** |
+| Repeated-CV AUC | **0.958** |
+| Repeated-CV balanced accuracy | **0.887** |
+| Rate-based no-goals sensitivity score | **0.969** |
+| Model including goals | **0.990** |
+
+The event-family sensitivity is deliberately prominent. A Soccer-Aid-only model scores the target **0.989**, while a Sidemen-only model scores it **0.612**. The latter has only four complete matches and represents a much more extreme creator-football format. Because the conclusion stays on the exhibition side but its magnitude depends on event family—and because FIFA and FotMob are different providers—the profile verdict is **moderate-high confidence**, not “near certainty.”
+
+![Official and exhibition distributions with Match 103 held out](assets/v2_official_vs_exhibition_holdout.png)
+
+![Plain-language two-population verdict](assets/narrative_08_two_population_verdict.png)
 
 ### 4. Lower team stakes, live individual rewards
 
@@ -405,7 +453,7 @@ The match was already unusually open by half-time, before the entire second-half
 
 Soccer Aid averaged 5.13 goals across 15 saved matches and had a previous maximum of nine. The expanded benchmark now contains 41 regulation-score matches, with an overall average of 7.15 goals and a maximum of 20. The event-level means range from 5.08 in Corazón Classic to 12.67 in Match for Hope and 12.14 in Sidemen Charity.
 
-This remains useful as a face-validity anchor: the bronze match reached an exhibition-like scoring level. It is not evidence that the football itself was equivalent. Soccer Aid combines celebrities and former professionals, while the expanded file also includes retired legends, creator-led formats, and benefit all-star teams. Those formats differ in roster quality, rules, substitutions, and incentives. The added data improve descriptive coverage, but they do not turn charity football into a valid causal control group.
+The 41-row score-only benchmark remains a face-validity anchor rather than one homogeneous control group. The new 19-row complete-core subset goes further: it supplies enough shared intensity variables to test observable profile similarity, and that test places Match 103 on the exhibition side even without goals. It still does not establish causal equivalence. Soccer Aid combines celebrities and former professionals, Sidemen is creator-led, and both differ from a World Cup match in roster quality, rules, substitutions, incentives, and data provider.
 
 ## Final evidence scorecard
 
@@ -414,6 +462,7 @@ This remains useful as a face-validity anchor: the bronze match reached an exhib
 | The match had lower selection priority than the semi-finals | **Supported** |
 | Elite friendlies normally score much more than official tournament matches | **Not supported** |
 | The scoreline was exhibition-like | **Supported descriptively** |
+| The non-goal common-core profile was exhibition-like | **Supported with moderate-high confidence** |
 | The players broadly coasted physically | **Not supported; high-intensity work and direct pressure rose** |
 | Contact intensity broadly disappeared | **Contradicted; foul volume was normal and tackle activity rose** |
 | Disciplinary intensity was unusually low | **Suggestive; zero cards, but empirical p=0.065–0.250 across sensitivity references** |
@@ -431,7 +480,7 @@ This remains useful as a face-validity anchor: the bronze match reached an exhib
 **Overall status: share with caveats.**
 
 - **High confidence:** score, lineup rotation, official FIFA process metrics, 103-report foul/card extraction, report reconciliation, and the focal teams' within-tournament ranks.
-- **Moderate-high confidence:** the spectacle-first behavioural diagnosis, because attack, activity, control failure, rotation, and individual incentives align across independent evidence layers.
+- **Moderate-high confidence:** the H4 exhibition-profile and H3 spectacle-first diagnoses. The no-goals holdout model separates 102 official from 19 exhibition matches well, while attack, activity, control failure, rotation, and individual incentives align across independent evidence layers.
 - **Low-moderate confidence:** zero cards as a standalone disciplinary anomaly; the empirical tail varies from 0.065 to 0.250 under reasonable sensitivity checks.
 - **Low confidence:** coordinated pre-arrangement, private player motivation, or exact equivalence to charity football. No match-statistical design can establish those claims.
 
@@ -447,4 +496,6 @@ The most important remaining performance-data gap is timestamped foul location a
 - [JGravier soccer-Elo repository](https://github.com/JGravier/soccer-elo), pinned sibling data at commit `a24d031e0ed81cbb4206ff84a2209bbf000ee6d6`
 - [Fjelstul World Cup Database](https://github.com/jfjelstul/worldcup), pinned sibling data at commit `35a8667f518b07469182ae16d35574dd0e7a00fb`
 - [Expanded charity/exhibition benchmark](../data/exhibition_charity_benchmark.csv), with event-level source URLs and source-tier labels; official examples include [Match for Hope](https://match4hope.com/2024-edition/), [Real Madrid Corazón Classic Match](https://www.realmadrid.com/en-US/news/club/latest-news/cronica-classic-match-07-06-2025), [UEFA Football for Hope](https://www.uefa.com/news-media/news/01a6-0e6c9b861c93-a973f2fa712-1000--stars-shine-at-tsunami-match/), and [Game4Ukraine](https://en.uaf.ua/news/48972)
+- [Exhibition match-intensity benchmark](../data/exhibition_match_intensity_benchmark.csv), with direct FotMob fixture URLs for all 15 Soccer Aid and seven Sidemen Charity rows; 19 rows meet the complete-core rule
+- [FotMob Soccer Aid 2026 preview](https://www.fotmob.com/uk/topnews/28335-preview-soccer-aid-unicef-2026), which identifies FotMob as the event's official live-score partner and describes its historical Soccer Aid coverage
 - Source paths, coverage rules, and known gaps are recorded in `data/source_manifest_v2.json`.
