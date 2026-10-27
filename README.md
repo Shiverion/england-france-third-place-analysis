@@ -109,23 +109,60 @@ The analysis is built as a reproducible evidence pipeline. Raw official reports 
 
 ### Pipeline Architecture
 
-```text
- Sources
-   FIFA Post-Match Summary + Full Time Match Reports (PDF, fetched in memory)
-   International results (pinned submodule) · Elo and WC history (sibling project, pinned)
-   Exhibition / charity benchmarks (41 score rows, 22 intensity rows) · lineups · award evidence
-     │
-     ▼  scripts/build_player_effort_data.py · scripts/build_contact_discipline_data.py
- data/processed/*.csv   (compact, committed; refresh is optional)
-     │
-     ▼  scripts/build_v2_notebook.py ─► scripts/execute_notebook.py
- Analysis stages (in the notebook)
-   matched friendly–official pairs (173) · score-state decomposition (964 WC matches)
-   official (102) vs exhibition (19) common-core classifier, Match 103 held out
-   contact/discipline panel (103 reports) · within-player per-90 tests (19 outfielders)
-     │
-     ▼
- output/tables/*.csv · output/assets/*.png · insight report · methods document
+```mermaid
+flowchart TD
+    subgraph sources["Sources"]
+        FIFA["FIFA Post-Match Summary<br/>Full Time Match Reports<br/>PDF; fetched in memory"]
+        Results["International results<br/>pinned submodule"]
+        History["Elo and World Cup history<br/>pinned sibling project"]
+        Bench["Exhibition and charity benchmarks<br/>41 score rows; 22 intensity rows<br/>lineups and award evidence"]
+    end
+
+    subgraph processing["Processing"]
+        Refresh["Optional data refresh<br/>scripts/build_player_effort_data.py<br/>scripts/build_contact_discipline_data.py"]
+        Processed[("data/processed/*.csv<br/>compact and committed")]
+        Build["scripts/build_v2_notebook.py"]
+        Execute["scripts/execute_notebook.py"]
+    end
+
+    subgraph analysis["Notebook analysis stages"]
+        Pairs["Matched friendly–official pairs<br/>173 pairs<br/>score-state analysis: 964 matches"]
+        Common["Official (102) vs exhibition (19)<br/>common-core classifier<br/>Match 103 held out"]
+        Contact["Contact and discipline panel<br/>103 reports"]
+        Player["Within-player per-90 tests<br/>19 outfielders"]
+    end
+
+    subgraph outputs["Generated outputs"]
+        Tables[("output/tables/*.csv")]
+        Assets["output/assets/*.png"]
+        Insight["Insight report"]
+        Methods["Methods document"]
+    end
+
+    FIFA -.-> Refresh
+    Results -.-> Refresh
+    History -.-> Refresh
+    Bench -.-> Refresh
+    Refresh --> Processed
+    Processed --> Build
+    Build --> Execute
+
+    Execute --> Pairs
+    Execute --> Common
+    Execute --> Contact
+    Execute --> Player
+
+    Pairs --> Tables
+    Common --> Tables
+    Contact --> Tables
+    Player --> Tables
+    Pairs --> Assets
+    Common --> Assets
+    Contact --> Assets
+    Player --> Assets
+    Tables --> Insight
+    Tables --> Methods
+    Assets --> Insight
 ```
 
 ### Key Design Choices
