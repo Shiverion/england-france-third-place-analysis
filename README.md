@@ -92,6 +92,61 @@ The formal intensity subset adds every Soccer Aid edition and every Sidemen Char
 
 Statistical tests describe the match’s observable scoring and process profile. They cannot prove private player motivation or intent.
 
+## System Design
+
+The analysis is built as a reproducible evidence pipeline. Raw official reports and benchmark datasets are extracted into compact processed tables, tested against labelled populations with a strict holdout, and rendered into a notebook, tables, and narrative visuals.
+
+### Requirements
+
+**Functional**
+- Test whether Match 103 looked like an exhibition or an open official match, using intensity, contact, discipline, player-effort, and incentive evidence.
+- Keep the target match out of every model fit (strict holdout) and report sensitivity across event families.
+
+**Non-functional**
+- **Provenance**: every source URL, pinned commit, and coverage note is recorded in `data/source_manifest_v2.json`; the international-results source is a pinned Git submodule.
+- **Statistical hygiene**: Holm correction across related outcomes, bootstrap intervals, cross-validation, and component-by-component verdicts with separate confidence grades.
+- **Claim boundary**: observable profiles only; no inference about private motive or pre-arrangement.
+
+### Pipeline Architecture
+
+```text
+ Sources
+   FIFA Post-Match Summary + Full Time Match Reports (PDF, fetched in memory)
+   International results (pinned submodule) · Elo and WC history (sibling project, pinned)
+   Exhibition / charity benchmarks (41 score rows, 22 intensity rows) · lineups · award evidence
+     │
+     ▼  scripts/build_player_effort_data.py · scripts/build_contact_discipline_data.py
+ data/processed/*.csv   (compact, committed; refresh is optional)
+     │
+     ▼  scripts/build_v2_notebook.py ─► scripts/execute_notebook.py
+ Analysis stages (in the notebook)
+   matched friendly–official pairs (173) · score-state decomposition (964 WC matches)
+   official (102) vs exhibition (19) common-core classifier, Match 103 held out
+   contact/discipline panel (103 reports) · within-player per-90 tests (19 outfielders)
+     │
+     ▼
+ output/tables/*.csv · output/assets/*.png · insight report · methods document
+```
+
+### Key Design Choices
+
+- **Two labelled populations plus one holdout.** The classifier never sees Match 103, so its exhibition-likeness score is an out-of-sample diagnostic rather than a fitted value.
+- **Goals excluded from the primary model.** Using shots, shots on target, fouls, and cards avoids circular reasoning from the ten-goal scoreline.
+- **Stratified benchmarks.** Charity events are summarised per event and roster profile, because a pooled average would mix very different scoring environments.
+
+### Trade-offs
+
+| Decision | Benefit | Cost |
+| --- | --- | --- |
+| Small exhibition sample (19 complete rows) | Real, documented matches | Wide uncertainty; sensitivity range 0.61–0.99 |
+| Cross-provider statistics (FIFA, FotMob) | Enough coverage for a benchmark | Definitions differ across providers |
+| Notebook generated from a script | Reproducible, diffable notebook source | Two layers to maintain |
+
+### What to Revisit as It Grows
+
+- Harmonise event definitions across providers (or use a single provider for both populations).
+- Extend the exhibition benchmark with tracking data so physical-effort comparisons are like for like.
+
 ## Reproduction notes
 
 The notebook was executed top-to-bottom successfully before publication. To rerun the analysis, use a Python environment with pandas, NumPy, SciPy, scikit-learn, matplotlib, PyMuPDF, and nbclient installed, then run:
